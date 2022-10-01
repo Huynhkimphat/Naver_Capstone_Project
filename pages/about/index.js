@@ -37,7 +37,7 @@ export default function About() {
             <div>A brand built on the love of craftmanship,</div>
             <div>quality and outstanding customer service</div>
           </div>
-          <div className={styles.aboutContentContainer}>
+          <div className={styles.aboutContentContainer1}>
             {aboutLists.map((item) => (
               <AboutContent key={item.id} data={item} />
             ))}
