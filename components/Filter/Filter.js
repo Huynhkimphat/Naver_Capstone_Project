@@ -1,60 +1,86 @@
 const styles = {
-  wrapper: "mx-auto flex justify-between",
-  groupFilter: "flex flex-start",
-  categoryFilter: "",
-  filterByDate: "flex",
+  wrapper:
+    "max-w-7xl mx-auto flex sm:justify-between justify-center items-center p-4",
+  groupFilter: "flex  sm:gap-x-4 gap-x-8 ",
+  filterContainer: "text-sm ",
+  filterContainerNoMoblie: "text-sm sm:flex hidden",
+  filterByDate: "sm:flex gap-x-4 hidden items-center",
   selectionFilter: "",
-  productFilter: "",
-  priceFilter: "",
-  brandFilter: "",
+  defaultOption: "hidden ",
 };
 // const listCategory = [];
 
+const categoryList = [
+  { id: 1, name: "Crockery" },
+  { id: 2, name: "Furniture" },
+  { id: 3, name: "Homeware" },
+  { id: 4, name: "Plant pots" },
+  { id: 5, name: "Chairs" },
+  { id: 6, name: "Cutlery" },
+];
+
 const Filter = () => {
-  const categoryList = [
-    { id: 1, name: "Crockery" },
-    { id: 2, name: "Furniture" },
-    { id: 3, name: "Homeware" },
-    { id: 4, name: "Plant pots" },
-    { id: 5, name: "Chairs" },
-    { id: 6, name: "Cutlery" },
-  ];
   return (
     <div className={styles.wrapper}>
       <div className={styles.groupFilter}>
         {/* category filter */}
-        <div className={styles.categoryFilter}>
+        <div className={styles.filterContainer}>
           <select className={styles.selectionFilter}>
-            <option value="">Category</option>
+            <option className={styles.defaultOption}>Category</option>
+            {categoryList.map((item) => (
+              <option key={item.id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
           </select>
         </div>
-        {/* category product */}
-        <div className={styles.productFilter}>
+        {/* product filter */}
+        <div className={styles.filterContainerNoMoblie}>
           <select className={styles.selectionFilter}>
-            <option value="">Product Type</option>
+            <option className={styles.defaultOption}>Product Type</option>
+
+            {categoryList.map((item) => (
+              <option key={item.id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
           </select>
         </div>
         {/* category price */}
-        <div className={styles.priceFilter}>
-          <select className={styles.selectionFilter} value="">
-            <option value="">Price</option>
+        <div className={styles.filterContainer}>
+          <select className={styles.selectionFilter}>
+            <option className={styles.defaultOption}>Price</option>
+            {categoryList.map((item) => (
+              <option key={item.id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
           </select>
         </div>
         {/* category brand */}
-        <div className={styles.brandFilter}>
-          <select className={styles.selectionFilter} value="">
-            <option value="">Brand</option>
+        <div className={styles.filterContainerNoMoblie}>
+          <select className={styles.selectionFilter}>
+            <option className={styles.defaultOption}>Brand</option>
+            {categoryList.map((item) => (
+              <option key={item.id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
       <div className={styles.filterByDate}>
-        <div className={styles.title}>Sorting by </div>
+        <div className={styles.title}>Sorting by: </div>
         {/* category date added */}
-        <div className={styles.filterDateBy}>
-        <select className={styles.selectionFilter} value="" 
-          >
-            <option value="">Date Added</option>
+        <div className={styles.filterContainer}>
+          <select className={styles.selectionFilter}>
+            <option className={styles.defaultOption}>Date Added</option>
+            {categoryList.map((item) => (
+              <option key={item.id} value={item.name}>
+                {item.name}
+              </option>
+            ))}
           </select>
         </div>
       </div>
