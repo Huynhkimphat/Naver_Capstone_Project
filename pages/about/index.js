@@ -1,7 +1,7 @@
 import Layout from "../../components/Layout";
 import AboutContent from "../../components/AboutContent/AboutContent";
-import AboutLogo from "../../static/About.png";
-import AboutLogo1 from "../../static/About2.png";
+import AboutLogo from "../../static/AboutImage.png";
+import AboutLogo1 from "../../static/AboutImage2.png";
 
 const styles = {
   wrapper: "mx-auto max-w-7xl flex",
@@ -19,7 +19,7 @@ const aboutLists = [
     isReverse: false,
   },
   {
-    id: 1,
+    id: 2,
     title: `Our service isn’t just personal, it’s actually hyper personally exquisite`,
     label1: `When we started Avion, the idea was simple. Make high quality furniture affordable and available for the mass market.`,
     label2: `Handmade, and lovingly crafted furniture and homeware is what we live, breathe and design so our Chelsea boutique become the hotbed for the London interior design community.`,
