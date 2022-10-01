@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Logo from "../../static/logo.png";
+import Logo from "../../static/Logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineSearch } from "react-icons/ai";
 // import { MdLightMode } from "react-icons/md";

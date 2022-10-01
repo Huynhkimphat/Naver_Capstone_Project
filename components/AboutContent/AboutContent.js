@@ -1,5 +1,4 @@
 import Image from "next/image";
-import About from "../../static/about.png";
 
 const styles = {
   wrapper: "mx-auto flex md:flex-row flex-col",
