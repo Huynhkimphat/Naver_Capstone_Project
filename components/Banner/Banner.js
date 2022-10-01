@@ -1,14 +1,14 @@
-import Image from "next/image";
 const styles = {
   wrapper: "mx-auto flex justify-center",
-  content: "flex justify-center bg-[#F9F9F9] w-3/4 p-8",
-  infoUser: "text-center items-center w-[50%] flex flex-col space-y-2",
+  content: "flex justify-center bg-[#F9F9F9] w-3/4 sm:p-8 p-2 ",
+  infoUser: "text-center items-center flex flex-col space-y-2",
   title: "text-3xl p-4",
   instruction: "text-2xl p-5",
-  emailAddition: "",
+  emailAddition: " flex flex-wrap gap-y-2 justify-center gap-x-2",
   emailAdditionContext: "outline-none p-4",
   btnSignup: "rounded-lg border border-x-0 p-4 bg-[#2A254B] text-white",
 };
+
 const Banner = () => {
   return (
     <div className={styles.wrapper}>
