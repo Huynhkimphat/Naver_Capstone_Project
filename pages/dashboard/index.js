@@ -28,8 +28,6 @@ const styles = {
     ProductQuantity: 'flex flex-col w-[80%]',
     ProductRight: 'flex w-[60%] justify-around',
     ProductRightItem: 'flex flex-col items-center',
-
-
 }
 const index = (props) => {
     const data = {
