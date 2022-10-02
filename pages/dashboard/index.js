@@ -49,24 +49,7 @@ const index = (props) => {
     ],
   };
 
-  const options = {
-    scales: {
-      xAxes: [
-        {
-          gridLines: {
-            color: "rgba(0, 0, 0, 0)",
-          },
-        },
-      ],
-      yAxes: [
-        {
-          gridLines: {
-            color: "rgba(0, 0, 0, 0)",
-          },
-        },
-      ],
-    },
-  };
+  
   const dataDou = {
     labels: ["Current Customers", "New Customers", "Target Customers"],
     datasets: [
@@ -131,7 +114,7 @@ const index = (props) => {
               <h3 className="text-6 font-medium">Total Customer: {"229"}</h3>
               <button className={styles.btnLineChart}>This Year</button>
             </div>
-            <Line data={data} options={options} height="190px" />
+            <Line data={data} height="190px" />
           </div>
           <div className={styles.douChart}>
             <Doughnut data={dataDou} height="190px" />
