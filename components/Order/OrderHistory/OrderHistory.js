@@ -1,9 +1,8 @@
-import CartHeader from "./CartHeader";
-import CartContent from "./CartContent";
+import OrderHistoryHeader from "./OrderHistoryHeader";
+import OrderHistoryContent from "./OrderHistoryContent";
 import Product1 from "../../../static/Product1.png";
 import Product2 from "../../../static/Product2.png";
 import Product3 from "../../../static/Product3.png";
-import Product4 from "../../../static/Product4.png";
 
 import { HiArrowNarrowLeft } from "react-icons/hi";
 
@@ -13,38 +12,32 @@ const styles = {
   backButton:
     "flex font-semibold text-indigo-600 text-sm mt-10 items-center gap-x-4 hover:text-[red]",
 };
-export default function Cart({ orderNo }) {
+export default function OrderHistory() {
   const cartLists = [
     {
       id: 1,
-      productName: "Chair1",
-      brandName: "Brand1",
-      price: 1000000,
-      image: Product1,
-      quantity: 1,
+      orderNo: "abcdxyz111",
+      total: 1000000,
+      createdOn: new Date(),
     },
     {
       id: 2,
-      productName: "Chair2",
-      brandName: "Brand2",
-      price: 10000,
-      image: Product2,
-      quantity: 100,
+      orderNo: "abcdxyz1122221",
+      total: 1000000000,
+      createdOn: new Date(),
     },
     {
       id: 3,
-      productName: "Chair3",
-      brandName: "Brand3",
-      price: 100,
-      image: Product3,
-      quantity: 500,
+      orderNo: "abcdxyz3333111",
+      total: 500000,
+      createdOn: new Date(),
     },
   ];
   return (
     <div className={styles.cartBorder}>
       <div className={styles.cart}>
-        <CartHeader orderNo={orderNo} />
-        <CartContent data={cartLists} />
+        <OrderHistoryHeader />
+        <OrderHistoryContent data={cartLists} />
         <div className={styles.backButton}>
           <HiArrowNarrowLeft />
           Continue Shopping

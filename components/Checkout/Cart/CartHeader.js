@@ -7,15 +7,17 @@ const styles = {
   tableTitle: "font-semibold text-gray-600 text-xs uppercase w-1/2",
   tableTitleCenter:
     "font-semibold text-center text-gray-600 text-xs uppercase sm:w-1/4 w-1/2 text-center",
-    tableTitleCenterNoMobile:
+  tableTitleCenterNoMobile:
     "font-semibold text-center text-gray-600 text-xs uppercase w-1/4 hidden sm:block text-center",
 };
-export default function Cart() {
+export default function CartHeader({ orderNo }) {
   return (
     <div>
       {/* Title */}
       <div className={styles.titleContainer}>
-        <h1 className={styles.title}>Shopping Cart</h1>
+        <h1 className={styles.title}>
+          {orderNo ? `Your Order: ${orderNo}` : `Your Shopping Cart`}
+        </h1>
       </div>
       {/* Table Title */}
       <div className={styles.tableTitleContainer}>
