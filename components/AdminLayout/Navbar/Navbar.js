@@ -11,7 +11,7 @@ const styles = {
 const Navbar = (props) => {
     return (
         <div className={props.status ? styles.wrapper : styles.wrapper_hidden}>
-                <Link href='/analyst'>
+                <Link href='/dashboard'>
                     <div className={styles.item}>
                         <AiOutlineDashboard></AiOutlineDashboard>
                         <a>Analyst</a>
