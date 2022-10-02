@@ -5,9 +5,11 @@ import { HiMinus } from "react-icons/hi";
 const styles = {
   tableContentContainer: "flex items-center hover:bg-gray-100 -mx-8 px-6 py-5",
   contentDetail: "flex w-1/2",
-  contentQuantity: "flex justify-center flex-col w-1/4 items-center gap-y-2",
+  contentQuantity:
+    "flex justify-center flex-col sm:w-1/4 w-1/2 items-center gap-y-2",
+  totalInMobile: "block sm:hidden text-center font-seminbold text-sm",
   contentQuantityAmount: "flex justify-center items-center",
-  contentAmount: "text-center w-1/4 font-semibold text-sm",
+  contentAmount: "text-center w-1/4 hidden sm:block font-semibold text-sm",
   imageContainer: "w-20",
   image: "h-24",
   contentDetailContainer: "flex flex-col justify-between ml-4 flex-grow",
@@ -33,6 +35,9 @@ export default function CartContent({ data }) {
             </div>
           </div>
           <div className={styles.contentQuantity}>
+            <span className={styles.totalInMobile}>
+              Total: {data.quantity * data.price} VND
+            </span>
             <div className={styles.contentQuantityAmount}>
               <HiMinus />
               <input
@@ -47,7 +52,7 @@ export default function CartContent({ data }) {
             </div>
           </div>
           <span className={styles.contentAmount}>
-            {data.quantity * data.price}
+            {data.quantity * data.price} VND
           </span>
         </div>
       ))}
