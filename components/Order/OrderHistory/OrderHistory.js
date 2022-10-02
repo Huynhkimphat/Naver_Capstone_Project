@@ -1,5 +1,5 @@
-import CartHeader from "./OrderHistoryHeader";
-import CartContent from "./OrderHistoryContent";
+import OrderHistoryHeader from "./OrderHistoryHeader";
+import OrderHistoryContent from "./OrderHistoryContent";
 import Product1 from "../../../static/Product1.png";
 import Product2 from "../../../static/Product2.png";
 import Product3 from "../../../static/Product3.png";
@@ -36,8 +36,8 @@ export default function OrderHistory() {
   return (
     <div className={styles.cartBorder}>
       <div className={styles.cart}>
-        <CartHeader />
-        <CartContent data={cartLists} />
+        <OrderHistoryHeader />
+        <OrderHistoryContent data={cartLists} />
         <div className={styles.backButton}>
           <HiArrowNarrowLeft />
           Continue Shopping
