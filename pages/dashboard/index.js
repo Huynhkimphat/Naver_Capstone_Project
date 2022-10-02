@@ -91,9 +91,9 @@ const index = (props) => {
   const printTopProduct = () => {
     return listTopProduct.map((element, index) => {
       return (
-        <div key={Math.random} className={styles.ProductItem}>
+        <div key={Math.random()} className={styles.ProductItem}>
           <div className={styles.ProductLeft}>
-            <Image height="50px" width="50px" src={Product1} alt={""}></Image>
+            <Image height="50px" width="50px" src={Product1} alt={""} />
             <div className={styles.ProductQuantity}>
               <span>Chair</span>
               <span>50 orders</span>
