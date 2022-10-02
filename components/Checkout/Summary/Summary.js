@@ -7,7 +7,7 @@ const styles = {
     "bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full",
 };
 
-export default function Summary() {
+export default function Summary({ orderNo }) {
   return (
     <div className={styles.wrapper}>
       <h1 className={styles.title}>Order Summary</h1>
@@ -16,7 +16,7 @@ export default function Summary() {
           <span>Total cost</span>
           <span>$600</span>
         </div>
-        <button className={styles.checkoutBtn}>Checkout</button>
+        {orderNo || <button className={styles.checkoutBtn}>Checkout</button>}
       </div>
     </div>
   );
