@@ -44,7 +44,7 @@ export default function Cart({ orderNo }) {
     <div className={styles.cartBorder}>
       <div className={styles.cart}>
         <CartHeader orderNo={orderNo} />
-        <CartContent data={cartLists} />
+        <CartContent data={cartLists} orderNo={orderNo} />
         <div className={styles.backButton}>
           <HiArrowNarrowLeft />
           Continue Shopping
