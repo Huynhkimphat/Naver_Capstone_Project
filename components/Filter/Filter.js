@@ -5,7 +5,7 @@ const styles = {
   filterContainer: "text-sm ",
   filterContainerNoMoblie: "text-sm sm:flex hidden",
   filterByDate: "sm:flex gap-x-4 hidden items-center",
-  selectionFilter: "",
+  selectionFilter: "outline-none",
   defaultOption: "hidden ",
 };
 // const listCategory = [];
@@ -46,7 +46,7 @@ const Filter = () => {
             ))}
           </select>
         </div>
-        {/* category price */}
+        {/*  price filter */}
         <div className={styles.filterContainer}>
           <select className={styles.selectionFilter}>
             <option className={styles.defaultOption}>Price</option>
@@ -57,7 +57,7 @@ const Filter = () => {
             ))}
           </select>
         </div>
-        {/* category brand */}
+        {/*  brand filter*/}
         <div className={styles.filterContainerNoMoblie}>
           <select className={styles.selectionFilter}>
             <option className={styles.defaultOption}>Brand</option>
@@ -72,7 +72,7 @@ const Filter = () => {
 
       <div className={styles.filterByDate}>
         <div className={styles.title}>Sorting by: </div>
-        {/* category date added */}
+        {/*  date added filter*/}
         <div className={styles.filterContainer}>
           <select className={styles.selectionFilter}>
             <option className={styles.defaultOption}>Date Added</option>
