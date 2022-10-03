@@ -215,7 +215,7 @@ const AdminOrders = (props) => {
         // Export File Excel
         <div className={styles.wrapper}> 
             <div className={styles.exportTable}>
-                <select className={styles.select} defaultValue='All'>
+                <select className={styles.select} defaultValue='All' title='select'>
                     <option value="All">All</option>
                     <option value="Approved">Approved</option>
                     <option value="Pending">Pending</option>
