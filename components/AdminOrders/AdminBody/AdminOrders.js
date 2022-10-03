@@ -231,7 +231,6 @@ const AdminOrders = (props) => {
                 {hasWindow && <DataTable
                     columns={columns}
                     data={data}
-                    responsive
                     pagination
                     selectableRows
                 />}
