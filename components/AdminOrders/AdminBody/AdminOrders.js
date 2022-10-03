@@ -226,7 +226,9 @@ const AdminOrders = (props) => {
                     <span>Export</span>
                 </button>
             </div>
+            
             {/* Orders List Table */}
+
             <div>
                 {hasWindow && <DataTable
                     columns={columns}
