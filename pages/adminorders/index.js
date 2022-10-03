@@ -7,7 +7,7 @@ const index = (props) => {
     return (
         <AdminLayout>
             <AdminHeader></AdminHeader>
-            {/* <AdminOrders></AdminOrders> */}
+            <AdminOrders></AdminOrders>
         </AdminLayout>
     );
 };
