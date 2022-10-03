@@ -17,9 +17,10 @@ const styles = {
   brandName: "text-red-500 text-xs",
   removeButton: "font-semibold hover:text-red-500 text-gray-500 text-xs",
   price: "font-semibold",
+  disabled: "text-[#ccc]",
 };
 
-export default function CartContent({ data }) {
+export default function CartContent({ data, orderNo }) {
   return (
     <div>
       {data.map((data) => (
@@ -39,13 +40,14 @@ export default function CartContent({ data }) {
               Total: {data.quantity * data.price} VND
             </span>
             <div className={styles.contentQuantityAmount}>
-              <HiMinus />
+              <HiMinus className={orderNo ? styles.disabled : ""} />
               <input
                 className="mx-2 border text-center w-8"
                 type="text"
+                disabled={orderNo}
                 value={data.quantity}
               />
-              <HiPlus />
+              <HiPlus className={orderNo ? styles.disabled : ""} />
             </div>
             <div href="#" className={styles.removeButton}>
               Remove
