@@ -23,7 +23,7 @@ const Navbar = (props) => {
                         <a>Users</a>
                     </div>
                 </Link>
-                <Link href='/orders'>
+                <Link href='/adminorders'>
                     <div className={styles.item}>
                         <BsCardChecklist></BsCardChecklist>
                         <a>Orders</a>
