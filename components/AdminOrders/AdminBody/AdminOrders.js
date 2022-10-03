@@ -205,12 +205,12 @@ const data = [
 ];
 
 const AdminOrders = (props) => {
-    const [hasWindow, setHasWindow] = useState(false);
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            setHasWindow(true);
-        }
-    }, []);
+    // const [hasWindow, setHasWindow] = useState(false);
+    // useEffect(() => {
+    //     if (typeof window !== "undefined") {
+    //         setHasWindow(true);
+    //     }
+    // }, []);
     return (
         // Export File Excel
         <div className={styles.wrapper}> 
@@ -227,14 +227,14 @@ const AdminOrders = (props) => {
                 </button>
             </div>
             {/* Orders List Table */}
-            <div>
+            {/* <div>
                 {hasWindow && <DataTable
                     columns={columns}
                     data={data}
                     pagination
                     selectableRows
                 />}
-            </div>
+            </div> */}
         </div>
     );
 };
