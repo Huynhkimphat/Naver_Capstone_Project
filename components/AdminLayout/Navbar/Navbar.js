@@ -32,7 +32,7 @@ const Navbar = (props) => {
                 <Link href='/adminproducts'>
                     <div className={styles.item}>
                         <BiCategory></BiCategory>
-                        <a>Category</a>
+                        <a>Products</a>
                     </div>
                 </Link>
                 <Link href='/history'>
