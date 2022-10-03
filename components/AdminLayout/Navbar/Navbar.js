@@ -35,12 +35,6 @@ const Navbar = (props) => {
                         <a>Products</a>
                     </div>
                 </Link>
-                <Link href='/history'>
-                    <div className={styles.item}>
-                        <AiOutlineHistory></AiOutlineHistory>
-                        <a>History Order</a>
-                    </div>
-                </Link>
             </div>
     );
 };
