@@ -1,7 +1,7 @@
 import React from 'react';
-import AdHeader from '../../components/AdHeader/AdHeader';
-import AdminLayout from '../../components/AdminLayout/AdminLayout';
-import AdProducts from '../../components/AdProducts/AdProducts';
+import AdHeader from '../../../components/AdHeader/AdHeader';
+import AdminLayout from '../../../components/AdminLayout/AdminLayout';
+import AdProducts from '../../../components/AdProducts/AdProducts';
 
 const index = (props) => {
     return (

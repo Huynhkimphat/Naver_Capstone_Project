@@ -1,12 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
-import AdminLayout from "../../components/AdminLayout/AdminLayout";
+import AdminLayout from "../../../components/AdminLayout/AdminLayout";
 import { Line, Doughnut, Pie } from "react-chartjs-2";
 import { FiUser } from "react-icons/fi";
 import { BsBag, BsPrinter, BsCart } from "react-icons/bs";
 import Chart from "chart.js/auto";
-import Product1 from "../../static/Product1.png";
-import { list } from "postcss";
+import Product1 from "../../../static/Product1.png";
 Chart.defaults.scale.grid.display = false;
 
 const styles = {

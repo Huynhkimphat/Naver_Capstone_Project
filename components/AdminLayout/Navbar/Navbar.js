@@ -11,25 +11,25 @@ const styles = {
 const Navbar = (props) => {
     return (
         <div className={props.status ? styles.wrapper : styles.wrapper_hidden}>
-                <Link href='/dashboard'>
+                <Link href='/admin/dashboard'>
                     <div className={styles.item}>
                         <AiOutlineDashboard></AiOutlineDashboard>
                         <a>Analyst</a>
                     </div>
                 </Link>
-                <Link href='/users'>
+                <Link href='/admin/users'>
                     <div className={styles.item}>
                         <AiOutlineUser></AiOutlineUser>
                         <a>Users</a>
                     </div>
                 </Link>
-                <Link href='/adminorders'>
+                <Link href='/admin/order'>
                     <div className={styles.item}>
                         <BsCardChecklist></BsCardChecklist>
                         <a>Orders</a>
                     </div>
                 </Link>
-                <Link href='/adminproducts'>
+                <Link href='/admin/product'>
                     <div className={styles.item}>
                         <BiCategory></BiCategory>
                         <a>Products</a>
