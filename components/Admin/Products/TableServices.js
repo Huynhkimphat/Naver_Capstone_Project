@@ -2,6 +2,7 @@ import Image from "next/image"
 import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
+import { Ripple } from 'primereact/ripple';
 import Product1 from '../../../static/Product1.png'
 const styles = {
     redSelect: 'bg-red-500 p-2 rounded-md text-white font-semibold',

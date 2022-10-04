@@ -4,6 +4,9 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { InputText } from "primereact/inputtext";
+import { Dropdown } from "primereact/dropdown";
+import { Ripple } from 'primereact/ripple';
 import { data } from './Data'
 import * as TableServices from './TableServices'
 import Feature from './Feature/Feature';
@@ -16,11 +19,33 @@ const styles = {
 const AdProducts = (props) => {
 
     const [products2, setProducts2] = useState(null);
+    const [first, setFirst] = useState(0);
+    const [rows, setRows] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
+    const onCustomPage = (event) => {
+        setFirst(event.first);
+        setRows(event.rows);
+        setCurrentPage(event.page + 1);
+    }
+    const onPageInputChange = (event) => {
+        setCurrentPage(event.target.value);
+    }
+    const onPageInputKeyDown = (event, options) => {
+        if (event.key === 'Enter') {
+            const page = parseInt(currentPage);
+            if (page < 1 || page > options.totalPages) {
+                setPageInputTooltip(`Value must be between 1 and ${options.totalPages}.`);
+            }
+            else {
+                const first = currentPage ? options.rows * (page - 1) : 0;
 
+                setFirst(first);
+                setPageInputTooltip('Press \'Enter\' key to go to this page.');
+            }
+        }
+    }
 
-    useEffect(() => {
-        setProducts2(data)
-    }, []);
     const onRowEditComplete = (e) => {
         let _products2 = [...products2];
         let { newData, index } = e;
@@ -29,15 +54,79 @@ const AdProducts = (props) => {
 
         setProducts2(_products2);
     };
+
+    // Paginator
+    const template = {
+        layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
+        'PrevPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Previous</span>
+                    <Ripple />
+                </button>
+            )
+        },
+        'NextPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Next</span>
+                    <Ripple />
+                </button>
+            )
+        },
+        'PageLinks': (options) => {
+            if ((options.view.startPage === options.page && options.view.startPage !== 0) || (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
+                const className = classNames(options.className, { 'p-disabled': true });
+
+                return <span className={className} style={{ userSelect: 'none' }}>...</span>;
+            }
+
+            return (
+                <button type="button" className={options.className} onClick={options.onClick}>
+                    {options.page + 1}
+                    <Ripple />
+                </button>
+            )
+        },
+        'RowsPerPageDropdown': (options) => {
+            const dropdownOptions = [
+                { label: 5, value: 5 },
+                { label: 10, value: 10 },
+                { label: 20, value: 20 },
+                { label: 'All', value: options.totalRecords }
+            ];
+
+            return <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} />;
+        },
+        'CurrentPageReport': (options) => {
+            return (
+                <span className="mx-3" style={{ color: 'var(--text-color)', userSelect: 'none' }}>
+                    Go to <InputText size="2" className="ml-1" value={currentPage} tooltip={pageInputTooltip}
+                        onKeyDown={(e) => onPageInputKeyDown(e, options)} onChange={onPageInputChange} />
+                </span>
+            )
+        }
+    };
+
+    useEffect(() => {
+        setProducts2(data)
+    }, []);
+    
     return (
         <div className={styles.wrapper}>
+            {/* Feature */}
             <Feature></Feature>
+            {/* Datatable */}
             <div className={styles.dataTable}>
                 <DataTable
                     value={products2}
                     editMode="row"
                     dataKey="id"
                     onRowEditComplete={onRowEditComplete}
+                    paginator
+                    paginatorTemplate={template}
+                    first={first} rows={rows}
+                    onPage={onCustomPage}
                     responsiveLayout="scroll"
                 >
                     <Column
