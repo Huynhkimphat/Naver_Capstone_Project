@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import Router from 'next/router';
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
@@ -23,6 +24,14 @@ const AdProducts = (props) => {
     const [rows, setRows] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
+    const [selectedProduct, setSelectedProduct] = useState(null)
+
+    const onRowSelect = (event) => {
+        Router.push(`/admin/product/update?id=${event.data.id}`)
+    }
+    const onRowUnselect = (event) => {
+        console.log(event.data);
+    }
     const onCustomPage = (event) => {
         setFirst(event.first);
         setRows(event.rows);
@@ -110,7 +119,9 @@ const AdProducts = (props) => {
     useEffect(() => {
         setProducts2(data)
     }, []);
-    
+    useEffect(() => {
+        // console.log(products2)
+    },[products2])
     return (
         <div className={styles.wrapper}>
             {/* Feature */}
@@ -127,6 +138,11 @@ const AdProducts = (props) => {
                     first={first} rows={rows}
                     onPage={onCustomPage}
                     responsiveLayout="scroll"
+                    selectionMode="single" 
+                    selection={selectedProduct} 
+                    onSelectionChange={e => setSelectedProduct(e.value)}
+                    onRowSelect={onRowSelect} 
+                    onRowUnselect={onRowUnselect}
                 >
                     <Column
                         field="id"
