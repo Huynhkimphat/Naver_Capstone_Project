@@ -2,80 +2,49 @@ import React, { useEffect, useState } from 'react';
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.css";
-import { IoIosAddCircle } from 'react-icons/io'
-import { BiEditAlt } from 'react-icons/bi'
-import { AiOutlineDelete } from 'react-icons/ai'
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
-import { Button } from "primereact/button";
-import { Toast } from "primereact/toast";
+import { Ripple } from 'primereact/ripple';
+import { data } from './Data'
+import * as TableServices from './TableServices'
+import Feature from './Feature/Feature';
+
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
-    feature: 'w-[100%] flex justify-between items-center gap-4 flex-wrap',
-    selectGroup: 'flex w-[100%] items-center gap-4 sm:w-[70%]',
-    select: 'px-4 py-2 rounded-md shadow-lg border w-[40%] sm: w-[30%]',
-    btnAdd: 'px-4 py-2 rounded-md bg-[#5842BD] text-white flex items-center gap-2 shadow-lg select-none'
+    dataTable: 'mt-4'
 }
-
 
 const AdProducts = (props) => {
 
     const [products2, setProducts2] = useState(null);
-    const statuses = [
-        { label: "In Stock", value: "INSTOCK" },
-        { label: "Low Stock", value: "LOWSTOCK" },
-        { label: "Out of Stock", value: "OUTOFSTOCK" }
-    ];
-    const dataTableFuncMap = {
-        products2: setProducts2,
-    };
-    useEffect(() => {
-        setProducts2([
-            {
-                id: "1000",
-                code: "f230fh0g3",
-                name: "Bamboo Watch",
-                description: "Product Description",
-                image: "bamboo-watch.jpg",
-                price: 65,
-                category: "Accessories",
-                quantity: 24,
-                inventoryStatus: "INSTOCK",
-                rating: 5,
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
+    const [first, setFirst] = useState(0);
+    const [rows, setRows] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
+    const onCustomPage = (event) => {
+        setFirst(event.first);
+        setRows(event.rows);
+        setCurrentPage(event.page + 1);
+    }
+    const onPageInputChange = (event) => {
+        setCurrentPage(event.target.value);
+    }
+    const onPageInputKeyDown = (event, options) => {
+        if (event.key === 'Enter') {
+            const page = parseInt(currentPage);
+            if (page < 1 || page > options.totalPages) {
+                setPageInputTooltip(`Value must be between 1 and ${options.totalPages}.`);
             }
-        ])
-    }, []);
+            else {
+                const first = currentPage ? options.rows * (page - 1) : 0;
 
-    const getStatusLabel = (status) => {
-        switch (status) {
-            case "INSTOCK":
-                return "In Stock";
-
-            case "LOWSTOCK":
-                return "Low Stock";
-
-            case "OUTOFSTOCK":
-                return "Out of Stock";
-
-            default:
-                return "NA";
+                setFirst(first);
+                setPageInputTooltip('Press \'Enter\' key to go to this page.');
+            }
         }
-    };
+    }
     const onRowEditComplete = (e) => {
         let _products2 = [...products2];
         let { newData, index } = e;
@@ -85,103 +54,96 @@ const AdProducts = (props) => {
         setProducts2(_products2);
     };
 
-    const textEditor = (options) => {
-        return (
-            <InputText
-                type="text"
-                value={options.value}
-                onChange={(e) => options.editorCallback(e.target.value)}
-            />
-        );
-    };
-    const statusEditor = (options) => {
-        return (
-            <Dropdown
-                value={options.value}
-                options={statuses}
-                optionLabel="label"
-                optionValue="value"
-                onChange={(e) => options.editorCallback(e.value)}
-                placeholder="Select a Status"
-                itemTemplate={(option) => {
-                    return (
-                        <span
-                            className={`product-badge status-${option.value.toLowerCase()}`}
-                        >
-                            {option.label}
-                        </span>
-                    );
-                }}
-            />
-        );
+    // Paginator
+    const template = {
+        layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
+        'PrevPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Previous</span>
+                    <Ripple />
+                </button>
+            )
+        },
+        'NextPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Next</span>
+                    <Ripple />
+                </button>
+            )
+        },
+        'PageLinks': (options) => {
+            if ((options.view.startPage === options.page && options.view.startPage !== 0) || (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
+                const className = classNames(options.className, { 'p-disabled': true });
+
+                return <span className={className} style={{ userSelect: 'none' }}>...</span>;
+            }
+
+            return (
+                <button type="button" className={options.className} onClick={options.onClick}>
+                    {options.page + 1}
+                    <Ripple />
+                </button>
+            )
+        },
+        'RowsPerPageDropdown': (options) => {
+            const dropdownOptions = [
+                { label: 5, value: 5 },
+                { label: 10, value: 10 },
+                { label: 20, value: 20 },
+                { label: 'All', value: options.totalRecords }
+            ];
+
+            return <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} />;
+        },
+        'CurrentPageReport': (options) => {
+            return (
+                <span className="mx-3" style={{ color: 'var(--text-color)', userSelect: 'none' }}>
+                    Go to <InputText size="2" className="ml-1" value={currentPage} tooltip={pageInputTooltip}
+                        onKeyDown={(e) => onPageInputKeyDown(e, options)} onChange={onPageInputChange} />
+                </span>
+            )
+        }
     };
 
-    const priceEditor = (options) => {
-        return (
-            <InputNumber
-                value={options.value}
-                onValueChange={(e) => options.editorCallback(e.value)}
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-            />
-        );
-    };
-
-    const statusBodyTemplate = (rowData) => {
-        return getStatusLabel(rowData.inventoryStatus);
-    };
-
-    const priceBodyTemplate = (rowData) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD"
-        }).format(rowData.price);
-    };
+    useEffect(() => {
+        setProducts2(data)
+    }, []);
+    
     return (
         <div className={styles.wrapper}>
-            <div className={styles.feature}>
-                <div className={styles.selectGroup}>
-                    <select className={styles.select} title='Category'>
-                        <option>Category</option>
-                        <option>All</option>
-                        <option>Chair</option>
-                        <option>Table</option>
-                        <option>Decor Items</option>
-                        <option>Brand</option>
-                    </select>
-                    <select className={styles.select}>
-                        <option>Status</option>
-                        <option>All</option>
-                        <option>In Stock</option>
-                        <option>Out of Stock</option>
-                    </select>
-                </div>
-                <button className={styles.btnAdd}>
-                    <IoIosAddCircle size='20px'></IoIosAddCircle>
-                    <span>Add Product</span>
-                </button>
-            </div>
-            <div>
+            {/* Feature */}
+            <Feature></Feature>
+            {/* Datatable */}
+            <div className={styles.dataTable}>
                 <DataTable
                     value={products2}
                     editMode="row"
                     dataKey="id"
                     onRowEditComplete={onRowEditComplete}
+                    paginator
+                    paginatorTemplate={template}
+                    first={first} rows={rows}
+                    onPage={onCustomPage}
                     responsiveLayout="scroll"
                 >
                     <Column
                         field="id"
                         header="ID"
                         sortable
-                        editor={(options) => textEditor(options)}
+                        editor={(options) => TableServices.textEditor(options)}
                         style={{ width: "15%" }}
                     ></Column>
+                    <Column
+                        header="Image"
+                        body={TableServices.imageBodyTemplate(products2)}>
+                    </Column>
                     <Column
                         field="name"
                         header="Name"
                         sortable
-                        editor={(options) => textEditor(options)}
+                        editor={(options) => TableServices.textEditor(options)}
                         style={{ width: "15%" }}
                     ></Column>
                     <Column
@@ -194,16 +156,16 @@ const AdProducts = (props) => {
                         field="inventoryStatus"
                         header="Status"
                         sortable
-                        body={statusBodyTemplate}
-                        editor={(options) => statusEditor(options)}
-                        style={{ width: "15%" }}
+                        body={TableServices.statusBodyTemplate}
+                        editor={(options) => TableServices.statusEditor(options)}
+                        style={{ width: "20%" }}
                     ></Column>
                     <Column
                         field="price"
                         header="Price"
                         sortable
-                        body={priceBodyTemplate}
-                        editor={(options) => priceEditor(options)}
+                        body={TableServices.priceBodyTemplate}
+                        editor={(options) => TableServices.priceEditor(options)}
                         style={{ width: "15%" }}
                     ></Column>
                     <Column
