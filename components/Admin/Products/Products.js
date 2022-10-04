@@ -70,7 +70,7 @@ const AdProducts = (props) => {
                         sortable
                         body={TableServices.statusBodyTemplate}
                         editor={(options) => TableServices.statusEditor(options)}
-                        style={{ width: "15%" }}
+                        style={{ width: "20%" }}
                     ></Column>
                     <Column
                         field="price"

@@ -3,6 +3,11 @@ import { InputText } from "primereact/inputtext";
 import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import Product1 from '../../../static/Product1.png'
+const styles = {
+    redSelect: 'bg-red-500 p-2 rounded-md text-white font-semibold',
+    greenSelect: 'bg-green-500 p-2 rounded-md text-white font-semibold',
+    yellowSelect: 'bg-yellow-500 p-2 rounded-md text-white font-semibold',
+}
 export const imageBodyTemplate = (rowData) => {
     return <div className='rounded-sm'>
         <Image
@@ -42,7 +47,7 @@ export const statusEditor = (options) => {
             itemTemplate={(option) => {
                 return (
                     <span
-                        className={`product-badge status-${option.value.toLowerCase()}`}
+                        className={`product-badge status-${option.value.toLowerCase()} `}
                     >
                         {option.label}
                     </span>
@@ -67,13 +72,19 @@ export const priceEditor = (options) => {
 const getStatusLabel = (status) => {
     switch (status) {
         case "INSTOCK":
-            return "In Stock";
+            return <span className={styles.greenSelect}>
+                In Stock
+            </span>;
 
         case "LOWSTOCK":
-            return "Low Stock";
+            return <span className={styles.yellowSelect}>
+                Low Stock
+            </span>;
 
         case "OUTOFSTOCK":
-            return "Out of Stock";
+            return <span className={styles.redSelect}>
+                Out of Stock
+            </span>;
 
         default:
             return "NA";
@@ -81,7 +92,7 @@ const getStatusLabel = (status) => {
 };
 
 export const statusBodyTemplate = (rowData) => {
-    return getStatusLabel(rowData.inventoryStatus);
+    return getStatusLabel(rowData.inventoryStatus)
 };
 
 export const priceBodyTemplate = (rowData) => {
