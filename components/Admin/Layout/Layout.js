@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Logo from "../../static/Logo.png";
+import Logo from "../../../static/Logo.png";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { GrNotification } from "react-icons/gr";
 import Navbar from "./Navbar/Navbar";
