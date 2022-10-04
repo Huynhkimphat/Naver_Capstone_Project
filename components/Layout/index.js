@@ -7,6 +7,7 @@ const styles = {
   container: ``,
   content: ``,
   main: ``,
+  footer: `bg-[#2A254B] flex justify-center`,
 };
 
 export default function Layout({ children }) {
@@ -15,7 +16,9 @@ export default function Layout({ children }) {
       <div className={styles.content}>
         <Header />
         <div className={styles.main}>{children}</div>
-        <Footer />
+        <div className={styles.footer}>
+          <Footer />
+        </div>
       </div>
     </div>
   );

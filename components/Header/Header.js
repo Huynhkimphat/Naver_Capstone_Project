@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Logo from "../../static/Logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -6,7 +7,6 @@ import { AiOutlineSearch } from "react-icons/ai";
 // import { MdModeNight } from "react-icons/md";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
-
 import { useState, useEffect } from "react";
 
 const styles = {
@@ -66,7 +66,7 @@ const Header = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <div className={styles.logoContainer}>
+        <Link className={styles.logoContainer} href="/">
           <Image
             className={styles.logo}
             src={Logo}
@@ -74,18 +74,18 @@ const Header = () => {
             width={65}
             alt={""}
           />
-        </div>
+        </Link>
         <div className={styles.headerNav}>{categoryRender}</div>
         <div className={styles.rightNav}>
           <div className={styles.searchIcon}>
             <AiOutlineSearch />
           </div>
-          <div className={styles.cartIcon}>
+          <Link href="/checkout" className={styles.cartIcon}>
             <AiOutlineShoppingCart />
-          </div>
-          <div className={styles.userIcon}>
+          </Link>
+          <Link href="/login" className={styles.userIcon}>
             <BiUserCircle />
-          </div>
+          </Link>
           <div className={styles.hamburgerMenuIcon}>
             <GiHamburgerMenu
               onClick={() => setIsOpenHamburgerMenu(!isOpenHamburgerMenu)}
@@ -95,13 +95,7 @@ const Header = () => {
       </div>
       {/* Navbar For  Mobile*/}
       {isOpenHamburgerMenu && (
-        <div className={styles.headerNavMobile}>
-          {categoryRender}
-          <div className={styles.navMobileContainer}>
-            <AiOutlineShoppingCart />
-            <BiUserCircle />
-          </div>
-        </div>
+        <div className={styles.headerNavMobile}>{categoryRender}</div>
       )}
     </div>
   );
