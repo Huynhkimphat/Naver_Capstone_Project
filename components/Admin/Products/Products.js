@@ -119,6 +119,7 @@ const AdProducts = (props) => {
     useEffect(() => {
         setProducts2(data)
     }, []);
+    
     useEffect(() => {
         // console.log(products2)
     },[products2])

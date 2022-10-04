@@ -3,13 +3,8 @@ import About from "./About/About";
 import FooterList from "./FooterList/FooterList";
 
 const styles = {
-  wrapper: "p-8 bg-[#2A254B] gap-10 p-5 ",
-  content:
-    "flex items-start justify-around w-full flex-col md:flex-row gap-y-8 gap-x-4",
-  aboutAndSocialContainer:
-    "flex flex-col md:flex-row gap-y-8 lg:gap-x-[10rem] md:gap-x-[6rem] sm:gap-x-[4rem]",
-  footerListsContainer:
-    "flex flex-col md:flex-row gap-y-8 lg:gap-x-[10rem] md:gap-x-[6rem] sm:gap-x-[4rem]",
+  wrapper: "p-8 flex flex-col p-5 container",
+  content: "flex justify center flex-wrap gap-y-6",
   divider:
     "border-solid border-y border-white mx-auto sm:max-w-[55rem] mt-8 mb-8",
   footerTitle: "sm:text-sm text-xs text-white flex justify-center items-center",
@@ -42,18 +37,16 @@ const Footer = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <div className={styles.aboutAndSocialContainer}>
-          <About />
-          <Social />
-        </div>
-        <div className={styles.footerListsContainer}>
-          <FooterList title={"Menu"} footerList={menuList} />
-          <FooterList title={"Category"} footerList={categoryList} />
-          <FooterList title={"Our Company"} footerList={ourCompanyList} />
-        </div>
+        <About />
+        <Social />
+        <FooterList title={"Menu"} footerList={menuList} />
+        {/* <FooterList title={"Category"} footerList={categoryList} /> */}
+        <FooterList title={"Our Company"} footerList={ourCompanyList} />
       </div>
-      <div className={styles.divider} />
-      <div className={styles.footerTitle}>Copyright 2022 Avion LTD</div>
+      <div className={styles.copyright}>
+        <div className={styles.divider} />
+        <div className={styles.footerTitle}>Copyright 2022 Avion LTD</div>
+      </div>
     </div>
   );
 };

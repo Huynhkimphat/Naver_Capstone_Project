@@ -3,8 +3,8 @@ import ProductDetailImage from "../../static/ProductDetail.png";
 import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
 const styles = {
-  wrapper: " container mx-auto flex flex-col lg:flex-row ",
-  imageProduct: "flex-2",
+  wrapper: " container mx-auto flex flex-col lg:flex-row p-4 ",
+  imageProduct: "flex overflow-hidden",
   detailContainer: "flex-1 p-2 sm:p-8 m-0 sm:m-12",
   productTitle: "text-4xl",
   productPrice: "text-2xl py-4 pb-4",
@@ -13,9 +13,9 @@ const styles = {
   dimensionTitle: "text-xl py-4",
   dimensionContent: " ",
   dimensionTable: "w-sm-table w-56 table-fixed",
-  // buy product css
   buyProduct: "flex justify-between items-center flex-col sm:flex-row ",
-  contentQualityContainer: "flex py-4 items-center justify-center flex-wrap gap-2",
+  contentQualityContainer:
+    "flex py-4 items-center justify-center flex-wrap gap-2",
   quantityAmountTitle: "text-xl mr-5",
   contentQuantityAmount: "flex justify-center items-center",
   btnAddCart: "rounded-lg border p-4 bg-[#2A254B] text-white text-center",
