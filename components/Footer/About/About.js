@@ -2,7 +2,8 @@ import Image from "next/image";
 import Logo from "../../../static/logoWhite.png";
 
 const styles = {
-  wrapper: "flex gap-y-4 flex-col text-white",
+  wrapper:
+    "flex gap-y-4 flex-col text-white lg:w-1/4 md:w-1/2 w-full items-center ",
   logoContainer: "flex-start",
   logo: "cursor-pointer object-contain",
 };

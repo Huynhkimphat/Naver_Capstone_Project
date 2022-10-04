@@ -1,5 +1,6 @@
 const styles = {
-  content: "text-white flex flex-col gap-y-3",
+  content:
+    "text-white flex flex-col gap-y-3 lg:w-1/4 md:w-1/2 w-full flex items-center",
   title: "text-bold text-xl",
   footerItem: "hover:text-[red] cursor-pointer",
 };
