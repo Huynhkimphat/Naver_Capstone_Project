@@ -45,7 +45,6 @@ const AdProducts = (props) => {
             }
         }
     }
-
     const onRowEditComplete = (e) => {
         let _products2 = [...products2];
         let { newData, index } = e;
