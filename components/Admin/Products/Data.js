@@ -27,7 +27,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1002",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -40,7 +40,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1003",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -53,7 +53,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1004",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -66,7 +66,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1005",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -79,7 +79,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1006",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -92,7 +92,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1007",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -105,7 +105,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1008",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -118,7 +118,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1009",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -131,7 +131,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1010",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -144,7 +144,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1011",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -157,7 +157,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1012",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -170,7 +170,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1013",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -183,7 +183,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1014",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",
@@ -196,7 +196,7 @@ export const data = [
         rating: 4,
     },
     {
-        id: "1001",
+        id: "1015",
         image: Product1,
         code: "nvklal433",
         name: "Black Watch",

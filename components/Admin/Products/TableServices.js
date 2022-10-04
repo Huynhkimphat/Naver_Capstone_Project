@@ -4,6 +4,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import { Ripple } from 'primereact/ripple';
 import Product1 from '../../../static/Product1.png'
+import Link from "next/link";
 const styles = {
     redSelect: 'bg-red-500 p-2 rounded-md text-white font-semibold',
     greenSelect: 'bg-green-500 p-2 rounded-md text-white font-semibold',
@@ -17,7 +18,7 @@ export const imageBodyTemplate = (rowData) => {
             width="100%"
             height="100%"
             layout="responsive"
-            objectFit="contain" />
+            objectFit="contain"/>
     </div>
 }
 
