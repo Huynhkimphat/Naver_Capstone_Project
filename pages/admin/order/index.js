@@ -1,13 +1,13 @@
 import React from 'react';
-import AdminLayout from "../../../components/AdminLayout/AdminLayout";
-import AdminOrders from '../../../components/AdminOrders/AdminOrders';
-import AdHeader from '../../../components/AdHeader/AdHeader';
+import Layout from "../../../components/Admin/Layout/Layout";
+import Orders from '../../../components/Admin/Orders/Orders';
+import Header from '../../../components/Admin/Header/Header';
 const index = (props) => {
     return (
-        <AdminLayout>
-            <AdHeader direction = {'Home > Orders'}></AdHeader>
-            <AdminOrders></AdminOrders>
-        </AdminLayout>
+        <Layout>
+            <Header direction = {'Home > Orders'}></Header>
+            <Orders></Orders>
+        </Layout>
     );
 };
 

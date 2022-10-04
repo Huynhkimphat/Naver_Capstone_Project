@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { FiUser } from "react-icons/fi";
 import { BsBag, BsPrinter, BsCart } from "react-icons/bs";
-import Product1 from '../../../static/Product1.png'
+import Product1 from '../../../../static/Product1.png'
 const styles = {
     overView: "w-full p-4 shadow-lg sm:w-[65%] overflow-hidden sm:h-73",
     ovHeader: "flex justify-evenly flex-wrap gap-3",

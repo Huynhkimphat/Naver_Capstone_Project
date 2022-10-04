@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import AdminLayout from "../../../components/AdminLayout/AdminLayout";
-import AdHeader from "../../../components/AdHeader/AdHeader";
-import Charts from "../../../components/Charts/Charts";
+import Layout from "../../../components/Admin/Layout/Layout";
+import Header from "../../../components/Admin/Header/Header";
+import Charts from "../../../components/Admin/Charts/Charts";
 
 const styles = {
   wrapper: ""
@@ -10,10 +10,10 @@ const index = (props) => {
   
   return (
     <div className={styles.wrapper}>
-      <AdminLayout>
-        <AdHeader direction={'Analyst > Overview'}></AdHeader>
+      <Layout>
+        <Header direction={'Analyst > Overview'}></Header>
         <Charts></Charts>
-      </AdminLayout>
+      </Layout>
     </div>
   );
 };
