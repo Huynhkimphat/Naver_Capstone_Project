@@ -6,8 +6,6 @@ const styles = {
 
 const FooterList = (props) => {
   const footerList = props.footerList;
-  console.log(footerList);
-
   const footerItemRendering = footerList?.map((item) => (
     <div key={item.id} className={styles.footerItem}>
       {item.name}

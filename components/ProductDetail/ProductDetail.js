@@ -3,7 +3,7 @@ import ProductDetailImage from "../../static/ProductDetail.png";
 import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
 const styles = {
-  wrapper: "mx-auto flex flex-col md:flex-row ",
+  wrapper: " container mx-auto flex flex-col lg:flex-row ",
   imageProduct: "flex-2",
   detailContainer: "flex-1 p-2 sm:p-8 m-0 sm:m-12",
   productTitle: "text-4xl",

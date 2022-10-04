@@ -4,7 +4,7 @@ import AboutLogo from "../../static/AboutImage.png";
 import AboutLogo1 from "../../static/AboutImage2.png";
 
 const styles = {
-  wrapper: "mx-auto max-w-7xl flex",
+  wrapper: "mx-auto container flex",
   content: " ",
   title: "flex justify-center items-center p-8 text-3xl flex-col",
 };
