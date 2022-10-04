@@ -1,16 +1,16 @@
 import React from 'react';
-import AdHeader from '../../../components/AdHeader/AdHeader';
-import AdminLayout from '../../../components/AdminLayout/AdminLayout';
-import AdProducts from '../../../components/AdProducts/AdProducts';
+import Header from '../../../components/Admin/Header/Header';
+import Layout from '../../../components/Admin/Layout/Layout';
+import Products from '../../../components/Admin/Products/Products';
 
 const index = (props) => {
     return (
-        <AdminLayout>
+        <Layout>
             <div className='p-4'>
-                <AdHeader direction={'Home > Products'}></AdHeader>
-                <AdProducts></AdProducts>
+                <Header direction={'Home > Products'}></Header>
+                <Products></Products>
             </div>
-        </AdminLayout>
+        </Layout>
     );
 };
 
