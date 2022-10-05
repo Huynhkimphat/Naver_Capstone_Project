@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Image from "next/image";
 import { BsFacebook, BsTwitter, BsGithub } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import Logo from "../../static/Logo.png";
 import { useRouter } from "next/router";
+import { AuthenUserContext } from "../../context/AuthUserContext";
+import { useEffect } from "react";
+
 const styles = {
   wrapper: "flex items-center justify-center flex-col p-[2rem]",
   image: "",
@@ -30,14 +33,27 @@ const styles = {
 };
 export default function Login() {
   const router = useRouter();
+  const { logInWithGoogleAccount, logInAdminAccount } =
+    useContext(AuthenUserContext);
 
   const [enteredUsername, setEnteredUsername] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
   const [userNameInvalid, setUserNameInvalid] = useState(false);
   const [passwordInvalid, setPasswordInvalid] = useState(false);
+  useEffect(() => {
+    if (localStorage.getItem("token") !== null) {
+      router.push("/");
+    }
+  }, []);
   const signInHandler = (event) => {
-    router.push(`/`);
+    logInAdminAccount(enteredUsername, enteredPassword);
+    router.push("/");
+
   };
+  const googleLogInHandle=()=>{
+    logInWithGoogleAccount();
+    router.push("/");
+  }
 
   const checkUsernameValid = (value) => {
     if (value.trim().length > 6 && value.includes("@")) {
@@ -111,7 +127,7 @@ export default function Login() {
         </div>
         <div className={styles.hrContainer}>Or continue with</div>
         <div className={styles.socialContainer}>
-          <div className={styles.social}>
+          <div className={styles.social} onClick={googleLogInHandle}>
             <FcGoogle className={styles.icon} />
           </div>
           <div className={styles.social}>
