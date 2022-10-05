@@ -27,7 +27,11 @@ const AdProducts = (props) => {
     const [selectedProduct, setSelectedProduct] = useState(null)
 
     const onRowSelect = (event) => {
-        Router.push(`/admin/product/update?id=${event.data.id}`)
+        const eventCheck = event.originalEvent.target.nodeName == 'SPAN' ? true : false
+        if (!eventCheck)
+            Router.push(`/admin/product/update/${event.data.id}`)
+        else
+            setSelectedProduct(null)
     }
     const onRowUnselect = (event) => {
         console.log(event.data);
@@ -119,10 +123,9 @@ const AdProducts = (props) => {
     useEffect(() => {
         setProducts2(data)
     }, []);
-    
+
     useEffect(() => {
-        // console.log(products2)
-    },[products2])
+    }, [products2])
     return (
         <div className={styles.wrapper}>
             {/* Feature */}
@@ -138,11 +141,11 @@ const AdProducts = (props) => {
                     paginatorTemplate={template}
                     first={first} rows={rows}
                     onPage={onCustomPage}
-                    responsiveLayout="scroll"
-                    selectionMode="single" 
-                    selection={selectedProduct} 
+                    responsiveLayout="stack" breakpoint="960px"
+                    selectionMode="single"
+                    selection={selectedProduct}
                     onSelectionChange={e => setSelectedProduct(e.value)}
-                    onRowSelect={onRowSelect} 
+                    onRowSelect={onRowSelect}
                     onRowUnselect={onRowUnselect}
                 >
                     <Column
