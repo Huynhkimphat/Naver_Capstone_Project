@@ -45,13 +45,13 @@ export default function Login() {
       router.push("/");
     }
   }, []);
-  const signInHandler = (event) => {
-    logInAdminAccount(enteredUsername, enteredPassword);
+  const signInHandler =async (event) => {
+    await logInAdminAccount(enteredUsername, enteredPassword);
     router.push("/");
 
   };
-  const googleLogInHandle=()=>{
-    logInWithGoogleAccount();
+  const googleLogInHandle=async ()=>{
+    await logInWithGoogleAccount();
     router.push("/");
   }
 
