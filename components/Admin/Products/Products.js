@@ -11,6 +11,7 @@ import { Ripple } from 'primereact/ripple';
 import { data } from './Data'
 import * as TableServices from './TableServices'
 import Feature from './Feature/Feature';
+import { BsEye } from 'react-icons/bs';
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
@@ -21,21 +22,11 @@ const AdProducts = (props) => {
 
     const [products2, setProducts2] = useState(null);
     const [first, setFirst] = useState(0);
-    const [rows, setRows] = useState(10);
+    const [rows, setRows] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
     const [selectedProduct, setSelectedProduct] = useState(null)
 
-    const onRowSelect = (event) => {
-        const eventCheck = event.originalEvent.target.nodeName == 'SPAN' ? true : false
-        if (!eventCheck)
-            Router.push(`/admin/product/update/${event.data.id}`)
-        else
-            setSelectedProduct(null)
-    }
-    const onRowUnselect = (event) => {
-        console.log(event.data);
-    }
     const onCustomPage = (event) => {
         setFirst(event.first);
         setRows(event.rows);
@@ -126,6 +117,14 @@ const AdProducts = (props) => {
 
     useEffect(() => {
     }, [products2])
+
+    const onCellSelect = (e) => {
+        setSelectedProduct(e.value)
+        console.log(e.value.rowData.id)
+        const path = e.value.rowData.id
+        if(e.value.field==='detail')
+            Router.push(`/admin/product/update/${path}`)
+    }
     return (
         <div className={styles.wrapper}>
             {/* Feature */}
@@ -143,15 +142,16 @@ const AdProducts = (props) => {
                     onPage={onCustomPage}
                     responsiveLayout="stack" breakpoint="960px"
                     selectionMode="single"
+                    cellSelection
                     selection={selectedProduct}
-                    onSelectionChange={e => setSelectedProduct(e.value)}
-                    onRowSelect={onRowSelect}
-                    onRowUnselect={onRowUnselect}
+                    onSelectionChange={onCellSelect}
                 >
                     <Column
                         field="id"
                         header="ID"
                         sortable
+                        filter
+                        filterPlaceholder="Search by id"
                         editor={(options) => TableServices.textEditor(options)}
                         style={{ width: "15%" }}
                     ></Column>
@@ -164,7 +164,7 @@ const AdProducts = (props) => {
                         header="Name"
                         sortable
                         editor={(options) => TableServices.textEditor(options)}
-                        style={{ width: "15%" }}
+                        style={{ width: "20%" }}
                     ></Column>
                     <Column
                         field="category"
@@ -192,6 +192,12 @@ const AdProducts = (props) => {
                         rowEditor
                         headerStyle={{ width: "10%", minWidth: "8rem" }}
                         bodyStyle={{ textAlign: "center" }}
+                    ></Column>
+                    <Column
+                        field="detail"
+                        headerStyle={{ width: "10%", minWidth: "1rem" }}
+                        bodyStyle={{ textAlign: "center"}}
+                        body={<BsEye></BsEye>}
                     ></Column>
                 </DataTable>
             </div>
