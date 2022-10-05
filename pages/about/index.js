@@ -3,6 +3,9 @@ import AboutContent from "../../components/AboutContent/AboutContent";
 import AboutLogo from "../../static/AboutImage.png";
 import AboutLogo1 from "../../static/AboutImage2.png";
 
+import Banner from "../../components/Banner/Banner";
+import AttentionContent from "../../components/AttentionContent/AttentionContent";
+
 const styles = {
   wrapper: "mx-auto container flex",
   content: " ",
@@ -42,10 +45,10 @@ export default function About() {
               <AboutContent key={item.id} data={item} />
             ))}
           </div>
-          {/* What... */}
-          {/* Join and feedback */}
         </div>
       </div>
+      <AttentionContent />
+      <Banner />
     </Layout>
   );
 }

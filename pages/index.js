@@ -1,5 +1,7 @@
 import Layout from "../components/Layout";
 import HeaderBanner from "../components/HeaderBanner/HeaderBanner";
+import ProductList from "../components/ProductList/ProductList";
+import AttentionContent from "../components/AttentionContent/AttentionContent";
 import Banner from "../components/Banner/Banner";
 
 const styles = {
@@ -11,8 +13,8 @@ export default function Home() {
     <div className={styles.wrapper}>
       <Layout>
         <HeaderBanner />
-        {/* ProductList */}
-        {/* What... */}
+        <ProductList/>
+        <AttentionContent/>
         <Banner />
       </Layout>
     </div>

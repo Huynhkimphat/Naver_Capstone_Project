@@ -1,5 +1,7 @@
 import Layout from "../../components/Layout";
 import ProductDetail from "../../components/ProductDetail/ProductDetail";
+import ProductList from "../../components/ProductList/ProductList";
+import AttentionContent from "../../components/AttentionContent/AttentionContent";
 import Banner from "../../components/Banner/Banner";
 
 const styles = {
@@ -11,8 +13,8 @@ export default function ProductDetailPage() {
     <Layout>
       <div className={styles.wrapper}>
         <ProductDetail />
-        {/* ProductList */}
-        {/* What... */}
+        <ProductList/>
+        <AttentionContent/>
         <Banner />
       </div>
     </Layout>
