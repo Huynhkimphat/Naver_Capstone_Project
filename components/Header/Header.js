@@ -7,7 +7,8 @@ import { AiOutlineSearch } from "react-icons/ai";
 // import { MdModeNight } from "react-icons/md";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthenUserContext } from "../../context/AuthUserContext";
 
 const styles = {
   wrapper: "p-2",
@@ -30,6 +31,9 @@ const styles = {
 
 const Header = () => {
   const [isOpenHamburgerMenu, setIsOpenHamburgerMenu] = useState(false);
+
+  const { currentUser } = useContext(AuthenUserContext);
+
   const categoryList = [
     { id: 1, name: "Plant Pots", isActive: 1 },
     { id: 2, name: "Ceramics", isActive: 0 },
@@ -83,9 +87,16 @@ const Header = () => {
           <Link href="/checkout" className={styles.cartIcon}>
             <AiOutlineShoppingCart />
           </Link>
-          <Link href="/login" className={styles.userIcon}>
-            <BiUserCircle />
-          </Link>
+          {!currentUser ? (
+            <Link href="/login" className={styles.userIcon}>
+              Log In
+            </Link>
+          ) : (
+            <Link href="/user" className={styles.userIcon}>
+              <BiUserCircle />
+            </Link>
+          )}
+
           <div className={styles.hamburgerMenuIcon}>
             <GiHamburgerMenu
               onClick={() => setIsOpenHamburgerMenu(!isOpenHamburgerMenu)}

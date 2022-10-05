@@ -7,6 +7,7 @@ const AuthenUserContext = createContext();
 
 const AuthenUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addUserToFirebase = async (user) => {
     await setDoc(doc(db, "users", user.email), {
@@ -17,10 +18,16 @@ const AuthenUserProvider = ({ children }) => {
   };
 
   const logInWithGoogleAccount = async () => {
-    const userData = await signInWithPopup(auth, provider);
-    setCurrentUser(userData.user);
-    await addUserToFirebase(userData.user);
-    setToken(userData.user.accessToken);
+    try {
+      const userData = await signInWithPopup(auth, provider);
+      setIsLoading(true);
+      setCurrentUser(userData.user);
+      await addUserToFirebase(userData.user);
+      setToken(userData.user.accessToken);
+      setIsLoading(false);
+    } catch (e) {
+      return;
+    }
   };
 
   const setToken = (token) => {
@@ -31,17 +38,26 @@ const AuthenUserProvider = ({ children }) => {
   };
 
   const logInAdminAccount = async (email, password) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        setToken(user.accessToken);
-      })
-      .catch((error) => {});
+    const userData = await signInWithEmailAndPassword(auth, email, password);
+    setIsLoading(true);
+    setCurrentUser(userData.user);
+    setToken(userData.user.accessToken);
+    setIsLoading(false);
+  };
+
+  const setCurrentUserWithJWT = async (data) => {
+    setCurrentUser(data);
   };
 
   return (
     <AuthenUserContext.Provider
-      value={{ currentUser, logInWithGoogleAccount, logInAdminAccount }}
+      value={{
+        currentUser,
+        logInWithGoogleAccount,
+        isLoading,
+        logInAdminAccount,
+        setCurrentUserWithJWT,
+      }}
     >
       {children}
     </AuthenUserContext.Provider>
