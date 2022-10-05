@@ -5,7 +5,7 @@ const styles = {
   wrapper: "container mx-auto m-10",
 };
 
-export default function userInfo() {
+export default function userinfo() {
   return (
     <Layout>
       <div className={styles.wrapper}>
