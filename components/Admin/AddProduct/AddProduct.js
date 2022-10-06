@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
+    title: 'border-b-2 py-4 text-2xl font-semibold',
+    formContainer: 'w-full flex justify-center',
+    form: 'w-[60%] py-4 flex flex-col',
+    label: ' font-medium mt-4',
+    inputName: 'border-2 rounded-md p-2 text-lg mt-1',
+    inputCategory: 'w-[40%] border-2 rounded-md p-2 text-lg mt-1',
+    inputImages: 'text-lg mt-1',
+    inputPrice: 'border-2 rounded-md p-2 text-lg mt-1 w-[40%]',
+    description: 'border-2 rounded-md p-2 text-lg mt-1 h-32'
 }
 const AddProduct = () => {
     const [image, setImage] = useState(null);
@@ -15,21 +24,21 @@ const AddProduct = () => {
     };
     return (
         <div className={styles.wrapper}>
-            <h1 className='border-b-2 py-4 text-2xl font-semibold'>Product Form</h1>
-            <div className='w-full flex justify-center'>
-                <form className='w-[60%] py-4 flex flex-col' action={'Send Data'}>
-                    <label className=' font-medium' htmlFor="productName">Product Name</label>
+            <h1 className={styles.title}>Product Form</h1>
+            <div className={styles.formContainer}>
+                <form className={styles.form} action={'Send Data'}>
+                    <label className={styles.label} htmlFor="productName">Product Name</label>
                     <input
-                        className='border-2 rounded-md p-2 text-lg mt-1'
+                        className={styles.inputName}
                         type="text"
                         id="producName"
                         name="producName"
                         required
                         minLength={5}
                         maxLength={20} />
-                    <label className=' font-medium mt-4' htmlFor="productCategory">Product Category</label>
+                    <label className={styles.label} htmlFor="productCategory">Product Category</label>
                     <select
-                        className='w-[40%] border-2 rounded-md p-2 text-lg mt-1'
+                        className={styles.inputCategory}
                         id="productCategory"
                         name="productCategory"
                         required>
@@ -38,23 +47,23 @@ const AddProduct = () => {
                         <option value="Table">Table</option>
                         <option value="Sofa">Sofa</option>
                     </select>
-                    <label className=' font-medium mt-4' htmlFor="imageProduct">Image of Product</label>
+                    <label className={styles.label} htmlFor="imageProduct">Image of Product</label>
                     <input
-                        className='text-lg mt-1'
+                        className={styles.inputImages}
                         type="file"
                         name="imageProduct"
                         multiple
                         onChange={uploadToClient} />
-                    <label className=' font-medium mt-4' htmlFor="description">Additional Description</label>
+                    <label className={styles.label} htmlFor="description">Additional Description</label>
                     <textarea
-                        className='border-2 rounded-md p-2 text-lg mt-1 h-32'
+                        className={styles.description}
                         type="text"
                         id="description"
                         name="description"
                     />
-                    <label className=' font-medium mt-4' htmlFor="productPrice">Product Price</label>
+                    <label className={styles.label} htmlFor="productPrice">Product Price</label>
                     <input
-                        className='border-2 rounded-md p-2 text-lg mt-1 w-[40%]'
+                        className={styles.inputPrice}
                         type="number"
                         id="productPrice"
                         name="productPrice"
