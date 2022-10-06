@@ -67,43 +67,42 @@ const Invoice = () => {
                         <div>
                             <DataTable
                                 value={orderDetail}
-                                editMode="row"
                                 dataKey="id"
+                                showGridlines
                                 responsiveLayout="scroll"
                             >
                                 <Column
                                     field="id"
                                     header="ID"
                                     sortable
-
-                                    style={{ width: "15%" }}
+                                    style={{ width: "20%" }}
                                 ></Column>
                                 <Column
                                     field="name"
                                     header="Name"
                                     sortable
 
-                                    style={{ width: "15%" }}
+                                    style={{ width: "20%" }}
                                 ></Column>
                                 <Column
                                     field="quantity"
                                     header="Quantity"
                                     sortable
-                                    style={{ width: "15%" }}
+                                    style={{ width: "20%" }}
                                 ></Column>
                                 <Column
                                     field="price"
                                     header="Price"
                                     sortable
                                     body={priceBodyTemplate}
-                                    style={{ width: "15%" }}
+                                    style={{ width: "20%" }}
                                 ></Column>
                                 <Column
                                     field="total"
                                     header="Total"
                                     sortable
                                     body={SumofProduct}
-                                    style={{ width: "15%" }}
+                                    style={{ width: "20%" }}
                                 ></Column>
 
                             </DataTable>
