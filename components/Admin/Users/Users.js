@@ -9,6 +9,7 @@ import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import Image from 'next/image';
 import Logo from '../../../static/Product1.png'
+import Router from 'next/router';
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
@@ -168,7 +169,12 @@ const Users = () => {
             </div>
         );
     }
-
+    const onRowSelect = (event) => {
+        Router.push(`/admin/users/${event.data.id}`)
+    }
+    const onRowUnselect = (event) => {
+        console.log(event)
+    }
     const emailBodyTemplate = (rowData) => {
         return (rowData.email);
     }
@@ -210,20 +216,31 @@ const Users = () => {
     return (
         <div className={styles.wrapper}>
             <div>
-                <DataTable value={customers2} paginator className="p-datatable-customers" header={header} rows={10}
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" rowsPerPageOptions={[10, 25, 50]}
-                    dataKey="id" rowHover selection={selectedCustomers} onSelectionChange={e => setSelectedCustomers(e.value)}
-                    globalFilterFields={['name', 'country.name', 'representative.name', 'balance', 'status']} emptyMessage="No customers found."
+                <DataTable value={customers2} 
+                    paginator 
+                    className="p-datatable-customers" 
+                    header={header} 
+                    rows={10}
+                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" 
+                    rowsPerPageOptions={[10, 25, 50]}
+                    dataKey="id"
+                    rowHover 
+                    selectionMode="single"
+                    selection={selectedCustomers} 
+                    onSelectionChange={e => setSelectedCustomers(e.value)}
+                    onRowSelect={onRowSelect} 
+                    onRowUnselect={onRowUnselect}
+                    globalFilterFields={['name', 'country.name', 'representative.name', 'balance', 'status']} 
+                    emptyMessage="No customers found."
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     editMode="row"
                     onRowEditComplete={onRowEditComplete}
                     responsiveLayout="scroll"
                 >
-                    <Column selectionMode="multiple" selectionAriaLabel="name" headerStyle={{ width: '1rem' }}></Column>
                     <Column
                         field="name"
                         header="Name"
-                        headerStyle={{ width: "30%", minWidth: "8rem" }}
+                        headerStyle={{ width: "20%", minWidth: "8rem" }}
                         sortable filterPlaceholder="Search by name"
                         editor={(options) => textEditor(options)}
                         body={nameBodyTemplate} />
@@ -236,14 +253,14 @@ const Users = () => {
                     <Column
                         field="address"
                         header="Address"
-                        headerStyle={{ width: "30%", minWidth: "8rem" }}
+                        headerStyle={{ width: "20%", minWidth: "8rem" }}
                         sortable filterMenuStyle={{ width: '10rem' }}
                         style={{ minWidth: '8rem' }} editor={(options) => textEditor(options)}
                         body={addressBodyTemplate} />
                     <Column
                         field="date"
                         header="Date"
-                        headerStyle={{ width: "10%", minWidth: "8rem" }}
+                        headerStyle={{ width: "20%", minWidth: "8rem" }}
                         sortable filterField="date"
                         dataType="date" editor={(options) => textEditor(options)} />
                     <Column
