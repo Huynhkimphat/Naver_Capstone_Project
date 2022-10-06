@@ -1,12 +1,12 @@
 const styles = {
-  wrapper: "mx-auto flex justify-center",
-  content: "flex justify-center bg-[#F9F9F9] w-3/4 sm:p-8 p-2 ",
+  wrapper: "mx-auto py-2 flex justify-center",
+  content: "flex justify-center bg-[#F9F9F9] w-3/4 p-2 sm:p-8 ",
   infoUser: "text-center items-center flex flex-col space-y-2",
   title: "text-3xl p-4",
-  instruction: "text-2xl p-5",
-  emailAddition: " flex flex-wrap gap-y-2 justify-center gap-x-2",
-  emailAdditionContext: "outline-none p-4",
-  btnSignup: "rounded-lg border border-x-0 p-4 bg-[#2A254B] text-white",
+  instruction: "text-2xl p-4",
+  emailAddition: " flex gap-y-2 justify-center gap-x-2 flex-col sm:flex-row",
+  emailAdditionContext: " p-2 w-full outline-none",
+  btnSignup: "rounded-lg border border-x-0 p-2 w-auto sm:w-1/3 bg-[#2A254B] text-white",
 };
 
 const Banner = () => {
