@@ -40,6 +40,8 @@ const AuthenUserProvider = ({ children }) => {
     localStorage.removeItem("token");
   };
 
+  const resetCurrentUser = () => setCurrentUser(null);
+
   const logInAdminAccount = async (email, password) => {
     const userData = await signInWithEmailAndPassword(auth, email, password);
     setIsLoading(true);
@@ -53,6 +55,14 @@ const AuthenUserProvider = ({ children }) => {
     setCurrentUser(data);
   };
 
+  const signOut = () => {
+    setIsLoading(true);
+    resetCurrentUser();
+    clearToken();
+    router.push("/");
+    setIsLoading(false);
+  };
+
   return (
     <AuthenUserContext.Provider
       value={{
@@ -61,6 +71,7 @@ const AuthenUserProvider = ({ children }) => {
         isLoading,
         logInAdminAccount,
         setCurrentUserWithJWT,
+        signOut,
       }}
     >
       {children}

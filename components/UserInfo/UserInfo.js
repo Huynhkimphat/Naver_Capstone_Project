@@ -1,5 +1,8 @@
 import Image from "next/image";
 import UserProfile from "../../static/UserProfile.jpg";
+import { AuthenUserContext } from "../../context/AuthUserContext";
+import { useContext } from "react";
+
 const styles = {
   wrapper: "mx-auto flex justify-around ",
   accountMenu: "hidden sm:block w-1/3 ml-24",
@@ -16,6 +19,8 @@ const styles = {
   userImage: "mw-full mh-full",
 };
 const UserInfo = () => {
+  const { signOut } = useContext(AuthenUserContext);
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.accountMenu}>
@@ -25,7 +30,7 @@ const UserInfo = () => {
         <div className={styles.accTitle}>Address Book</div>
         <div className={styles.accTitle}>History order</div>
         <div className={styles.btnLogoutContainer}>
-          <button className={styles.btnLogout} type="submit">
+          <button className={styles.btnLogout} onClick={signOut}>
             Log out
           </button>
         </div>
@@ -41,30 +46,36 @@ const UserInfo = () => {
           <div className={styles.formInforAcc}>
             <label
               for="UserName"
-              class="block w-auto overflow-hidden border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+              className="block w-auto overflow-hidden border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
             >
-              <span class="text-xs font-medium text-gray-700"> Username </span>
+              <span className="text-xs font-medium text-gray-700">
+                {" "}
+                Username{" "}
+              </span>
 
               <input
                 type="userName"
                 id="UserName"
                 placeholder="Le Thi A"
-                class="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
               />
             </label>
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label
                   for="UserEmail"
-                  class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                  className="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
                 >
-                  <span class="text-xs font-medium text-gray-700"> Email </span>
+                  <span className="text-xs font-medium text-gray-700">
+                    {" "}
+                    Email{" "}
+                  </span>
 
                   <input
                     type="email"
                     id="UserEmail"
                     placeholder="anthony@rhcp.com"
-                    class="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
                   />
                 </label>
               </div>
@@ -72,15 +83,18 @@ const UserInfo = () => {
               <div>
                 <label
                   for="UserPhone"
-                  class="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                  className="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
                 >
-                  <span class="text-xs font-medium text-gray-700"> Phone </span>
+                  <span className="text-xs font-medium text-gray-700">
+                    {" "}
+                    Phone{" "}
+                  </span>
 
                   <input
                     type="userPhone"
                     id="UserPhone"
                     placeholder="0703264721"
-                    class="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                    className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
                   />
                 </label>
               </div>
@@ -91,7 +105,7 @@ const UserInfo = () => {
           <div className={styles.inforTitle}>Address Book</div>
           <div className={styles.adressAccDetail}>
             <textarea
-              class="w-full rounded-lg border-gray-200 p-3 text-sm"
+              className="w-full rounded-lg border-gray-200 p-3 text-sm"
               placeholder="Message"
               rows="8"
               id="message"
@@ -102,7 +116,7 @@ const UserInfo = () => {
           <div className={styles.inforTitle}>History order</div>
           <div className={styles.historyOrderContent}>
             <input
-              class="w-full rounded-lg border-gray-200 p-3 text-sm"
+              className="w-full rounded-lg border-gray-200 p-3 text-sm"
               placeholder="No product yet"
               type="text"
               id="name"
@@ -110,7 +124,7 @@ const UserInfo = () => {
           </div>
         </div>
         <div className={styles.btnContainer}>
-          <button className={styles.btnLogout} type="submit">
+          <button className={styles.btnLogout} onClick={signOut} type="submit">
             Log out
           </button>
         </div>
