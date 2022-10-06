@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {DataTable} from "primereact/datatable";
-import {Column} from "primereact/column";
+import React, { useEffect, useState } from 'react';
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import InvoiceHeader from './InvoiceHeader/InvoiceHeader';
 import InvoiceContent from './InvoiceContent/InvoiceContent';
 import InvoiceTotal from './InvoiceTotal/InvoiceTotal';
@@ -41,11 +41,11 @@ const Invoice = () => {
         ])
     }, []);
 
-    const SumofProduct = (rowData)=> {
+    const SumofProduct = (rowData) => {
         return new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD"
-        }).format(rowData.price*rowData.quantity);
+        }).format(rowData.price * rowData.quantity);
     }
 
     const priceBodyTemplate = (rowData) => {
@@ -62,51 +62,46 @@ const Invoice = () => {
                     <div>
                         <InvoiceHeader></InvoiceHeader>
                         <InvoiceContent></InvoiceContent>
+                        <DataTable
+                            value={orderDetail}
+                            dataKey="id"
+                            showGridlines
+                            responsiveLayout="scroll"
+                        >
+                            <Column
+                                field="id"
+                                header="ID"
+                                sortable
+                                style={{ width: "20%" }}
+                            ></Column>
+                            <Column
+                                field="name"
+                                header="Name"
+                                sortable
 
-                        {/*Data table*/}
-                        <div>
-                            <DataTable
-                                value={orderDetail}
-                                dataKey="id"
-                                showGridlines
-                                responsiveLayout="scroll"
-                            >
-                                <Column
-                                    field="id"
-                                    header="ID"
-                                    sortable
-                                    style={{ width: "20%" }}
-                                ></Column>
-                                <Column
-                                    field="name"
-                                    header="Name"
-                                    sortable
+                                style={{ width: "20%" }}
+                            ></Column>
+                            <Column
+                                field="quantity"
+                                header="Quantity"
+                                sortable
+                                style={{ width: "20%" }}
+                            ></Column>
+                            <Column
+                                field="price"
+                                header="Price"
+                                sortable
+                                body={priceBodyTemplate}
+                                style={{ width: "20%" }}
+                            ></Column>
+                            <Column
+                                field="total"
+                                header="Total"
+                                body={SumofProduct}
+                                style={{ width: "20%" }}
+                            ></Column>
 
-                                    style={{ width: "20%" }}
-                                ></Column>
-                                <Column
-                                    field="quantity"
-                                    header="Quantity"
-                                    sortable
-                                    style={{ width: "20%" }}
-                                ></Column>
-                                <Column
-                                    field="price"
-                                    header="Price"
-                                    sortable
-                                    body={priceBodyTemplate}
-                                    style={{ width: "20%" }}
-                                ></Column>
-                                <Column
-                                    field="total"
-                                    header="Total"
-                                    sortable
-                                    body={SumofProduct}
-                                    style={{ width: "20%" }}
-                                ></Column>
-
-                            </DataTable>
-                        </div>
+                        </DataTable>
                         {/*Total money pay*/}
                         <InvoiceTotal></InvoiceTotal>
                     </div>
