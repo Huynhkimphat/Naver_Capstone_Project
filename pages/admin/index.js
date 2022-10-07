@@ -11,7 +11,7 @@ const index = (props) => {
   return (
     <div className={styles.wrapper}>
       <Layout>
-        <Header direction={'Analyst > Overview'}></Header>
+        <Header direction={'Analyst / Overview'}></Header>
         <Charts></Charts>
       </Layout>
     </div>

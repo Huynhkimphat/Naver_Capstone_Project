@@ -162,6 +162,7 @@ const AdProducts = (props) => {
                     <Column
                         field="name"
                         header="Name"
+                        headerStyle={{ width: "30%", minWidth: "8rem"}}
                         sortable
                         editor={(options) => TableServices.textEditor(options)}
                         style={{ width: "20%" }}

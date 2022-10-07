@@ -8,7 +8,7 @@ const OrderItem = () => {
     const {orders} = router.query;
     return (
         <Layout>
-            <Header direction = {`Home > Order > Detail`}></Header>
+            <Header direction = {`Home / Order / Detail`}></Header>
             <OrderDetail></OrderDetail>
         </Layout>
     );

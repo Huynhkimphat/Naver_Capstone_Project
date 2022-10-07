@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { GrAddCircle } from 'react-icons/gr';
+import { IoIosAddCircle } from 'react-icons/io';
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
@@ -67,11 +69,14 @@ const AddProduct = () => {
                         type="number"
                         id="productPrice"
                         name="productPrice"
-                        required 
+                        required
                         title="It should be money"
                         placeholder='ex: $5'
-                        />
-                    <button className='w-fit text-white rounded-md mt-10 py-2 px-4 bg-[#5842BD]' type="submit">Add Product</button>
+                    />
+                    <button className='w-fit flex items-center gap-2 text-white rounded-md mt-10 py-2 px-4 bg-[#5842BD]' type="submit">
+                        <IoIosAddCircle size='20px'></IoIosAddCircle>
+                        <span>Add Product</span>
+                    </button>
                 </form>
             </div>
         </div>
