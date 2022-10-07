@@ -240,20 +240,20 @@ const Users = () => {
                     <Column
                         field="name"
                         header="Name"
-                        headerStyle={{ width: "20%", minWidth: "8rem" }}
+                        headerStyle={{ width: "100%", minWidth: "8rem" }}
                         sortable filterPlaceholder="Search by name"
                         editor={(options) => textEditor(options)}
                         body={nameBodyTemplate} />
                     <Column
                         field="email"
                         header="Email"
-                        headerStyle={{ width: "20%", minWidth: "8rem" }}
+                        headerStyle={{ width: "30%", minWidth: "8rem" }}
                         sortable dataType="email" editor={(options) => textEditor(options)}
                         body={emailBodyTemplate} />
                     <Column
                         field="address"
                         header="Address"
-                        headerStyle={{ width: "20%", minWidth: "8rem" }}
+                        headerStyle={{ width: "100%", minWidth: "8rem" }}
                         sortable filterMenuStyle={{ width: '10rem' }}
                         style={{ minWidth: '8rem' }} editor={(options) => textEditor(options)}
                         body={addressBodyTemplate} />
