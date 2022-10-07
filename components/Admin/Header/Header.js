@@ -1,7 +1,7 @@
 import React from 'react';
 const styles = {
-    wrapper: '',
-    direction: 'font-bold ml-4 text-[#535353]'
+    wrapper: 'bg-admin_color py-4 rounded-t-lg border-b-4 border-gray-300',
+    direction: 'font-bold ml-4 text-white'
 }
 const AdHeader = (props) => {
     return (

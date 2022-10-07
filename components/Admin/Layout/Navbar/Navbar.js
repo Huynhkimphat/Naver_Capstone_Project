@@ -6,12 +6,12 @@ import { BiCategory } from 'react-icons/bi';
 const styles = {
     wrapper: 'w-[60%] p-8 mt-[3rem] z-50 flex flex-col gap-6 text-[#2A2A2A] bg-white h-[100vh] shadow-xl fixed transition-transform sm:w-[20%] sm:mt-[4rem]',
     wrapper_hidden: 'w-[60%] p-8 mt-[3rem] z-50 flex flex-col gap-6 text-[#2A2A2A] bg-white h-[100vh] shadow-xl fixed translate-x-[-100%] transition-transform sm:translate-x-0 sm:w-[20%] sm: mt-[4rem]',
-    item: 'flex p-2 gap-4 items-center cursor-pointer transition hover:font-[500] hover:text-[#5842BD]'
+    item: 'flex py-2 px-4 text-lg rounded-2xl font-semibold gap-4 items-center cursor-pointer transition hover:font-[700] hover:text-white hover:bg-admin_color'
 }
 const Navbar = (props) => {
     return (
         <div className={props.status ? styles.wrapper : styles.wrapper_hidden}>
-                <Link href='/admin/dashboard'>
+                <Link href='/admin'>
                     <div className={styles.item}>
                         <AiOutlineDashboard></AiOutlineDashboard>
                         <a>Analyst</a>

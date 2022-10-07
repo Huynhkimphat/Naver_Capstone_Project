@@ -140,7 +140,7 @@ const AdProducts = (props) => {
                     paginatorTemplate={template}
                     first={first} rows={rows}
                     onPage={onCustomPage}
-                    responsiveLayout="stack" breakpoint="960px"
+                    responsiveLayout="scroll"
                     selectionMode="single"
                     cellSelection
                     selection={selectedProduct}
@@ -162,6 +162,7 @@ const AdProducts = (props) => {
                     <Column
                         field="name"
                         header="Name"
+                        headerStyle={{ width: "30%", minWidth: "8rem"}}
                         sortable
                         editor={(options) => TableServices.textEditor(options)}
                         style={{ width: "20%" }}
@@ -175,10 +176,11 @@ const AdProducts = (props) => {
                     <Column
                         field="inventoryStatus"
                         header="Status"
+                        headerStyle={{ width: "30%", minWidth: "8rem"}}
                         sortable
                         body={TableServices.statusBodyTemplate}
                         editor={(options) => TableServices.statusEditor(options)}
-                        style={{ width: "20%" }}
+                        //style={{ width: "50px", padding: "0px"}}
                     ></Column>
                     <Column
                         field="price"
@@ -191,7 +193,7 @@ const AdProducts = (props) => {
                     <Column
                         rowEditor
                         headerStyle={{ width: "10%", minWidth: "8rem" }}
-                        bodyStyle={{ textAlign: "center" }}
+                        bodyStyle={{ textAlign: "center"}}
                     ></Column>
                     <Column
                         field="detail"
