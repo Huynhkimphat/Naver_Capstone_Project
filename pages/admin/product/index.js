@@ -7,7 +7,7 @@ const index = (props) => {
     return (
         <Layout>
             <div className='p-4'>
-                <Header direction={'Home > Products'}></Header>
+                <Header direction={'Home / Products'}></Header>
                 <Products></Products>
             </div>
         </Layout>

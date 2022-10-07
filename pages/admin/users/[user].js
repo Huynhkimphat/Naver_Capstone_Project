@@ -5,7 +5,7 @@ import Invoice from '../../../components/Admin/Invoice/Invoice';
 const UserDetail = () => {
     return (
         <Layout>
-            <Header direction = {'Home > User > Detail'}></Header>
+            <Header direction = {'Home / User / Detail'}></Header>
             <Invoice></Invoice>
         </Layout>
     );

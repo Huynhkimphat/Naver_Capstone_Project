@@ -8,7 +8,8 @@ module.exports = {
     extend: {
       colors: {
         light_blue: 'rgba(249, 249, 249, 0.15);',
-        dark_blue: '#2A254B'
+        dark_blue: '#2A254B',
+        admin_color: '#5842BD'
       }
     },
   },

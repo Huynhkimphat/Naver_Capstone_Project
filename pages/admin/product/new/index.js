@@ -5,7 +5,7 @@ import AddProduct from '../../../../components/Admin/AddProduct/AddProduct';
 const index = () => {
     return (
         <Layout>
-            <Header direction={'Home > Product > Add Product'}></Header>
+            <Header direction={'Home / Product / Add Product'}></Header>
             <AddProduct></AddProduct>
         </Layout>
     );

@@ -5,7 +5,7 @@ import Users from '../../../components/Admin/Users/Users';
 const index = (props) => {
     return (
         <Layout>
-            <Header direction="Home > User"></Header>
+            <Header direction="Home / User"></Header>
             <Users></Users>
         </Layout>
     );
