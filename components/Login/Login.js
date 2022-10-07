@@ -47,12 +47,9 @@ export default function Login() {
   }, []);
   const signInHandler =async (event) => {
     await logInAdminAccount(enteredUsername, enteredPassword);
-    router.push("/");
-
   };
   const googleLogInHandle=async ()=>{
     await logInWithGoogleAccount();
-    router.push("/");
   }
 
   const checkUsernameValid = (value) => {

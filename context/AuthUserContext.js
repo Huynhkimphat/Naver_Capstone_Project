@@ -23,10 +23,10 @@ const AuthenUserProvider = ({ children }) => {
     try {
       const userData = await signInWithPopup(auth, provider);
       setIsLoading(true);
-      setCurrentUser(userData.user);
       await addUserToFirebase(userData.user);
-      router.push("/");
+      setCurrentUser(userData.user);
       setToken(userData.user.accessToken);
+      await router.push("/");
       setIsLoading(false);
     } catch (e) {
       return;
@@ -46,8 +46,8 @@ const AuthenUserProvider = ({ children }) => {
     const userData = await signInWithEmailAndPassword(auth, email, password);
     setIsLoading(true);
     setCurrentUser(userData.user);
-    router.push("/");
     setToken(userData.user.accessToken);
+    await router.push("/");
     setIsLoading(false);
   };
 
