@@ -8,7 +8,7 @@ const styles = {
   title: "lg:w-3/4 text-3xl",
   mainContent: "flex flex-col lg:flex-col-reverse",
   description: "mt-20 lg:mt-30 md:mt-15 mb-8 lg:mb-0",
-  btnViewCollection: "bg-[#F9F9F926] lg:mt-10 py-4 px-8 w-full md:w-auto",
+  btnViewCollection: "bg-[#F9F9F926] lg:mt-10 py-4 px-8 w-full md:w-auto hover:text-[#FA4A0C] hover:bg-white hover:duration-300 hover:rounded-xl",
   imgContainer: "md:w-4/12 w-0 relative",
 };
 
