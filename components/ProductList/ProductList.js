@@ -9,10 +9,12 @@ const styles = {
     wrapper: "lg:p-14 md:p-12 p-6",
     title: "md:text-3xl text-xl md:mb-7 mb-4",
     container: "grid md:grid-cols-4 grid-cols-2 gap-x-6 gap-y-8",
-    name: "mt-6 mb-2 text-lg md:text-sm lg:text-xl",
-    price: "text-lg md:text-sm lg:text-lg",
+    img: "hover:cursor-pointer",
+    name: "mt-6 mb-2 text-lg md:text-sm lg:text-xl hover:cursor-pointer",
+    price: "text-lg md:text-sm lg:text-lg hover:cursor-pointer ",
     btnContainer: "text-center",
-    btnViewCollection: "mt-8 bg-zinc-50 py-4 px-8 w-full md:w-auto",
+    btnViewCollection: "mt-8 bg-zinc-50 py-4 px-8 w-full md:w-auto hover:text-[#FA4A0C] hover:bg-zinc-200 hover:duration-300 hover:rounded-xl",
+    textColorHover: "hover:text-[#FA4A0C]",
 }
 
 const productList = [
@@ -67,9 +69,13 @@ const ProductList = () => {
         <div className={styles.container}>
             {productList.map((item) => (
                 <div key={item.key} className={styles.item}>
-                    <Image src={item.img} alt=""/>
-                    <div className={styles.name}>{item.name}</div>
-                    <div className={styles.price}>{item.price}</div>
+                    <Image className={styles.img} src={item.img} alt=""/>
+                    <div className={styles.name}>
+                        <span className={styles.textColorHover}>{item.name}</span>
+                    </div>
+                    <div className={styles.price}>
+                        <span className={styles.textColorHover}>{item.price}</span>
+                    </div>
                 </div>
             ))}
         </div>
