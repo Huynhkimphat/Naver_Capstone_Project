@@ -7,6 +7,7 @@ const styles = {
   filterByDate: "sm:flex gap-x-4 hidden items-center",
   selectionFilter: "outline-none",
   defaultOption: "hidden ",
+  title: "hidden md:flex",
 };
 // const listCategory = [];
 
