@@ -7,12 +7,10 @@ const styles = {
 }
 const OrderDetail = () => {
     // Just A test
-    const status = useSelector((state) => {
-        return state.product.status
-      })
-      useEffect(() => {
-        console.log(status)
-      }, [status])
+    const {products, status} = useSelector((state) => state.rootReducer.product)
+    useEffect(() => {
+        console.log(products)
+    }, [])
     return (
         <div className={styles.wrapper}>
             <div className='flex p-4 gap-4 border-b-2'>
@@ -36,6 +34,7 @@ const OrderDetail = () => {
                         <span>Email: hieulechanhkk@gmail.com</span>
                         <span>Phone: 0913906117</span>
                         <span>Address: HCM</span>
+                        <span>{status}</span>
                     </div>
                 </div>
                 <div></div>
