@@ -303,7 +303,6 @@ const AdminOrders = (props) => {
     };
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
-        console.log(e.value)
         const path = e.value.rowData.code
         if(e.value.field==='detail')
             Router.push(`/admin/order/${path}`)
