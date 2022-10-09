@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image'
 import _Image from '../../../static/Product1.png'
+import { useSelector } from 'react-redux';
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col mt-4 rounded-md',
 }
 const OrderDetail = () => {
+    // Just A test
+    const status = useSelector((state) => {
+        return state.product.status
+      })
+      useEffect(() => {
+        console.log(status)
+      }, [status])
     return (
         <div className={styles.wrapper}>
             <div className='flex p-4 gap-4 border-b-2'>

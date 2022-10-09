@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Logo from "../../../static/Logo.png";
 import UserAvatar from '../../../static/UserProfile.jpg'
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { GrNotification } from "react-icons/gr";
 import Navbar from "./Navbar/Navbar";
+import { useSelector } from "react-redux";
 const styles = {
   wrapper: "w-full",
   header:
