@@ -11,6 +11,7 @@ import { BsEye } from 'react-icons/bs';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { onGetProductsList, onUpdateProductStatus } from '../../../redux/actions/products';
+import productApi from '../../../services/api/productAPI';
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     dataTable: 'mt-4'
@@ -40,19 +41,17 @@ const AdProducts = (props) => {
     };
 
     useEffect(() => {
-        dispatch(onUpdateProductStatus('Loading fetch'))
-        axios.get('https://dummyjson.com/products')
-            .then(res => {
-                const data = res.data.products;
+        (async () => {
+            try {
+                const data = await productApi.getAll()
                 setProducts(data)
                 dispatch(onGetProductsList(data))
                 dispatch(onUpdateProductStatus('Success fetch'))
-            })
-            .catch(error => {
-                console.log(error)
+            } catch (error) {
                 dispatch(onUpdateProductStatus('Error fetch'))
-            })
-    },[]);
+            }
+        })()
+    }, []);
 
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
