@@ -5,7 +5,7 @@ import Footer from "../Footer/Footer";
 import { useState, useContext, useEffect } from "react";
 import { Puff } from "react-loader-spinner";
 import { AuthenUserContext } from "../../context/AuthUserContext";
-
+import { useRouter } from "next/router";
 const styles = {
   container: ``,
   content: ``,
@@ -14,7 +14,10 @@ const styles = {
 };
 
 export default function Layout({ children }) {
-  const { setCurrentUserWithJWT, isLoading } = useContext(AuthenUserContext);
+  const router = useRouter();
+  const { currentUser, setCurrentUserWithJWT, isLoading } =
+    useContext(AuthenUserContext);
+  const [isRouterValid, setIsRouterValid] = useState(false);
 
   function parseJwt(token) {
     if (!token) {
@@ -28,6 +31,17 @@ export default function Layout({ children }) {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setCurrentUserWithJWT(parseJwt(token));
+  }, []);
+
+  useEffect(() => {
+    router.events.on("routeChangeStart", (url, { shallow }) => {
+      console.log(currentUser)
+      console.log(`App is changing to ${url}`);
+    });
+    router.events.on("routeChangeComplete", (url, { shallow }) => {
+      console.log(currentUser)
+      console.log(`App is Changed to ${url} complete`);
+    });
   }, []);
 
   return (
