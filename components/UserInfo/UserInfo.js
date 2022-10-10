@@ -32,7 +32,7 @@ const styles = {
 const UserInfo = () => {
   const { signOut } = useContext(AuthenUserContext);
   const [user, setUser] = useState([]);
-  // useEffect(() => {
+ // useEffect(() => {
   //   const getAllUser = async () => {
   //     const querySnapshot = await getDocs(collection(db, "users"));
   //     console.log(
