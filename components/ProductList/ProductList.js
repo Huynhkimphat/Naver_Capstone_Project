@@ -116,10 +116,9 @@ const ProductList = () => {
 
     const loadMore = () => {
         if (endIndexProduct + 1 <= productList.length) {
-            productListUIUpdate = productListUIUpdate.concat(productList.slice(endIndexProduct, endIndexProduct + productAmount));
+            const newProductListUIUpdate=[...productListUIUpdate,...productList.slice(endIndexProduct, endIndexProduct + productAmount)]
             endIndexProduct += productAmount;
-
-            setProductListUI(productListUIUpdate);
+            setProductListUI(newProductListUIUpdate);
         }
     };
 
