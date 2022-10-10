@@ -9,6 +9,11 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BiUserCircle } from "react-icons/bi";
 import { useState, useEffect, useContext } from "react";
 import { AuthenUserContext } from "../../context/AuthUserContext";
+import categoryService from "../../services/api/categoryService";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { setCategories } from "../../redux/actions/category";
+import AppSelector from "../../redux/selector";
 
 const styles = {
   wrapper: "p-2",
@@ -24,27 +29,30 @@ const styles = {
     "hidden lg:flex cursor-pointer items-center space-x-2 flex justify-center flex-col lg:flex-row ",
   headerNavMobile:
     "flex lg:hidden cursor-pointer items-center space-x-2 flex justify-center flex-col lg:flex-row",
-  button: `py-2 px-4 text-[#726E8D]`,
+  button: `py-2 px-4 text-[#726E8D] text-bold hover:text-[#FA4A0C]`,
   activeButton: `text-bold text-[#FA4A0C]`,
   navMobileContainer: `flex text-xl gap-5 `,
 };
 
 const Header = () => {
+  const { categories, status } = useSelector((state) =>
+    AppSelector.getAllCategory(state)
+  );
+
   const [isOpenHamburgerMenu, setIsOpenHamburgerMenu] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    categoryService
+      .getAllCategory()
+      .then((res) => dispatch(setCategories(res)));
+  }, []);
 
   const { currentUser } = useContext(AuthenUserContext);
 
-  const categoryList = [
-    { id: 1, name: "Plant Pots", isActive: 1 },
-    { id: 2, name: "Ceramics", isActive: 0 },
-    { id: 3, name: "Table", isActive: 0 },
-    { id: 4, name: "Chairs", isActive: 0 },
-    { id: 5, name: "Crockery", isActive: 0 },
-    { id: 6, name: "Tableware", isActive: 0 },
-    { id: 7, name: "Cutlery", isActive: 0 },
-  ];
   const handleHeaderNavClick = (item) => {
-    //
+    return router.push(`/product/${item.data.name.toLowerCase()}`);
   };
 
   useEffect(() => {
@@ -54,17 +62,20 @@ const Header = () => {
       }
     });
   }, []);
-
-  const categoryRender = categoryList.map((item) => (
+  const categoryRender = categories?.map((item) => (
     <div
       key={item.id}
-      className={[styles.button, item.isActive ? styles.activeButton : ""]}
+      className={`${styles.button} ${
+        router.query.slug?.toString().includes(item.data.name.toLowerCase())
+          ? styles.activeButton
+          : ""
+      }`}
       onClick={() => {
         handleHeaderNavClick(item);
       }}
-      value={item.name}
+      value={item.data.name}
     >
-      {item.name}
+      {item.data.name}
     </div>
   ));
   return (
