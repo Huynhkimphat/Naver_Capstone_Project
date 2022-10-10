@@ -1,7 +1,18 @@
 import Image from "next/image";
 import UserProfile from "../../static/UserProfile.jpg";
 import { AuthenUserContext } from "../../context/AuthUserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+
+import {
+  collection,
+  getDocs,
+  getDoc,
+  setDoc,
+  doc,
+  query,
+} from "firebase/firestore";
+import { db } from "../../lib/firebase";
+import { useEffect } from "react";
 
 const styles = {
   wrapper: "mx-auto flex justify-around ",
@@ -9,7 +20,7 @@ const styles = {
   accountName: "text-2xl py-4 font-bold font-body",
   accTitle: "font-body py-4",
   btnLogOutContainer: "",
-  btnLogout: "rounded-lg border border-x-0 p-4 bg-[#2A254B] text-white",
+  btn: "rounded-lg border border-x-0 p-4 bg-[#2A254B] text-white",
   //content account
   accountContent: "w-full m-4",
   nameAcc: "text-4xl py-8 font-bold font-body",
@@ -20,6 +31,38 @@ const styles = {
 };
 const UserInfo = () => {
   const { signOut } = useContext(AuthenUserContext);
+  const [user, setUser] = useState([]);
+  // useEffect(() => {
+  //   const getAllUser = async () => {
+  //     const querySnapshot = await getDocs(collection(db, "users"));
+  //     console.log(
+  //       querySnapshot.docs.map((doc) => {
+  //         return {
+  //           id: doc.id,
+  //           data: {
+  //             name: doc.data().name,
+  //           },
+  //         };
+  //       })
+  //     );
+  //   };
+
+  //   getAllUser();
+  // });
+
+  useEffect(() => {
+    const getUserByEmail = async () => {
+      const querySnapshot = await getDoc(
+        doc(db, "users", "19521992@gm.uit.edu.vn")
+      );
+      setUser(querySnapshot.data());
+    };
+
+    getUserByEmail();
+  }, []);
+
+
+ 
 
   return (
     <div className={styles.wrapper}>
@@ -38,9 +81,15 @@ const UserInfo = () => {
       {/* content account */}
       <div className={styles.accountContent}>
         <div className={styles.userImage}>
-          <Image height={300} src={UserProfile} objectFit="contain" />
+          <Image
+            src={`https://res.cloudinary.com/demo/image/fetch/${user?.imageUrl}`}
+            width={100}
+            height={100}
+            alt=""
+            objectFit="contain"
+          />
         </div>
-        <div className={styles.nameAcc}>Hi, Phat</div>
+        <div className={styles.nameAcc}>Hi, {user.name}</div>
         <div className={styles.inforAcc}>
           <div className={styles.inforTitle}>Account details</div>
           <div className={styles.formInforAcc}>
@@ -56,6 +105,7 @@ const UserInfo = () => {
               <input
                 type="userName"
                 id="UserName"
+                value={user.name}
                 placeholder="Le Thi A"
                 className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
               />
@@ -74,6 +124,7 @@ const UserInfo = () => {
                   <input
                     type="email"
                     id="UserEmail"
+                    value={user.email}
                     placeholder="anthony@rhcp.com"
                     className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
                   />
@@ -93,6 +144,7 @@ const UserInfo = () => {
                   <input
                     type="userPhone"
                     id="UserPhone"
+                    value={user.phone}
                     placeholder="0703264721"
                     className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
                   />
@@ -107,10 +159,17 @@ const UserInfo = () => {
             <textarea
               className="w-full rounded-lg border-gray-200 p-3 text-sm"
               placeholder="Message"
+              value={user.address}
               rows="8"
               id="message"
             ></textarea>
           </div>
+        </div>
+
+        <div className={styles.btnSave}>
+          <button className={styles.btn} type="submit">
+            Save
+          </button>
         </div>
         <div className={styles.historyOrderAcc}>
           <div className={styles.inforTitle}>History order</div>
@@ -124,7 +183,7 @@ const UserInfo = () => {
           </div>
         </div>
         <div className={styles.btnContainer}>
-          <button className={styles.btnLogout} onClick={signOut} type="submit">
+          <button className={styles.btn} onClick={signOut} type="submit">
             Log out
           </button>
         </div>
