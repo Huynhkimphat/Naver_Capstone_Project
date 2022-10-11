@@ -3,7 +3,6 @@ import { collection, getDocs, setDoc, doc, query } from "firebase/firestore";
 import { db, auth, provider } from "../lib/firebase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
-import { parseCookies, setCookie, destroyCookie } from "nookies";
 import { useDispatch } from "react-redux";
 import { setUserEmail, resetUser } from "../redux/actions/userActions";
 
@@ -25,16 +24,11 @@ const AuthenUserProvider = ({ children }) => {
 
   const logInWithGoogleAccount = async () => {
     try {
-      const cookies = parseCookies();
       const userData = await signInWithPopup(auth, provider);
       setIsLoading(true);
       await addUserToFirebase(userData.user);
       setCurrentUser(userData.user);
       setToken(userData.user.accessToken);
-      setCookie({}, "token", userData.user.accessToken, {
-        maxAge: 30 * 24 * 60 * 60,
-        path: '/',
-      })
       dispatch(setUserEmail(userData.user.email));
       await router.push("/");
       setIsLoading(false);
@@ -53,15 +47,10 @@ const AuthenUserProvider = ({ children }) => {
   const resetCurrentUser = () => setCurrentUser(null);
 
   const logInAdminAccount = async (email, password) => {
-    const cookies = parseCookies();
     const userData = await signInWithEmailAndPassword(auth, email, password);
     setIsLoading(true);
     setCurrentUser(userData.user);
     setToken(userData.user.accessToken);
-    setCookie({}, "token", userData.user.accessToken, {
-      maxAge: 30 * 24 * 60 * 60,
-      path: '/',
-    })
     dispatch(setUserEmail(userData.user.email));
     await router.push("/");
     setIsLoading(false);
@@ -75,11 +64,11 @@ const AuthenUserProvider = ({ children }) => {
     setIsLoading(true);
     resetCurrentUser();
     clearToken();
-    destroyCookie({},"token")
     dispatch(resetUser());
     router.push("/");
     setIsLoading(false);
   };
+
   return (
     <AuthenUserContext.Provider
       value={{

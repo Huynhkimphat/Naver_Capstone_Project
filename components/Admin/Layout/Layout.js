@@ -5,6 +5,7 @@ import UserAvatar from '../../../static/UserProfile.jpg'
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { GrNotification } from "react-icons/gr";
 import Navbar from "./Navbar/Navbar";
+import { useSelector } from "react-redux";
 const styles = {
   wrapper: "w-full",
   header:
