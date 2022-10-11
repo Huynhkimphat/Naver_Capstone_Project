@@ -2,7 +2,8 @@ import Image from "next/image";
 import UserProfile from "../../static/UserProfile.jpg";
 import { AuthenUserContext } from "../../context/AuthUserContext";
 import { useContext, useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
+import AppSelector from "../../redux/selector";
 import {
   collection,
   getDocs,
@@ -13,6 +14,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 import { useEffect } from "react";
+import userService from "../../services/api/userService";
+import { setUser } from "../../redux/actions/userActions";
 
 const styles = {
   wrapper: "mx-auto flex justify-around ",
@@ -31,38 +34,13 @@ const styles = {
 };
 const UserInfo = () => {
   const { signOut } = useContext(AuthenUserContext);
-  const [user, setUser] = useState([]);
- // useEffect(() => {
-  //   const getAllUser = async () => {
-  //     const querySnapshot = await getDocs(collection(db, "users"));
-  //     console.log(
-  //       querySnapshot.docs.map((doc) => {
-  //         return {
-  //           id: doc.id,
-  //           data: {
-  //             name: doc.data().name,
-  //           },
-  //         };
-  //       })
-  //     );
-  //   };
-
-  //   getAllUser();
-  // });
+  const dispatch = useDispatch();
+  const userEmail = useSelector((state) => AppSelector.getUserEmail(state));
+  const user = useSelector((state) => AppSelector.getUser(state));
 
   useEffect(() => {
-    const getUserByEmail = async () => {
-      const querySnapshot = await getDoc(
-        doc(db, "users", "19521992@gm.uit.edu.vn")
-      );
-      setUser(querySnapshot.data());
-    };
-
-    getUserByEmail();
+    userService.getUserByEmail(userEmail).then((res) => dispatch(setUser(res)));
   }, []);
-
-
- 
 
   return (
     <div className={styles.wrapper}>
