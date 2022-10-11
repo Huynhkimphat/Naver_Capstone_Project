@@ -4,8 +4,6 @@ import { useRouter } from "next/router";
 import Layout from '../../../../components/Admin/Layout/Layout'
 import Header from '../../../../components/Admin/Header/Header'
 import ProductItem from '../../../../components/Admin/ProductDetail/ProductDetail';
-import { getServerSideProps } from '..';
-
 const ProductDetail = () => {
     const router = useRouter();
     const { slug } = router.query;
@@ -18,5 +16,3 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
-
-export { getServerSideProps }

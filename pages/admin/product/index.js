@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../../../components/Admin/Header/Header';
 import Layout from '../../../components/Admin/Layout/Layout';
 import Products from '../../../components/Admin/Products/Products';
-import { getServerSideProps } from '..';
 
 const index = (props) => {
     return (
@@ -16,5 +15,3 @@ const index = (props) => {
 };
 
 export default index;
-
-export { getServerSideProps }

@@ -1,5 +1,5 @@
 import Layout from "../../components/Layout";
-import { getServerSideProps } from "..";
+
 const styles = {
   wrapper: "mx-auto",
 };
@@ -13,5 +13,3 @@ export default function Home() {
     </div>
   );
 }
-
-export { getServerSideProps }
