@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setUserEmail, resetUser } from "../redux/actions/userActions";
 
+import { parseCookies, setCookie, destroyCookie } from "nookies";
+
 const AuthenUserContext = createContext();
 
 const AuthenUserProvider = ({ children }) => {
@@ -24,12 +26,17 @@ const AuthenUserProvider = ({ children }) => {
 
   const logInWithGoogleAccount = async () => {
     try {
+      const cookies = parseCookies();
       const userData = await signInWithPopup(auth, provider);
       setIsLoading(true);
       await addUserToFirebase(userData.user);
       setCurrentUser(userData.user);
       setToken(userData.user.accessToken);
       dispatch(setUserEmail(userData.user.email));
+      setCookie({}, "token", userData.user.accessToken, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: '/',
+      })
       await router.push("/");
       setIsLoading(false);
     } catch (e) {
@@ -47,11 +54,16 @@ const AuthenUserProvider = ({ children }) => {
   const resetCurrentUser = () => setCurrentUser(null);
 
   const logInAdminAccount = async (email, password) => {
+    const cookies = parseCookies();
     const userData = await signInWithEmailAndPassword(auth, email, password);
     setIsLoading(true);
     setCurrentUser(userData.user);
     setToken(userData.user.accessToken);
     dispatch(setUserEmail(userData.user.email));
+    setCookie({}, "token", userData.user.accessToken, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    })
     await router.push("/");
     setIsLoading(false);
   };
@@ -65,10 +77,10 @@ const AuthenUserProvider = ({ children }) => {
     resetCurrentUser();
     clearToken();
     dispatch(resetUser());
+    destroyCookie({},"token")
     router.push("/");
     setIsLoading(false);
   };
-
   return (
     <AuthenUserContext.Provider
       value={{
