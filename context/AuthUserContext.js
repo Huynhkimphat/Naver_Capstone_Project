@@ -4,12 +4,16 @@ import { db, auth, provider } from "../lib/firebase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
 import { parseCookies, setCookie, destroyCookie } from "nookies";
+import { useDispatch } from "react-redux";
+import { setUserEmail, resetUser } from "../redux/actions/userActions";
+
 const AuthenUserContext = createContext();
 
 const AuthenUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const addUserToFirebase = async (user) => {
     await setDoc(doc(db, "users", user.email), {
@@ -31,6 +35,7 @@ const AuthenUserProvider = ({ children }) => {
         maxAge: 30 * 24 * 60 * 60,
         path: '/',
       })
+      dispatch(setUserEmail(userData.user.email));
       await router.push("/");
       setIsLoading(false);
     } catch (e) {
@@ -57,6 +62,7 @@ const AuthenUserProvider = ({ children }) => {
       maxAge: 30 * 24 * 60 * 60,
       path: '/',
     })
+    dispatch(setUserEmail(userData.user.email));
     await router.push("/");
     setIsLoading(false);
   };
@@ -70,6 +76,7 @@ const AuthenUserProvider = ({ children }) => {
     resetCurrentUser();
     clearToken();
     destroyCookie({},"token")
+    dispatch(resetUser());
     router.push("/");
     setIsLoading(false);
   };
