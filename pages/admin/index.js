@@ -25,29 +25,31 @@ export default index;
 
 export async function getServerSideProps(ctx) {
   const cookies = nookies.get(ctx)["token"]
-  const { email } = jwtDecode(cookies)
-  let adminData;
-  const getData = async () => {
-    const docRef = doc(db, "users", email);
-    try {
-      const docSnap = await getDoc(docRef);
-      const rs = docSnap.data();
-      return rs;
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  adminData = await getData()
-  if (cookies) {
-    if (!adminData.isAdmin) {
-      return {
-        redirect: {
-          destination: '/',
-          permanent: false,
-        }
+  if (cookies !== undefined) {
+    const { email } = jwtDecode(cookies)
+    let adminData;
+    const getData = async () => {
+      const docRef = doc(db, "users", email);
+      try {
+        const docSnap = await getDoc(docRef);
+        const rs = docSnap.data();
+        return rs;
+      } catch (error) {
+        console.log(error)
       }
     }
-    else return { props: {} }
+    adminData = await getData()
+    if (cookies) {
+      if (!adminData.isAdmin) {
+        return {
+          redirect: {
+            destination: '/',
+            permanent: false,
+          }
+        }
+      }
+      else return { props: {} }
+    }
   }
 
   return {
