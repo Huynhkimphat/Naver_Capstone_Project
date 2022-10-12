@@ -11,7 +11,7 @@ const styles = {
     label: ' font-medium mt-4',
     inputName: 'border-2 rounded-md p-2 text-lg mt-1',
     inputCategory: 'w-[40%] border-2 rounded-md p-2 text-lg mt-1',
-    inputImages: 'text-lg mt-1',
+    inputImages: 'text-lg mt-1 text-transparent',
     inputPrice: 'border-2 rounded-md p-2 text-lg mt-1 w-[40%]',
     description: 'border-2 rounded-md p-2 text-lg mt-1 h-32',
     imgContainer:
@@ -35,7 +35,7 @@ const AddProduct = () => {
         },
         description: '',
         price: '',
-        quantity: 1
+        quantity: 0
     }
     const [countryList, setCountryList] = useState([])
     const [images, setImages] = useState([]);
@@ -45,6 +45,7 @@ const AddProduct = () => {
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             const i = event.target.files[0];
+            console.log(event.target.files[0]);
             setImages([...images, i])
             setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
         }
@@ -82,9 +83,11 @@ const AddProduct = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(information)
-        productService.addProduct(information, images)
-        setInformation(initialProduct)
+        console.log(information);
+        productService.addProduct(information, images);
+        setInformation(initialProduct);
+        setImages([]);
+        setCreateObjectURL([]);
     }
     useEffect(() => {
         (async () => {
@@ -214,7 +217,7 @@ const AddProduct = () => {
                         className={styles.inputImages}
                         type="file"
                         name="imageProduct"
-                        title='Choose multiple images'
+                        title=" "
                         multiple
                         onChange={uploadToClient} />
                     <div className={styles.imgContainer}>
@@ -239,6 +242,18 @@ const AddProduct = () => {
                         title="It should be money"
                         value={information.price}
                         placeholder='ex: $5'
+                        onChange={handleChange}
+                    />
+                    <label className={styles.label} htmlFor="quantity">Quantity</label>
+                    <input
+                        className={styles.inputPrice}
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        required
+                        title="It should be the number"
+                        value={information.quantity}
+                        placeholder='ex: 0 to Number'
                         onChange={handleChange}
                     />
                     <button className={styles.submit} type="submit">
