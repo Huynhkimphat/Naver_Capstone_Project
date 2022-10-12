@@ -4,15 +4,6 @@ import { AuthenUserContext } from "../../context/AuthUserContext";
 import { useContext, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AppSelector from "../../redux/selector";
-import {
-  collection,
-  getDocs,
-  getDoc,
-  setDoc,
-  doc,
-  query,
-} from "firebase/firestore";
-import { db } from "../../lib/firebase";
 import { useEffect } from "react";
 import userService from "../../services/api/userService";
 import { setUser } from "../../redux/actions/userActions";
@@ -37,10 +28,40 @@ const UserInfo = () => {
   const dispatch = useDispatch();
   const userEmail = useSelector((state) => AppSelector.getUserEmail(state));
   const user = useSelector((state) => AppSelector.getUser(state));
+  const [userName, setUserName] = useState(user.name);
+  const [phone, setPhone] = useState(user.phone);
+  const [address, setAddress] = useState(user.address);
 
   useEffect(() => {
     userService.getUserByEmail(userEmail).then((res) => dispatch(setUser(res)));
   }, []);
+
+  const handleUserNameInput = (e) => {
+    setUserName(e.target.value);
+  };
+  const handlePhoneInput = (e) => {
+    setPhone(e.target.value);
+  };
+  const handleAddressInput = (e) => {
+    setAddress(e.target.value);
+  };
+
+  const handleUpdateUser = (e) =>{
+    // logic if every field is valid
+    const prepareUser = {
+      ...user,
+      name:userName,
+      phone:phone || 0,
+      address:address || '',
+    }
+    if( JSON.stringify(prepareUser) === JSON.stringify(user) ){
+      return;
+    }
+
+    userService.updateUser(prepareUser);
+    userService.getUserByEmail(userEmail).then((res) => dispatch(setUser(res)));
+
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -72,18 +93,17 @@ const UserInfo = () => {
           <div className={styles.inforTitle}>Account details</div>
           <div className={styles.formInforAcc}>
             <label
-              for="UserName"
+              for="userName"
               className="block w-auto overflow-hidden border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
             >
               <span className="text-xs font-medium text-gray-700">
-                {" "}
-                Username{" "}
+                Username
               </span>
-
               <input
-                type="userName"
-                id="UserName"
-                value={user.name}
+                type="text"
+                id="userName"
+                value={userName}
+                onChange={handleUserNameInput}
                 placeholder="Le Thi A"
                 className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
               />
@@ -91,18 +111,17 @@ const UserInfo = () => {
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label
-                  for="UserEmail"
+                  for="email"
                   className="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
                 >
                   <span className="text-xs font-medium text-gray-700">
-                    {" "}
-                    Email{" "}
+                    Email
                   </span>
-
                   <input
-                    type="email"
-                    id="UserEmail"
+                    type="text"
+                    id="email"
                     value={user.email}
+                    disabled={true}
                     placeholder="anthony@rhcp.com"
                     className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
                   />
@@ -111,18 +130,17 @@ const UserInfo = () => {
 
               <div>
                 <label
-                  for="UserPhone"
+                  for="phone"
                   className="block overflow-hidden rounded-md border border-gray-200 px-3 py-2 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
                 >
                   <span className="text-xs font-medium text-gray-700">
-                    {" "}
                     Phone{" "}
                   </span>
-
                   <input
-                    type="userPhone"
-                    id="UserPhone"
-                    value={user.phone}
+                    type="number"
+                    id="phone"
+                    value={phone}
+                    onChange={handlePhoneInput}
                     placeholder="0703264721"
                     className="mt-1 w-full border-none p-0 focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
                   />
@@ -137,7 +155,8 @@ const UserInfo = () => {
             <textarea
               className="w-full rounded-lg border-gray-200 p-3 text-sm"
               placeholder="Message"
-              value={user.address}
+              value={address}
+              onChange={handleAddressInput}
               rows="8"
               id="message"
             ></textarea>
@@ -145,7 +164,7 @@ const UserInfo = () => {
         </div>
 
         <div className={styles.btnSave}>
-          <button className={styles.btn} type="submit">
+          <button className={styles.btn} type="submit" onClick={handleUpdateUser}>
             Save
           </button>
         </div>

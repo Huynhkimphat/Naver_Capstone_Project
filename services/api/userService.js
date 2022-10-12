@@ -14,6 +14,18 @@ const userService = {
     const user = querySnapshot.data();
     return user;
   },
+  async updateUser(user){
+    const userRef = doc(db, "users", user.email);
+    setDoc(userRef, user)
+    .then(userRef => {
+        console.log("Entire Document has been updated successfully");
+    })
+    .catch(error => {
+        console.log(error);
+    })
+
+  }
 };
+
 
 export default userService;
