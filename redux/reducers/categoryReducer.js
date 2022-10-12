@@ -1,7 +1,7 @@
 import * as Category from "../types/categoryType";
 
 const initialState = {
-    category: {},
+    category: [],
     status: "",
 };
 
