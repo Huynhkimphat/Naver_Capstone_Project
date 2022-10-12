@@ -1,11 +1,18 @@
-import { setDoc, doc, addDoc, collection } from "firebase/firestore";
+import { setDoc, doc, collection } from "firebase/firestore";
 import { db, storage } from "../../../lib/firebase";
-import { getStorage, ref, uploadBytes } from "firebase/storage"
+import { ref, uploadBytesResumable } from "firebase/storage"
+
 const productService = {
     async addProduct(data, images) {
         const newDocRef = doc(collection(db, "product"));
         await setDoc(newDocRef, data);
-        uploadBytes(ref(storage, `product/${newDocRef.id}`),images)
+
+        // Upload image
+        images.forEach((image, index) => {
+            const imgType = image.type.split("/")[1];
+            const storageRef = ref(storage, `product/${newDocRef.id}/product_${index}.${imgType}`);
+            uploadBytesResumable(storageRef, image)
+        });
     },
 }
 
