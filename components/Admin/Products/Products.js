@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Router from 'next/router';
 import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -8,17 +8,12 @@ import { Column } from "primereact/column";
 import * as TableServices from './TableServices'
 import Feature from './Feature/Feature';
 import { BsEye } from 'react-icons/bs';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { onGetProductsList, onUpdateProductStatus } from '../../../redux/actions/products';
-import productApi from '../../../services/api/productAPI';
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     dataTable: 'mt-4'
 }
 
 const AdProducts = (props) => {
-    const dispatch = useDispatch();
     const [products, setProducts] = useState([]);
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(5);
@@ -41,16 +36,16 @@ const AdProducts = (props) => {
     };
 
     useEffect(() => {
-        (async () => {
-            try {
-                const data = await productApi.getAll()
-                setProducts(data)
-                dispatch(onGetProductsList(data))
-                dispatch(onUpdateProductStatus('Success fetch'))
-            } catch (error) {
-                dispatch(onUpdateProductStatus('Error fetch'))
-            }
-        })()
+        // (async () => {
+        //     try {
+        //         const data = await productApi.getAll()
+        //         setProducts(data)
+        //         dispatch(onGetProductsList(data))
+        //         dispatch(onUpdateProductStatus('Success fetch'))
+        //     } catch (error) {
+        //         dispatch(onUpdateProductStatus('Error fetch'))
+        //     }
+        // })()
     }, []);
 
     const onCellSelect = (e) => {
