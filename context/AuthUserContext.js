@@ -29,14 +29,17 @@ const AuthenUserProvider = ({ children }) => {
       const cookies = parseCookies();
       const userData = await signInWithPopup(auth, provider);
       setIsLoading(true);
-      await addUserToFirebase(userData.user);
+      const googleAccountUser = doc(db, "users", userData.user.email);
+      if (googleAccountUser.empty) {
+        await addUserToFirebase(userData.user);
+      }
       setCurrentUser(userData.user);
       setToken(userData.user.accessToken);
       dispatch(setUserEmail(userData.user.email));
       setCookie({}, "token", userData.user.accessToken, {
         maxAge: 30 * 24 * 60 * 60,
-        path: '/',
-      })
+        path: "/",
+      });
       await router.push("/");
       setIsLoading(false);
     } catch (e) {
@@ -62,8 +65,8 @@ const AuthenUserProvider = ({ children }) => {
     dispatch(setUserEmail(userData.user.email));
     setCookie({}, "token", userData.user.accessToken, {
       maxAge: 30 * 24 * 60 * 60,
-      path: '/',
-    })
+      path: "/",
+    });
     await router.push("/");
     setIsLoading(false);
   };
@@ -77,7 +80,7 @@ const AuthenUserProvider = ({ children }) => {
     resetCurrentUser();
     clearToken();
     dispatch(resetUser());
-    destroyCookie({},"token")
+    destroyCookie({}, "token");
     router.push("/");
     setIsLoading(false);
   };

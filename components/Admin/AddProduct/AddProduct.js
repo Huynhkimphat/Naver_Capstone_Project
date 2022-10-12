@@ -45,7 +45,6 @@ const AddProduct = () => {
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             const i = event.target.files[0];
-            console.log(event.target.files[0]);
             setImages([...images, i])
             setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
         }
@@ -83,7 +82,6 @@ const AddProduct = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(information);
         productService.addProduct(information, images);
         setInformation(initialProduct);
         setImages([]);
