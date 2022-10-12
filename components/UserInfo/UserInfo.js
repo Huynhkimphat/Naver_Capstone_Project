@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AppSelector from "../../redux/selector";
 import { useEffect } from "react";
 import userService from "../../services/api/userService";
-import { setUser } from "../../redux/actions/userActions";
+import { setUser } from "../../redux/actions/userAction";
 
 const styles = {
     wrapper: "mx-auto flex justify-around ",

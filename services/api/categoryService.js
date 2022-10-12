@@ -12,9 +12,9 @@ const categoryService = {
     async getCategory() {
         const querySnapshot = await getDocs(collection(db, "category"));
         return querySnapshot.docs.map((doc) => {
-          return {
-            ...doc.data()
-          };
+            return {
+                ...doc.data(),
+            };
         });
     },
 };
