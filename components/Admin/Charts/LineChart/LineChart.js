@@ -6,7 +6,7 @@ const styles = {
     lineChart: "w-full p-4 shadow-lg sm:w-[65%]",
     titleLineChart: "flex w-full justify-between items-center",
     btnLineChart:
-        "px-4 py-1 bg-[#5842BD] text-white font-medium rounded-md shadow-2xl",
+        "p-1 bg-[#5842BD] text-white font-medium rounded-md shadow-2xl",
 }
 
 const data = {
@@ -27,7 +27,10 @@ const LineChart = (props) => {
         <div className={styles.lineChart}>
             <div className={styles.titleLineChart}>
                 <h3 className="text-6 font-medium">Total Customer: {"229"}</h3>
-                <button className={styles.btnLineChart}>This Year</button>
+                <select className={styles.btnLineChart}>
+                    <option value="year">Year</option>
+                    <option value="month">Month</option>
+                </select>
             </div>
             <Line data={data} height="190px" />
         </div>

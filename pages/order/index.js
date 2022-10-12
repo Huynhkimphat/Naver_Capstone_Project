@@ -1,6 +1,6 @@
 import Layout from "../../components/Layout";
 import OrderHistory from "../../components/Order/OrderHistory/OrderHistory";
-
+import { getServerSideProps } from '../user'
 const styles = {
   wrapper: "container mx-auto mt-10",
 };
@@ -14,3 +14,5 @@ export default function Order() {
     </Layout>
   );
 }
+
+export { getServerSideProps }
