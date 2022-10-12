@@ -8,7 +8,6 @@ import { useState, useEffect } from "react";
 
 const styles = {
     wrapper: "lg:p-14 md:p-12 p-6",
-    title: "md:text-3xl text-xl md:mb-7 mb-4",
     container: "grid md:grid-cols-4 grid-cols-2 gap-x-6 gap-y-8",
     img: "hover:cursor-pointer",
     name: "mt-6 mb-2 text-lg md:text-sm lg:text-xl hover:cursor-pointer",
@@ -116,7 +115,13 @@ const ProductList = () => {
 
     const loadMore = () => {
         if (endIndexProduct + 1 <= productList.length) {
-            const newProductListUIUpdate=[...productListUIUpdate,...productList.slice(endIndexProduct, endIndexProduct + productAmount)]
+            const newProductListUIUpdate = [
+                ...productListUIUpdate,
+                ...productList.slice(
+                    endIndexProduct,
+                    endIndexProduct + productAmount
+                ),
+            ];
             endIndexProduct += productAmount;
             setProductListUI(newProductListUIUpdate);
         }
@@ -124,22 +129,27 @@ const ProductList = () => {
 
     return (
         <div className={styles.wrapper}>
-            <div className={styles.title}>New ceramics</div>
             <div className={styles.container}>
                 {productListUIUpdate.map((item) => (
                     <div key={item.key} className={styles.item}>
                         <Image className={styles.img} src={item.img} alt="" />
                         <div className={styles.name}>
-                            <span className={styles.textColorHover}>{item.name}</span>
+                            <span className={styles.textColorHover}>
+                                {item.name}
+                            </span>
                         </div>
                         <div className={styles.price}>
-                            <span className={styles.textColorHover}>{item.price}</span>
+                            <span className={styles.textColorHover}>
+                                {item.price}
+                            </span>
                         </div>
                     </div>
                 ))}
             </div>
             <div className={styles.btnContainer} onClick={loadMore}>
-                <button className={styles.btnViewCollection}>View Collection</button>
+                <button className={styles.btnViewCollection}>
+                    View Collection
+                </button>
             </div>
         </div>
     );

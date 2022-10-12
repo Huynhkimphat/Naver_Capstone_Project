@@ -4,7 +4,7 @@ import { db, auth, provider } from "../lib/firebase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { setUserEmail, resetUser } from "../redux/actions/userActions";
+import { setUserEmail, resetUser } from "../redux/actions/userAction";
 
 import { parseCookies, setCookie, destroyCookie } from "nookies";
 

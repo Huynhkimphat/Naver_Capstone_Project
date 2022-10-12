@@ -1,14 +1,9 @@
 import Layout from "../../components/Layout";
+import AllProductPage from "../product";
 const styles = {
-  wrapper: "mx-auto",
+    wrapper: "mx-auto",
 };
 
-export default function Home() {
-  return (
-    <div className={styles.wrapper}>
-      <Layout>
-        <h1>Category</h1>
-      </Layout>
-    </div>
-  );
+export default function Category() {
+    return <AllProductPage />;
 }
