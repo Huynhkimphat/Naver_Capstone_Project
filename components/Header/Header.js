@@ -72,7 +72,7 @@ const Header = () => {
 
     const categoryRender = categoryList.map((item) => (
         <div
-            key={item.id}
+            key={item.name}
             className={`${styles.button} ${
                 router.query.slug?.toString().includes(item.name.toLowerCase())
                     ? styles.activeButton
