@@ -34,7 +34,7 @@ const AddProduct = () => {
             brand: "",
             color: "",
             height: "",
-            madeIn: "NA",
+            madeIn: "",
             material: "",
             width: ""
         },
@@ -136,8 +136,9 @@ const AddProduct = () => {
                         name="name"
                         value={information.name}
                         required
-                        minLength={5}
-                        maxLength={20}
+                        minLength={4}
+                        maxLength={40}
+                        title="Please type your new product name"
                         onChange={handleChange}
                     />
                     <label className={styles.label} htmlFor="categoryId">Product Category</label>
@@ -170,6 +171,7 @@ const AddProduct = () => {
                                 type="text"
                                 id='brand'
                                 name="brand"
+                                required
                                 value={information.configuration.brand}
                                 maxLength={40}
                                 onChange={handleChange}
@@ -182,6 +184,7 @@ const AddProduct = () => {
                                 type="text"
                                 id='color'
                                 name="color"
+                                required
                                 value={information.configuration.color}
                                 minLength={4}
                                 maxLength={40}
@@ -195,6 +198,7 @@ const AddProduct = () => {
                                 type="number"
                                 id='width'
                                 name="width"
+                                required
                                 value={information.configuration.width}
                                 maxLength={40}
                                 placeholder="(Cm)"
@@ -208,6 +212,7 @@ const AddProduct = () => {
                                 type="number"
                                 id='height'
                                 name="height"
+                                required
                                 value={information.configuration.height}
                                 maxLength={40}
                                 placeholder="(Cm)"
@@ -221,6 +226,7 @@ const AddProduct = () => {
                                 type="text"
                                 id='material'
                                 name="material"
+                                required
                                 value={information.configuration.material}
                                 maxLength={40}
                                 placeholder="Example: Made of Plastic"
@@ -248,6 +254,7 @@ const AddProduct = () => {
                         name="imageProduct"
                         title=" "
                         multiple
+                        required
                         onChange={uploadToClient} />
                     <div className={styles.imgContainer}>
                         {imageList}
