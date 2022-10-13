@@ -13,9 +13,10 @@ import { Ripple } from "primereact/ripple";
 import Router from "next/router";
 import { BsEye } from "react-icons/bs";
 import orderService from "../../../services/api/admin/orderService";
+import updateField from "../../../services/api/admin/updateField";
 
 const styles = {
-    wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
+    wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md gap-4',
     exportTable: 'w-[100%] flex justify-between items-center',
     select: 'px-4 py-2 rounded-md shadow-lg',
     btnExport: 'px-4 py-2 rounded-md bg-[#5842BD] text-white flex items-center gap-2 shadow-lg'
@@ -28,10 +29,16 @@ const AdminOrders = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
     const [selectedProduct, setSelectedProduct] = useState(null)
+
     const statuses = [
-        { label: "Approved", value: "APPROVED" },
-        { label: "Pending", value: "PENDING" },
-        { label: "Reject", value: "REJECT" }
+        "APPROVED",
+        "PENDING",
+        "REJECT"
+    ];
+    const statuses2 = [
+        { label: "APPROVED", value: "APPROVED" },
+        { label: "PENDING", value: "PENDING" },
+        { label: "REJECT", value: "REJECT" }
     ];
     const dataTableFuncMap = {
         products2: setProducts2,
@@ -56,7 +63,7 @@ const AdminOrders = (props) => {
         },
         'PageLinks': (options) => {
             if ((options.view.startPage === options.page && options.view.startPage !== 0) || (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
-                const className = classNames(options.className, { 'p-disabled': true });
+                const className = classNames(options.className, { '': true });
 
                 return <span className={className} style={{ userSelect: 'none' }}>...</span>;
             }
@@ -149,19 +156,27 @@ const AdminOrders = (props) => {
         );
     };
     const statusEditor = (options) => {
+        const handleChange = (e) => {
+            // ID: options.rowData.code
+            const orderID = options.rowData.code;
+            // Value: e.value
+            const value = e.value;
+            options.editorCallback(e.value)
+            console.log(orderID, value, options)
+            updateField.byId(orderID, "status", value);
+        }
         return (
             <Dropdown
                 value={options.value}
-                options={statuses}
+                options={statuses2}
                 optionLabel="label"
                 optionValue="value"
-                onChange={(e) => options.editorCallback(e.value)}
+                onChange={handleChange}
                 placeholder="Select a Status"
                 itemTemplate={(option) => {
                     return (
                         <span
-                            className={`product-badge status-${option.value.toLowerCase()}`}
-                        >
+                            className={`product-badge status-${option.value.toLowerCase()}`}>
                             {option.label}
                         </span>
                     );
@@ -183,7 +198,11 @@ const AdminOrders = (props) => {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return getStatusLabel(rowData.status);
+        return (
+            <span className={`customer-badge status-${rowData.status}`}>
+                {rowData.status}
+            </span>
+        );
     };
 
     const priceBodyTemplate = (rowData) => {
@@ -191,6 +210,21 @@ const AdminOrders = (props) => {
             style: "currency",
             currency: "VND"
         }).format(rowData.totalPrice);
+    };
+    const statusItemTemplate = (option) => {
+        return <span className={`${option}`}>{option}</span>;
+    };
+    const statusRowFilterTemplate = (options) => {
+        return (
+            <Dropdown
+                value={options.value}
+                options={statuses}
+                onChange={(e) => { options.filterApplyCallback(e.value) }}
+                itemTemplate={statusItemTemplate}
+                placeholder="Select a Status"
+                showClear
+            />
+        );
     };
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
@@ -202,12 +236,12 @@ const AdminOrders = (props) => {
         // Export File Excel
         <div className={styles.wrapper}>
             <div className={styles.exportTable}>
-                <select className={styles.select} defaultValue='All'>
+                {/* <select className={styles.select} defaultValue='All'>
                     <option value="All">All</option>
                     <option value="Approved">Approved</option>
                     <option value="Pending">Pending</option>
                     <option value="Rejected">Rejected</option>
-                </select>
+                </select> */}
                 <button className={styles.btnExport}>
                     <FaFileExcel></FaFileExcel>
                     <span>Export</span>
@@ -218,57 +252,72 @@ const AdminOrders = (props) => {
                 <DataTable
                     value={products2}
                     editMode="row"
+                    editable="true"
                     onRowEditComplete={onRowEditComplete}
                     responsiveLayout="scroll"
                     paginator
                     paginatorTemplate={template}
-                    first={first} rows={rows}
+                    first={first}
+                    rows={rows}
                     onPage={onCustomPage}
                     selectionMode="single"
                     cellSelection
+                    filterDisplay="row"
                     selection={selectedProduct}
                     onSelectionChange={onCellSelect}
+                    showGridlines
                     dataKey="code"
+                    emptyMessage="No customers found."
                 >
                     <Column
                         field="code"
                         header="Code"
                         sortable
-                        editor={(options) => textEditor(options)}
-                        style={{ width: "20%" }}
+                        filter
+                        filterPlaceholder="Search by code"
+                        // editor={(options) => textEditor(options)}
+                        style={{ width: "20%", minWidth: "14rem", padding:"0 0 0 10px", textAlign:"center" }}
                     ></Column>
                     <Column
                         field="date"
                         header="Date"
                         sortable
-                        style={{ width: "20%" }}
+                        filter
+                        filterPlaceholder="Date"
+                        style={{ width: "20%", minWidth: "14rem", padding:"0 0 0 10px", textAlign:"center"}}
                     ></Column>
                     <Column
                         field="totalPrice"
                         header="Price"
                         sortable
                         body={priceBodyTemplate}
-                        editor={(options) => priceEditor(options)}
-                        style={{ width: "20%" }}
+                        // editor={(options) => priceEditor(options)}
+                        filter
+                        filterPlaceholder="Price"
+                        style={{ width: "20%", minWidth: "10rem", padding:"0 0 0 10px", textAlign:"center"}}
                     ></Column>
                     <Column
                         field="status"
                         header="Status"
                         sortable
+                        showFilterMenu={false}
+                        filterMenuStyle={{ width: "14rem" }}
+                        filter
                         body={statusBodyTemplate}
                         editor={(options) => statusEditor(options)}
-                        style={{ width: "20%" }}
+                        filterElement={statusRowFilterTemplate}
+                        style={{ width: "20%", minWidth: "8rem", padding:"5px 0 5px 10px", textAlign:"center"}}
                     ></Column>
-                    <Column
+                    {/* <Column
                         rowEditor
                         headerStyle={{ width: "10%", minWidth: "8rem" }}
                         bodyStyle={{ textAlign: "center" }}
-                    ></Column>
+                    ></Column> */}
                     <Column
                         field="detail"
-                        headerStyle={{ width: "10%", minWidth: "3rem" }}
-                        bodyStyle={{ textAlign: "center" }}
-                        body={<BsEye></BsEye>}
+                        headerStyle={{ width: "10%", minWidth: "3rem" , textAlign:"center"}}
+                        bodyStyle={{ textAlign: "center", textAlign:"center" }}
+                        body={<BsEye className="m-auto"></BsEye>}
                     ></Column>
                 </DataTable>
             </div>
