@@ -1,4 +1,4 @@
-import { collection, getDocs } from "firebase/firestore"
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore"
 import { db } from "../../../lib/firebase"
 
 
@@ -18,6 +18,5 @@ const orderService = {
         });
         return ordersList;
     },
-
 }
 export default orderService;
