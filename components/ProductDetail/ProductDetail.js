@@ -20,20 +20,18 @@ const styles = {
   contentQuantityAmount: "flex justify-center items-center",
   btnAddCart: "rounded-lg border p-4 bg-[#2A254B] text-white text-center",
 };
-const ProductDetail = () => {
+const ProductDetail = ({ product }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.imageProduct}>
         <Image src={ProductDetailImage} alt="true" />
       </div>
       <div className={styles.detailContainer}>
-        <div className={styles.productTitle}>The Dandy Chair</div>
-        <div className={styles.productPrice}>250000VND</div>
+        <div className={styles.productTitle}>{product[0].name}</div>
+        <div className={styles.productPrice}>{product[0].price}</div>
         <div className={styles.descriptionTitle}>Description</div>
         <div className={styles.descriptionContent}>
-          A timeless design, with premium materials features as one of our most
-          popular and iconic pieces. The dandy chair is perfect for any stylish
-          living space with beech legs and lambskin leather upholstery.
+          {product[0].description}
         </div>
         <div className={styles.dimensionTitle}>Dimensions</div>
         <div className={styles.dimensionContent}>
