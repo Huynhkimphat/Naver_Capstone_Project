@@ -15,6 +15,8 @@ import { setCategory } from "../../redux/actions/categoryAction";
 import { setUser } from "../../redux/actions/userAction";
 import AppSelector from "../../redux/selector";
 import { useRouter } from "next/router";
+import productService from "../../services/api/productService";
+import { setProductList } from "../../redux/actions/productAction";
 
 const styles = {
   wrapper: "px-8 py-2",
@@ -55,6 +57,9 @@ const Header = () => {
         .then((res) => dispatch(setUser(res)));
     }
     categoryService.getCategory().then((res) => dispatch(setCategory(res)));
+    productService
+      .getAllProducts()
+      .then((res) => dispatch(setProductList(res)));
   }, []);
 
   const { currentUser } = useContext(AuthenUserContext);
