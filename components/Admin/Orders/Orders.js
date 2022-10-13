@@ -12,6 +12,8 @@ import { Dropdown } from "primereact/dropdown";
 import { Ripple } from "primereact/ripple";
 import Router from "next/router";
 import { BsEye } from "react-icons/bs";
+import orderService from "../../../services/api/admin/orderService";
+
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     exportTable: 'w-[100%] flex justify-between items-center',
@@ -20,7 +22,7 @@ const styles = {
 }
 
 const AdminOrders = (props) => {
-    const [products2, setProducts2] = useState(null);
+    const [products2, setProducts2] = useState([]);
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
@@ -108,120 +110,9 @@ const AdminOrders = (props) => {
         }
     }
     useEffect(() => {
-        setProducts2([
-            {
-                id: "1000",
-                code: "f230fh0g3",
-                name: "Bamboo Watch",
-                description: "Product Description",
-                image: "bamboo-watch.jpg",
-                date: '1998',
-                price: 65,
-                category: "Accessories",
-                quantity: 24,
-                inventoryStatus: "INSTOCK",
-                rating: 5,
-                orderstatus: 'APPROVED'
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                date: "1997",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-                orderstatus: 'REJECT'
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                date: "1997",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-                orderstatus: 'REJECT'
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                date: "1997",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-                orderstatus: 'REJECT'
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                date: "1997",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-                orderstatus: 'REJECT'
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                date: "1997",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-                orderstatus: 'REJECT'
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                date: "1997",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-                orderstatus: 'REJECT'
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                date: "1997",
-                price: 72,
-                category: "Accessories",
-                quantity: 61,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-                orderstatus: 'REJECT'
-            }
-        ])
+        orderService.getOrdersAll().then(res => {
+            setProducts2([...products2, ...res])
+        })
     }, []);
 
     const getStatusLabel = (status) => {
@@ -292,19 +183,19 @@ const AdminOrders = (props) => {
     };
 
     const statusBodyTemplate = (rowData) => {
-        return getStatusLabel(rowData.orderstatus);
+        return getStatusLabel(rowData.status);
     };
 
     const priceBodyTemplate = (rowData) => {
-        return new Intl.NumberFormat("en-US", {
+        return new Intl.NumberFormat("vi", {
             style: "currency",
-            currency: "USD"
-        }).format(rowData.price);
+            currency: "VND"
+        }).format(rowData.totalPrice);
     };
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
         const path = e.value.rowData.code
-        if(e.value.field==='detail')
+        if (e.value.field === 'detail')
             Router.push(`/admin/order/${path}`)
     }
     return (
@@ -347,28 +238,21 @@ const AdminOrders = (props) => {
                         style={{ width: "20%" }}
                     ></Column>
                     <Column
-                        field="name"
-                        header="Name"
-                        sortable
-                        editor={(options) => textEditor(options)}
-                        style={{ width: "20%" }}
-                    ></Column>
-                    <Column
                         field="date"
                         header="Date"
                         sortable
                         style={{ width: "20%" }}
                     ></Column>
                     <Column
-                        field="price"
-                        header="Amount"
+                        field="totalPrice"
+                        header="Price"
                         sortable
                         body={priceBodyTemplate}
                         editor={(options) => priceEditor(options)}
                         style={{ width: "20%" }}
                     ></Column>
                     <Column
-                        field="orderstatus"
+                        field="status"
                         header="Status"
                         sortable
                         body={statusBodyTemplate}
