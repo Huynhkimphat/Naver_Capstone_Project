@@ -118,6 +118,10 @@ const ProductList = ({ viewCollection = false, category }) => {
   const productListUI = productList.slice(startIndexProduct, endIndexProduct);
   const [productListUIUpdate, setProductListUI] = useState(productListUI);
 
+  const goToProductDetail = (id) => {
+    router.push(`product/${id}`);
+  };
+
   const loadMore = () => {
     if (viewCollection) {
       return router.push(`/category/${category.toLowerCase()}`);
@@ -136,9 +140,14 @@ const ProductList = ({ viewCollection = false, category }) => {
     <div className={styles.wrapper}>
       <div className={styles.container}>
         {productListUIUpdate.map((item) => (
-          <div key={item.key} className={styles.item}>
+          <div key={item.id} className={styles.item}>
             <div className={styles.name}>
-              <span className={styles.textColorHover}>{item.name}</span>
+              <span
+                className={styles.textColorHover}
+                onClick={() => goToProductDetail(item.id)}
+              >
+                {item.name}
+              </span>
             </div>
             <div className={styles.price}>
               <span className={styles.textColorHover}>{item.price}</span>
