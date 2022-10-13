@@ -10,6 +10,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import Image from 'next/image';
 import Logo from '../../../static/Product1.png'
 import Router from 'next/router';
+import { BsEye } from 'react-icons/bs';
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
@@ -73,7 +74,7 @@ const Users = () => {
                 "balance": 70663,
                 "email": "quockhanh123@gmail.com",
                 "address": "289 Hoàng Văn Thụ",
-                "phone": "0973256777"
+                "phone": "0973256111"
             },
             {
                 id: "1001",
@@ -94,7 +95,7 @@ const Users = () => {
                 "balance": 82429,
                 "email": "hoaian123@gmail.com",
                 "address": "289 Hoàng Văn Thụ",
-                "phone": "0973256777"
+                "phone": "0973256222"
             },
             {
                 id: "1002",
@@ -115,7 +116,7 @@ const Users = () => {
                 "balance": 28334,
                 "email": "quockhanh123@gmail.com",
                 "address": "289 Hoàng Văn Thụ",
-                "phone": "0973256777"
+                "phone": "0973256333"
             },
             {
                 id: "1003",
@@ -136,8 +137,200 @@ const Users = () => {
                 "balance": 88521,
                 "email": "hoaian123@gmail.com",
                 "address": "289 Hoàng Văn Thụ",
-                "phone": "0973256777"
-            }
+                "phone": "0973256444"
+            },
+            {
+                id: "1004",
+                "name": "Donette Foller",
+                "country": {
+                    "name": "South Africa",
+                    "code": "za"
+                },
+                "company": "Printing Dimensions",
+                "date": "2016-05-20",
+                "status": "proposal",
+                "verified": true,
+                "activity": 33,
+                "representative": {
+                    "name": "Asiya Javayant",
+                    "image": "asiyajavayant.png"
+                },
+                "balance": 93905,
+                "email": "quockhanh123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256555",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
+            {
+                id: "1005",
+                "name": "Simona Morasca",
+                "country": {
+                    "name": "Egypt",
+                    "code": "eg"
+                },
+                "company": "Chapman, Ross E Esq",
+                "date": "2018-02-16",
+                "status": "qualified",
+                "verified": false,
+                "activity": 68,
+                "representative": {
+                    "name": "Ivan Magalhaes",
+                    "image": "ivanmagalhaes.png"
+                },
+                "balance": 93905,
+                "email": "hoaian123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256666",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
+            {
+                id: "1006",
+                "name": "Mitsue Tollner",
+                "country": {
+                    "name": "Paraguay",
+                    "code": "py"
+                },
+                "company": "Morlong Associates",
+                "date": "2018-02-19",
+                "status": "renewal",
+                "verified": true,
+                "activity": 54,
+                "representative": {
+                    "name": "Ivan Magalhaes",
+                    "image": "ivanmagalhaes.png"
+                },
+                "balance": 93905,
+                "email": "hoaian123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256777",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
+            {
+                id: "1007",
+                "name": "Leota Dilliard",
+                "country": {
+                    "name": "Serbia",
+                    "code": "rs"
+                },
+                "company": "Commercial Press",
+                "date": "2019-08-13",
+                "status": "renewal",
+                "verified": true,
+                "activity": 69,
+                "representative": {
+                    "name": "Onyama Limba",
+                    "image": "onyamalimba.png"
+                },
+                "balance": 93905,
+                "email": "hoaian123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256777",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
+            {
+                id: "1008",
+                "name": "Sage Wieser",
+                "country": {
+                    "name": "Egypt",
+                    "code": "eg"
+                },
+                "company": "Truhlar And Truhlar Attys",
+                "date": "2018-11-21",
+                "status": "unqualified",
+                "verified": true,
+                "activity": 76,
+                "representative": {
+                    "name": "Ivan Magalhaes",
+                    "image": "ivanmagalhaes.png"
+                },
+                "balance": 93905,
+                "email": "quockhanh123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256777",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
+            {
+                id: "1010",
+                "name": "Kris Marrier",
+                "country": {
+                    "name": "Mexico",
+                    "code": "mx"
+                },
+                "company": "King, Christopher A Esq",
+                "date": "2015-07-07",
+                "status": "proposal",
+                "verified": false,
+                "activity": 3,
+                "representative": {
+                    "name": "Onyama Limba",
+                    "image": "onyamalimba.png"
+                },
+                "balance": 93905,
+                "email": "quockhanh123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256777",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
+            {
+                id: "1011",
+                "name": "Minna Amigon",
+                "country": {
+                    "name": "Romania",
+                    "code": "ro"
+                },
+                "company": "Dorl, James J Esq",
+                "date": "2018-11-07",
+                "status": "qualified",
+                "verified": false,
+                "activity": 38,
+                "representative": {
+                    "name": "Anna Fali",
+                    "image": "annafali.png"
+                },
+                "balance": 93905,
+                "email": "quockhanh123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256777",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
+            {
+                id: "1012",
+                "name": "Abel Maclead",
+                "country": {
+                    "name": "Singapore",
+                    "code": "sg"
+                },
+                "company": "Rangoni Of Florence",
+                "date": "2017-03-11",
+                "status": "qualified",
+                "verified": true,
+                "activity": 87,
+                "representative": {
+                    "name": "Bernardo Dominic",
+                    "image": "bernardodominic.png"
+                },
+                "balance": 93905,
+                "email": "quockhanh123@gmail.com",
+                "address": "289 Hoàng Văn Thụ",
+                "phone": "0973256777",
+                "myorder": "nvklal433",
+                "createdBy": "Phạm Nam",
+                "password": "43987597436"
+            },
         ])
     }, []);
 
@@ -193,26 +386,6 @@ const Users = () => {
 
     const header = renderHeader();
 
-    const onRowEditComplete = (e) => {
-        let _customers2 = [...customers2];
-        let { newData, index } = e;
-
-        _customers2[index] = newData;
-
-        setCustomers2(_customers2);
-    };
-
-    const textEditor = (options) => {
-        return (
-            <InputText
-                type="text"
-                value={options.value}
-                onChange={(e) => options.editorCallback(e.target.value)}
-            />
-        );
-    };
-
-
     return (
         <div className={styles.wrapper}>
             <div>
@@ -234,7 +407,6 @@ const Users = () => {
                     emptyMessage="No customers found."
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
                     editMode="row"
-                    onRowEditComplete={onRowEditComplete}
                     responsiveLayout="scroll"
                 >
                     <Column
@@ -242,40 +414,39 @@ const Users = () => {
                         header="Name"
                         headerStyle={{ width: "100%", minWidth: "8rem" }}
                         sortable filterPlaceholder="Search by name"
-                        editor={(options) => textEditor(options)}
                         body={nameBodyTemplate} />
                     <Column
                         field="email"
                         header="Email"
                         headerStyle={{ width: "30%", minWidth: "8rem" }}
-                        sortable dataType="email" editor={(options) => textEditor(options)}
+                        sortable dataType="email"
                         body={emailBodyTemplate} />
                     <Column
                         field="address"
                         header="Address"
                         headerStyle={{ width: "100%", minWidth: "8rem" }}
                         sortable filterMenuStyle={{ width: '10rem' }}
-                        style={{ minWidth: '8rem' }} editor={(options) => textEditor(options)}
+                        style={{ minWidth: '8rem' }}
                         body={addressBodyTemplate} />
                     <Column
                         field="date"
                         header="Date"
                         headerStyle={{ width: "20%", minWidth: "8rem" }}
                         sortable filterField="date"
-                        dataType="date" editor={(options) => textEditor(options)} />
+                        dataType="date"/>
                     <Column
                         field="phone"
                         header="Phone"
                         sortable dataType="phone"
                         style={{ minWidth: '6rem' }}
                         body={phoneBodyTemplate}
-                        editor={(options) => textEditor(options)}
                         filterElement={balanceFilterTemplate} />
                     <Column
-                        rowEditor
-                        headerStyle={{ width: "10%", minWidth: "8rem" }}
-                        bodyStyle={{ textAlign: "center" }}
-                    />
+                        field="detail"
+                        headerStyle={{ width: "10%", minWidth: "1rem" }}
+                        bodyStyle={{ textAlign: "center"}}
+                        body={<BsEye></BsEye>}
+                    ></Column>
                 </DataTable>
             </div>
         </div>
