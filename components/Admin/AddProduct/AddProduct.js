@@ -29,7 +29,7 @@ const styles = {
 const AddProduct = () => {
     const initialProduct = {
         name: '',
-        categoryId: 0,
+        category: 0,
         configuration: {
             brand: "",
             color: "",
@@ -141,13 +141,13 @@ const AddProduct = () => {
                         title="Please type your new product name"
                         onChange={handleChange}
                     />
-                    <label className={styles.label} htmlFor="categoryId">Product Category</label>
+                    <label className={styles.label} htmlFor="category">Product Category</label>
                     <div className='flex items-center gap-4'>
                         <select
                             className={styles.inputCategory}
-                            id="categoryId"
-                            name="categoryId"
-                            value={information.categoryId}
+                            id="category"
+                            name="category"
+                            value={information.category}
                             onChange={handleChange}
                             required>
                             {printCategory}
