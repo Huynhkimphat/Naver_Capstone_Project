@@ -6,6 +6,7 @@ import Product3 from "../../static/Product3.png";
 import Product4 from "../../static/Product4.png";
 import { useState, useEffect } from "react";
 
+import Router from 'next/router';
 const styles = {
     wrapper: "lg:p-14 md:p-12 p-6",
     container: "grid md:grid-cols-4 grid-cols-2 gap-x-6 gap-y-8",
