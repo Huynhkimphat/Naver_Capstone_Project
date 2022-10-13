@@ -3,6 +3,8 @@ import { IoIosAddCircle } from 'react-icons/io';
 import Image from 'next/image';
 import productService from '../../../services/api/admin/productService';
 import countryAPI from '../../../services/api/countryAPI';
+import categoryService from '../../../services/api/admin/categoryService';
+import { AiFillEyeInvisible } from 'react-icons/ai';
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     title: 'border-b-2 py-4 text-2xl font-semibold',
@@ -20,6 +22,9 @@ const styles = {
         'w-fit flex items-center gap-2 text-white rounded-md mt-10 py-2 px-4 bg-[#5842BD]',
     configuration: "w-full flex flex-wrap border-2 rounded-md mt-2 gap-4 p-4",
     cfItem: 'flex flex-col',
+    btnCtSave: 'bg-admin_color px-4 py-2 rounded-md text-white',
+    addCategory: 'bg-admin_color rounded-full text-white cursor-pointer',
+    hiddenAddCt: 'rounded-full text-admin_color cursor-pointer',
 }
 const AddProduct = () => {
     const initialProduct = {
@@ -29,7 +34,7 @@ const AddProduct = () => {
             brand: "",
             color: "",
             height: "",
-            madeIn: "NA",
+            madeIn: "",
             material: "",
             width: ""
         },
@@ -37,15 +42,18 @@ const AddProduct = () => {
         price: '',
         quantity: 0
     }
-    const [countryList, setCountryList] = useState([])
+    const [toggle, setToggle] = useState(false);
+    const [inputCt, setInputCt] = useState('');
+    const [categories, setCategories] = useState(["All"])
+    const [countryList, setCountryList] = useState([]);
     const [images, setImages] = useState([]);
     const [createObjectURL, setCreateObjectURL] = useState([]);
-    const [information, setInformation] = useState(initialProduct)
+    const [information, setInformation] = useState(initialProduct);
     // Upload images from Computer to Browser & Show all images in Form
     const uploadToClient = (event) => {
         if (event.target.files && event.target.files[0]) {
             const i = event.target.files[0];
-            setImages([...images, i])
+            setImages([...images, i]);
             setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
         }
     };
@@ -87,7 +95,19 @@ const AddProduct = () => {
         setImages([]);
         setCreateObjectURL([]);
     }
+    const handleCtChange = (e) => {
+        setInputCt(e.target.value);
+    }
+    const handleCtSave = (e) => {
+        e.preventDefault();
+        if(!inputCt) return;
+        categoryService.addCategory(inputCt);
+        setCategories([...categories, inputCt]);
+        setInputCt('')
+        setToggle(!toggle);
+    }
     useEffect(() => {
+        categoryService.getCategories().then(res => setCategories([...categories, ...res]));
         (async () => {
             try {
                 const ctList = await countryAPI.getAll();
@@ -98,7 +118,10 @@ const AddProduct = () => {
         })()
     }, [])
     const countriesOption = countryList.map((country) => {
-      return <option key={country.name.common} value={country.name.common}>{country.name.common}</option>
+        return <option key={country.name.common} value={country.name.common}>{country.name.common}</option>
+    })
+    const printCategory = categories.map((category, index) => {
+        return <option key={index} value={category}>{category}</option>
     })
     return (
         <div className={styles.wrapper}>
@@ -113,23 +136,32 @@ const AddProduct = () => {
                         name="name"
                         value={information.name}
                         required
-                        minLength={5}
-                        maxLength={20}
+                        minLength={4}
+                        maxLength={40}
+                        title="Please type your new product name"
                         onChange={handleChange}
                     />
                     <label className={styles.label} htmlFor="categoryId">Product Category</label>
-                    <select
-                        className={styles.inputCategory}
-                        id="categoryId"
-                        name="categoryId"
-                        value={information.categoryId}
-                        onChange={handleChange}
-                        required>
-                        <option value="0">All</option>
-                        <option value="1">Chair</option>
-                        <option value="2">Table</option>
-                        <option value="3">Sofa</option>
-                    </select>
+                    <div className='flex items-center gap-4'>
+                        <select
+                            className={styles.inputCategory}
+                            id="categoryId"
+                            name="categoryId"
+                            value={information.categoryId}
+                            onChange={handleChange}
+                            required>
+                            {printCategory}
+                        </select>
+                        <IoIosAddCircle className={!toggle ? styles.addCategory: "hidden"} size={30} onClick={() => setToggle(!toggle)}></IoIosAddCircle>
+                        <AiFillEyeInvisible className={toggle ? styles.hiddenAddCt : "hidden"} size={30} onClick={() => setToggle(!toggle)}></AiFillEyeInvisible>
+                        <input
+                            className={toggle ? `${styles.inputCategory}` : "hidden"}
+                            type="text"
+                            placeholder='Your category'
+                            value = {inputCt}
+                            onChange={handleCtChange}></input>
+                        <button className={toggle ? styles.btnCtSave : 'hidden'} onClick={handleCtSave}>Save</button>
+                    </div>
                     <label className={styles.label}>Configuration</label>
                     <div className={styles.configuration}>
                         <div className={styles.cfItem}>
@@ -139,6 +171,7 @@ const AddProduct = () => {
                                 type="text"
                                 id='brand'
                                 name="brand"
+                                required
                                 value={information.configuration.brand}
                                 maxLength={40}
                                 onChange={handleChange}
@@ -151,6 +184,7 @@ const AddProduct = () => {
                                 type="text"
                                 id='color'
                                 name="color"
+                                required
                                 value={information.configuration.color}
                                 minLength={4}
                                 maxLength={40}
@@ -164,6 +198,7 @@ const AddProduct = () => {
                                 type="number"
                                 id='width'
                                 name="width"
+                                required
                                 value={information.configuration.width}
                                 maxLength={40}
                                 placeholder="(Cm)"
@@ -177,6 +212,7 @@ const AddProduct = () => {
                                 type="number"
                                 id='height'
                                 name="height"
+                                required
                                 value={information.configuration.height}
                                 maxLength={40}
                                 placeholder="(Cm)"
@@ -190,6 +226,7 @@ const AddProduct = () => {
                                 type="text"
                                 id='material'
                                 name="material"
+                                required
                                 value={information.configuration.material}
                                 maxLength={40}
                                 placeholder="Example: Made of Plastic"
@@ -217,6 +254,7 @@ const AddProduct = () => {
                         name="imageProduct"
                         title=" "
                         multiple
+                        required
                         onChange={uploadToClient} />
                     <div className={styles.imgContainer}>
                         {imageList}
