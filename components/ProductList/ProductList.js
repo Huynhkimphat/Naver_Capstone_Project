@@ -111,46 +111,37 @@ let productAmount = 4;
 let startIndexProduct = 0;
 let endIndexProduct = startIndexProduct + productAmount;
 
-const ProductList = ({viewCollection=false,category}) => {
-    const productList = useSelector((state) => AppSelector.getProduct(state));
-    const productListUI = productList.slice(startIndexProduct, endIndexProduct);
-    const [productListUIUpdate, setProductListUI] = useState(productListUI);
+const ProductList = ({ viewCollection = false, category }) => {
+  const productList = useSelector((state) => AppSelector.getProduct(state));
+  const productListUI = productList.slice(startIndexProduct, endIndexProduct);
+  const [productListUIUpdate, setProductListUI] = useState(productListUI);
 
-    const loadMore = () => {
-        if(viewCollection){
-            return router.push(`/category/${category.toLowerCase()}`);
-        }
-        if (endIndexProduct + 1 <= productList.length) {
-            const newProductListUIUpdate = [
-                ...productListUIUpdate,
-                ...productList.slice(
-                    endIndexProduct,
-                    endIndexProduct + productAmount
-                ),
-            ];
-            endIndexProduct += productAmount;
-            setProductListUI(newProductListUIUpdate);
-        }
-    };
+  const loadMore = () => {
+    if (viewCollection) {
+      return router.push(`/category/${category.toLowerCase()}`);
+    }
+    if (endIndexProduct + 1 <= productList.length) {
+      const newProductListUIUpdate = [
+        ...productListUIUpdate,
+        ...productList.slice(endIndexProduct, endIndexProduct + productAmount),
+      ];
+      endIndexProduct += productAmount;
+      setProductListUI(newProductListUIUpdate);
+    }
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         {productListUIUpdate.map((item) => (
           <div key={item.key} className={styles.item}>
-            
             <div className={styles.name}>
               <span className={styles.textColorHover}>{item.name}</span>
             </div>
-<<<<<<< HEAD
             <div className={styles.btnContainer} onClick={loadMore}>
-                <button className={styles.btnViewCollection}>
-                    {viewCollection? `View Collection` : `Load More`}
-                </button>
-=======
-            <div className={styles.price}>
-              <span className={styles.textColorHover}>{item.price}</span>
->>>>>>> 8dca132 (update load product list data)
+              <button className={styles.btnViewCollection}>
+                {viewCollection ? `View Collection` : `Load More`}
+              </button>
             </div>
           </div>
         ))}
