@@ -17,7 +17,7 @@ import AppSelector from "../../redux/selector";
 import { useRouter } from "next/router";
 
 const styles = {
-  wrapper: "p-2",
+  wrapper: "px-8 py-2",
   content: "flex-1 flex justify-between",
   logoContainer: "flex items-center",
   logo: "cursor-pointer object-contain",

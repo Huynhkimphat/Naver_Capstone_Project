@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import Product1 from "../../static/Product1.png";
+import headerBanner from "../../static/headerBanner.jpg";
 
 const styles = {
   wrapper: "flex lg:p-14 md:p-12 text-white font-normal",
@@ -31,7 +31,7 @@ const HeaderBanner = () => {
         </div>
       </div>
       <div className={styles.imgContainer}>
-        <Image src={Product1} alt={""} layout="fill"/>
+        <Image src={headerBanner} alt={""} layout="fill"/>
       </div>
     </div>
   );

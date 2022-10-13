@@ -109,11 +109,14 @@ let productAmount = 4;
 let startIndexProduct = 0;
 let endIndexProduct = startIndexProduct + productAmount;
 
-const ProductList = () => {
+const ProductList = ({viewCollection=false,category}) => {
     const productListUI = productList.slice(startIndexProduct, endIndexProduct);
     const [productListUIUpdate, setProductListUI] = useState(productListUI);
 
     const loadMore = () => {
+        if(viewCollection){
+            return router.push(`/category/${category.toLowerCase()}`);
+        }
         if (endIndexProduct + 1 <= productList.length) {
             const newProductListUIUpdate = [
                 ...productListUIUpdate,
@@ -148,7 +151,7 @@ const ProductList = () => {
             </div>
             <div className={styles.btnContainer} onClick={loadMore}>
                 <button className={styles.btnViewCollection}>
-                    View Collection
+                    {viewCollection? `View Collection` : `Load More`}
                 </button>
             </div>
         </div>
