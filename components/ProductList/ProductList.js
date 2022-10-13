@@ -7,6 +7,7 @@ import Product4 from "../../static/Product4.png";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import AppSelector from "../../redux/selector";
+import { useRouter } from "next/router";
 
 const styles = {
   wrapper: "lg:p-14 md:p-12 p-6",
@@ -112,6 +113,7 @@ let startIndexProduct = 0;
 let endIndexProduct = startIndexProduct + productAmount;
 
 const ProductList = ({ viewCollection = false, category }) => {
+  const router = useRouter();
   const productList = useSelector((state) => AppSelector.getProduct(state));
   const productListUI = productList.slice(startIndexProduct, endIndexProduct);
   const [productListUIUpdate, setProductListUI] = useState(productListUI);
@@ -138,16 +140,16 @@ const ProductList = ({ viewCollection = false, category }) => {
             <div className={styles.name}>
               <span className={styles.textColorHover}>{item.name}</span>
             </div>
-            <div className={styles.btnContainer} onClick={loadMore}>
-              <button className={styles.btnViewCollection}>
-                {viewCollection ? `View Collection` : `Load More`}
-              </button>
+            <div className={styles.price}>
+              <span className={styles.textColorHover}>{item.price}</span>
             </div>
           </div>
         ))}
       </div>
       <div className={styles.btnContainer} onClick={loadMore}>
-        <button className={styles.btnViewCollection}>View Collection</button>
+        <button className={styles.btnViewCollection}>
+          {viewCollection ? `View Collection` : `Load More`}
+        </button>
       </div>
     </div>
   );
