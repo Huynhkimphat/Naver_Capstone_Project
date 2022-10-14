@@ -7,12 +7,12 @@ const styles = {
         "w-full flex items-center justify-start p-[1rem] shadow-lg sm:w-[30%]",
 }
 const dataDou = {
-    labels: ["Current Customers", "New Customers", "Target Customers"],
+    labels: ["Approved", "Rejected", "Pending"],
     datasets: [
         {
             data: [35, 35, 30],
-            backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-            hoverBackgroundColor: ["#36A2EB", "#FFCE56", "#FF6384"],
+            backgroundColor: ["#76FF03", "#F50057"  ,"#FFD600"],
+            hoverBackgroundColor: ["#1FAA00", "#D50000", "#FFAB00"],
         },
     ],
 };
