@@ -10,6 +10,7 @@ const orderService = {
             const data = order.data();
             return {
                 code: order.id,
+                customerId: data.customerId,
                 date: data.orderDate,
                 totalPrice: data.totalPrice,
                 status: data.status,

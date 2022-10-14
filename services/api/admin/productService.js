@@ -1,4 +1,4 @@
-import { setDoc, doc, collection, updateDoc, FieldPath, arrayUnion,getDocs } from "firebase/firestore";
+import { setDoc, doc, collection, updateDoc, FieldPath, arrayUnion, query, where, documentId, getDoc, getDocs} from "firebase/firestore";
 import { db, storage } from "../../../lib/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { async } from "@firebase/util";
@@ -44,6 +44,16 @@ const productService = {
 
 
     },
+    
+    async getProductsByIds(data) {
+        const ref = collection(db, "product")
+        return await Promise.all(
+            data.map(async (item) => {
+                const snap = await getDoc(doc(db, 'product', item.productId))
+                return { ...snap.data() }
+            })
+        )
+    }
 }
 
 export default productService;
