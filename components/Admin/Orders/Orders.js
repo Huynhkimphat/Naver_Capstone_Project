@@ -1,41 +1,56 @@
 import "primeicons/primeicons.css";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css"
 import "primereact/resources/primereact.css";
 import React, { useEffect, useState, useRef } from 'react';
-import { FaFileExcel } from 'react-icons/fa'
-// import DataTable from 'react-data-table-component';
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import { Ripple } from "primereact/ripple";
 import Router from "next/router";
 import { BsEye } from "react-icons/bs";
 import orderService from "../../../services/api/admin/orderService";
+import updateField from "../../../services/api/admin/updateField";
+import { Button } from "primereact/button";
+import { useDispatch } from "react-redux";
+import { chooseOrder } from "../../../redux/actions/orderAction";
 
 const styles = {
-    wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
-    exportTable: 'w-[100%] flex justify-between items-center',
+    wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md gap-4',
+    exportTable: 'w-[100%] flex justify-end items-center gap-2',
     select: 'px-4 py-2 rounded-md shadow-lg',
-    btnExport: 'px-4 py-2 rounded-md bg-[#5842BD] text-white flex items-center gap-2 shadow-lg'
+    btnExport: 'px-4 py-2 rounded-md bg-[#5842BD] text-white flex items-center gap-2 shadow-lg',
+    approved: "bg-green-500 px-2 py-1 rounded-lg text-white font-semibold",
+    reject: "bg-red-500 px-2 py-1 rounded-lg text-white font-semibold",
+    pending: "bg-yellow-500 px-2 py-1 rounded-lg text-white font-semibold"
 }
 
 const AdminOrders = (props) => {
+    const dispatch = useDispatch();
     const [products2, setProducts2] = useState([]);
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
     const [selectedProduct, setSelectedProduct] = useState(null)
-    const statuses = [
-        { label: "Approved", value: "APPROVED" },
-        { label: "Pending", value: "PENDING" },
-        { label: "Reject", value: "REJECT" }
+    const [filteredData, setFilteredData] = useState([])
+    const dt = useRef(null);
+    const cols = [
+        { field: 'code', header: 'Code' },
+        { field: 'date', header: 'Date' },
+        { field: 'totalPrice', header: 'Price' },
+        { field: 'status', header: 'Status' }
     ];
-    const dataTableFuncMap = {
-        products2: setProducts2,
-    };
+    const statuses = [
+        "APPROVED",
+        "PENDING",
+        "REJECT"
+    ];
+    const statuses2 = [
+        { label: "APPROVED", value: "APPROVED" },
+        { label: "PENDING", value: "PENDING" },
+        { label: "REJECT", value: "REJECT" }
+    ];
     const template = {
         layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
         'PrevPageLink': (options) => {
@@ -56,7 +71,7 @@ const AdminOrders = (props) => {
         },
         'PageLinks': (options) => {
             if ((options.view.startPage === options.page && options.view.startPage !== 0) || (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
-                const className = classNames(options.className, { 'p-disabled': true });
+                const className = classNames(options.className, { '': true });
 
                 return <span className={className} style={{ userSelect: 'none' }}>...</span>;
             }
@@ -112,24 +127,10 @@ const AdminOrders = (props) => {
     useEffect(() => {
         orderService.getOrdersAll().then(res => {
             setProducts2([...products2, ...res])
+            setFilteredData([...products2, ...res])
         })
     }, []);
 
-    const getStatusLabel = (status) => {
-        switch (status) {
-            case "APPROVED":
-                return "Approved";
-
-            case "REJECT":
-                return "Reject";
-
-            case "PENDING":
-                return "Pending";
-
-            default:
-                return "NA";
-        }
-    };
     const onRowEditComplete = (e) => {
         let _products2 = [...products2];
         let { newData, index } = e;
@@ -138,30 +139,28 @@ const AdminOrders = (props) => {
 
         setProducts2(_products2);
     };
-
-    const textEditor = (options) => {
-        return (
-            <InputText
-                type="text"
-                value={options.value}
-                onChange={(e) => options.editorCallback(e.target.value)}
-            />
-        );
-    };
     const statusEditor = (options) => {
+        const handleChange = (e) => {
+            // ID: options.rowData.code
+            const orderID = options.rowData.code;
+            // Value: e.value
+            const value = e.value;
+            options.editorCallback(e.value)
+            console.log(orderID, value, options)
+            updateField.byId(orderID, "status", value);
+        }
         return (
             <Dropdown
                 value={options.value}
-                options={statuses}
+                options={statuses2}
                 optionLabel="label"
                 optionValue="value"
-                onChange={(e) => options.editorCallback(e.value)}
+                onChange={handleChange}
                 placeholder="Select a Status"
                 itemTemplate={(option) => {
                     return (
                         <span
-                            className={`product-badge status-${option.value.toLowerCase()}`}
-                        >
+                            className={`product-badge status-${option.value.toLowerCase()}`}>
                             {option.label}
                         </span>
                     );
@@ -170,20 +169,13 @@ const AdminOrders = (props) => {
         );
     };
 
-    const priceEditor = (options) => {
-        return (
-            <InputNumber
-                value={options.value}
-                onValueChange={(e) => options.editorCallback(e.value)}
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-            />
-        );
-    };
-
     const statusBodyTemplate = (rowData) => {
-        return getStatusLabel(rowData.status);
+        const cssStyle = rowData.status.toLowerCase();
+        return (
+            <span className={styles[cssStyle]}>
+                {rowData.status}
+            </span>
+        );
     };
 
     const priceBodyTemplate = (rowData) => {
@@ -192,83 +184,153 @@ const AdminOrders = (props) => {
             currency: "VND"
         }).format(rowData.totalPrice);
     };
+    const statusItemTemplate = (option) => {
+        return <span className={`${option}`}>{option}</span>;
+    };
+    const statusRowFilterTemplate = (options) => {
+        return (
+            <Dropdown
+                value={options.value}
+                options={statuses}
+                onChange={(e) => { options.filterApplyCallback(e.value) }}
+                itemTemplate={statusItemTemplate}
+                placeholder="Select a Status"
+                showClear
+            />
+        );
+    };
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
         const path = e.value.rowData.code
+        dispatch(chooseOrder(e.value.rowData))
         if (e.value.field === 'detail')
             Router.push(`/admin/order/${path}`)
     }
+
+    const exportColumns = cols.map(col => ({ title: col.header, dataKey: col.field }));
+    const exportPdf = () => {
+        import('jspdf').then(jsPDF => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default(0, 0);
+                doc.autoTable(exportColumns, filteredData);
+                doc.save('products.pdf');
+            })
+        })
+    }
+    const exportCSV = () => {
+        dt.current.exportCSV();
+    }
     return (
-        // Export File Excel
+        // Export File Excel & PDF
         <div className={styles.wrapper}>
             <div className={styles.exportTable}>
-                <select className={styles.select} defaultValue='All'>
-                    <option value="All">All</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
-                </select>
-                <button className={styles.btnExport}>
-                    <FaFileExcel></FaFileExcel>
-                    <span>Export</span>
-                </button>
+                <Button type="button"
+                    icon="pi pi-file-pdf"
+                    onClick={exportPdf}
+                    className="p-button-warning mr-2"
+                />
+                <Button
+                    icon="pi pi-file-excel"
+                    className="p-button-success"
+                    onClick={exportCSV} />
             </div>
             {/* Orders List Table */}
             <div>
                 <DataTable
+                    ref={dt}
                     value={products2}
                     editMode="row"
+                    editable="true"
                     onRowEditComplete={onRowEditComplete}
                     responsiveLayout="scroll"
                     paginator
                     paginatorTemplate={template}
-                    first={first} rows={rows}
+                    first={first}
+                    rows={rows}
                     onPage={onCustomPage}
                     selectionMode="single"
                     cellSelection
+                    filterDisplay="row"
                     selection={selectedProduct}
                     onSelectionChange={onCellSelect}
+                    showGridlines
                     dataKey="code"
+                    emptyMessage="No orders found."
+                    onValueChange={ftData => setFilteredData(ftData)}
                 >
                     <Column
                         field="code"
                         header="Code"
                         sortable
-                        editor={(options) => textEditor(options)}
-                        style={{ width: "20%" }}
+                        filter
+                        filterPlaceholder="Search by code"
+                        // editor={(options) => textEditor(options)}
+                        style={{
+                            width: "20%",
+                            minWidth: "14rem",
+                            padding: "0 0 0 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
                     <Column
                         field="date"
                         header="Date"
                         sortable
-                        style={{ width: "20%" }}
+                        filter
+                        filterPlaceholder="Date"
+                        style={{
+                            width: "20%",
+                            minWidth: "14rem",
+                            padding: "0 0 0 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
                     <Column
                         field="totalPrice"
                         header="Price"
                         sortable
                         body={priceBodyTemplate}
-                        editor={(options) => priceEditor(options)}
-                        style={{ width: "20%" }}
+                        // editor={(options) => priceEditor(options)}
+                        filter
+                        filterPlaceholder="Price"
+                        style={{
+                            width: "20%",
+                            minWidth: "10rem",
+                            padding: "0 0 0 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
                     <Column
                         field="status"
                         header="Status"
                         sortable
+                        showFilterMenu={false}
+                        filterMenuStyle={{ width: "14rem" }}
+                        filter
                         body={statusBodyTemplate}
                         editor={(options) => statusEditor(options)}
-                        style={{ width: "20%" }}
+                        filterElement={statusRowFilterTemplate}
+                        style={{
+                            width: "20%",
+                            minWidth: "8rem",
+                            padding: "5px 0 5px 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
-                    <Column
+                    {/* <Column
                         rowEditor
                         headerStyle={{ width: "10%", minWidth: "8rem" }}
                         bodyStyle={{ textAlign: "center" }}
-                    ></Column>
+                    ></Column> */}
                     <Column
                         field="detail"
-                        headerStyle={{ width: "10%", minWidth: "3rem" }}
-                        bodyStyle={{ textAlign: "center" }}
-                        body={<BsEye></BsEye>}
+                        header="Detail"
+                        headerStyle={{ width: "10%", minWidth: "3rem", textAlign: "center" }}
+                        bodyStyle={{
+                            textAlign: "center",
+                            textAlign: "center"
+                        }}
+                        body={<BsEye className="m-auto"></BsEye>}
                     ></Column>
                 </DataTable>
             </div>

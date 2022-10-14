@@ -5,6 +5,8 @@ import UserAvatar from '../../../static/UserProfile.jpg'
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { GrNotification } from "react-icons/gr";
 import Navbar from "./Navbar/Navbar";
+import { useSelector } from "react-redux";
+import AppSelector from "../../../redux/selector";
 const styles = {
   wrapper: "w-full",
   header:
@@ -16,6 +18,7 @@ const styles = {
   avatar: "rounded-full",
 };
 const AdminLayout = (props) => {
+  const userImg = useSelector(state => AppSelector.getUserImageUrl(state))
   const [toggleMenu, setToggleMenu] = useState(false);
   const handleToggle = () => {
     setToggleMenu(!toggleMenu);
@@ -32,7 +35,11 @@ const AdminLayout = (props) => {
         ></AiOutlineMenuUnfold>
         <div className="flex items-center gap-5">
           <GrNotification size={20}></GrNotification>
-          <Image className={styles.avatar} src={UserAvatar} width={40} height={40} alt={""}></Image>
+          <Image className={styles.avatar} 
+          src={userImg}
+          width={40} 
+          height={40} 
+          alt={""}></Image>
         </div>
       </div>
       {/* Navbar */}

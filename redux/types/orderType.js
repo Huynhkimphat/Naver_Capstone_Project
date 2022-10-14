@@ -1,0 +1,2 @@
+export const CHOOSE_ORDER = "CHOOSE_ORDER"
+export const UPDATE_STATUS = "UPDATE_STATUS"
