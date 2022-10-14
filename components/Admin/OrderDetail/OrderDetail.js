@@ -61,7 +61,7 @@ const OrderDetail = () => {
                     <h1 className={styles.productName}>Total: {order.total} VNĐ via (COD)</h1>
                     <span>Tracking Status on: 11:30PM, Today</span>
                 </div>
-                <Image className='rounded-2xl' src={products[index].images[0]} width={200} height={200} alt=""></Image>
+                <Image className='rounded-2xl' src={products[index]?.images[0]} width={200} height={200} alt=""></Image>
             </div>
         )
     })
