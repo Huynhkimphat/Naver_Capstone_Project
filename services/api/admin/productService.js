@@ -1,4 +1,4 @@
-import { setDoc, doc, collection, updateDoc, FieldPath, arrayUnion } from "firebase/firestore";
+import { setDoc, doc, collection, updateDoc, FieldPath, arrayUnion,getDocs } from "firebase/firestore";
 import { db, storage } from "../../../lib/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { async } from "@firebase/util";
@@ -33,6 +33,17 @@ const productService = {
         });
     },
 
+    async getListProduct() {
+        const querySnapshot = await getDocs(collection(db, "product"));
+        return querySnapshot.docs.map((doc) => {
+            return {
+                id: doc.data().id,
+                ...doc.data(),
+            };
+        });
+
+
+    },
 }
 
 export default productService;

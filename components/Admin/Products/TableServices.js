@@ -13,7 +13,7 @@ const styles = {
 export const imageBodyTemplate = (rowData) => {
     return <div className='rounded-sm'>
         <Image
-            src={Product1}
+            src={rowData.images[0]}
             alt="" title=""
             width="100%"
             height="100%"
@@ -102,4 +102,13 @@ export const priceBodyTemplate = (rowData) => {
         style: "currency",
         currency: "USD"
     }).format(rowData.price);
+};
+
+export const checkStatus = (rowData) => {
+   if (rowData.quantity > 1){
+       return `In stock (${rowData.quantity}) `
+   }
+   else {
+       return 'Out of stock'
+   }
 };
