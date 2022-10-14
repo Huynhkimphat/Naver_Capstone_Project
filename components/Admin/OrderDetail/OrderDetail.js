@@ -7,6 +7,7 @@ import { updateStatus } from '../../../redux/actions/orderAction';
 import { useRouter } from 'next/router';
 import userService from '../../../services/api/userService';
 import productService from '../../../services/api/admin/productService';
+
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col mt-4 rounded-lg',
     header: 'bg-admin_color flex p-4 justify-between border-b-2 rounded-lg shadow-xl',
@@ -28,7 +29,6 @@ const styles = {
     productName: 'font-semibold text-xl',
     btnGroup: 'flex gap-4 justify-end mt-8',
     productItInfo: 'font-semibold',
-
 
 }
 const OrderDetail = () => {
@@ -52,8 +52,7 @@ const OrderDetail = () => {
     const ordersList = productListDetail.map((order, index) => {
         return (
             <div key={order.productId}
-                className={styles.productContainer}>
-                
+                className={styles.productContainer}>   
                 <div className='flex flex-col gap-2'>
                     <h1 className={styles.productName}>Name: {products[index]?.name}</h1>
                     <span className={styles.productItInfo}>Category: {products[index]?.category}</span>
