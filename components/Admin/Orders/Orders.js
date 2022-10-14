@@ -12,6 +12,8 @@ import { BsEye } from "react-icons/bs";
 import orderService from "../../../services/api/admin/orderService";
 import updateField from "../../../services/api/admin/updateField";
 import { Button } from "primereact/button";
+import { useDispatch } from "react-redux";
+import { chooseOrder } from "../../../redux/actions/orderAction";
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md gap-4',
@@ -24,6 +26,7 @@ const styles = {
 }
 
 const AdminOrders = (props) => {
+    const dispatch = useDispatch();
     const [products2, setProducts2] = useState([]);
     const [first, setFirst] = useState(0);
     const [rows, setRows] = useState(5);
@@ -199,6 +202,7 @@ const AdminOrders = (props) => {
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
         const path = e.value.rowData.code
+        dispatch(chooseOrder(e.value.rowData))
         if (e.value.field === 'detail')
             Router.push(`/admin/order/${path}`)
     }
