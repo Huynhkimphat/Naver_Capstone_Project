@@ -62,28 +62,28 @@ const Overview = (props) => {
                 <div className={styles.ovHitem}>
                     <FiUser size="2.0rem" color="#FFB402"></FiUser>
                     <div className=" text-[12px]">
-                        <div>Total Visits</div>
+                        <div>Total User</div>
                         <div className="text-center">10.8m</div>
                     </div>
                 </div>
                 <div className={styles.ovHitem}>
                     <BsCart size="2.0rem" color="#5F27CD"></BsCart>
                     <div className=" text-[12px]">
-                        <div>Total Sales</div>
+                        <div>Products</div>
                         <div className="text-center">10.8m</div>
                     </div>
                 </div>
                 <div className={styles.ovHitem}>
                     <BsBag size="2.0rem" color="#FF9F43"></BsBag>
                     <div className=" text-[12px]">
-                        <div>Total Made</div>
+                        <div>Category</div>
                         <div className="text-center">10.8m</div>
                     </div>
                 </div>
                 <div className={styles.ovHitem}>
                     <BsPrinter size="2.0rem" color="#FF6B6B"></BsPrinter>
                     <div className=" text-[12px]">
-                        <div>Completed</div>
+                        <div>Orders</div>
                         <div className="text-center">10.8m</div>
                     </div>
                 </div>

@@ -8,6 +8,11 @@ import { Column } from "primereact/column";
 import * as TableServices from './TableServices'
 import Feature from './Feature/Feature';
 import { BsEye } from 'react-icons/bs';
+import AppSelector from "../../../redux/selector";
+import {useDispatch, useSelector} from "react-redux";
+import productService from "../../../services/api/productService";
+import {setProductList} from "../../../redux/actions/productAction";
+import {checkStatus} from "./TableServices";
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     dataTable: 'mt-4'
@@ -20,6 +25,7 @@ const AdProducts = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
     const [selectedProduct, setSelectedProduct] = useState(null)
+    const productList = useSelector((state) => AppSelector.getProduct(state));
 
     const onCustomPage = (event) => {
         setFirst(event.first);
@@ -55,6 +61,14 @@ const AdProducts = (props) => {
         if (e.value.field === 'detail')
             Router.push(`/admin/product/update/${path}`)
     }
+
+
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        productService.getAllProducts().then((res) => dispatch(setProductList(res)));
+    }, []);
     return (
         <div className={styles.wrapper}>
             {/* Feature */}
@@ -62,7 +76,7 @@ const AdProducts = (props) => {
             {/* Datatable */}
             <div className={styles.dataTable}>
                 <DataTable
-                    value={products}
+                    value={productList}
                     editMode="row"
                     dataKey="id"
                     onRowEditComplete={onRowEditComplete}
@@ -87,8 +101,9 @@ const AdProducts = (props) => {
                         style={{ width: "15%" }}
                     ></Column>
                     <Column
+                        field="images"
                         header="Image"
-                        body={TableServices.imageBodyTemplate(products)}>
+                        body={TableServices.imageBodyTemplate}>
                     </Column>
                     <Column
                         field="name"
@@ -105,11 +120,11 @@ const AdProducts = (props) => {
                         style={{ width: "15%" }}
                     ></Column>
                     <Column
-                        field="inventoryStatus"
+                        field="quantity"
                         header="Status"
                         headerStyle={{ width: "30%", minWidth: "8rem" }}
                         sortable
-                        body={TableServices.statusBodyTemplate}
+                        body={TableServices.checkStatus}
                         editor={(options) => TableServices.statusEditor(options)}
                     //style={{ width: "50px", padding: "0px"}}
                     ></Column>

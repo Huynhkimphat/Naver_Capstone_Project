@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IoIosAddCircle } from 'react-icons/io';
 import Image from 'next/image';
 import productService from '../../../services/api/admin/productService';
 import countryAPI from '../../../services/api/countryAPI';
 import categoryService from '../../../services/api/admin/categoryService';
 import { AiFillEyeInvisible } from 'react-icons/ai';
+import { Toast } from 'primereact/toast';
+import 'primeicons/primeicons.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
+
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     title: 'border-b-2 py-4 text-2xl font-semibold',
@@ -42,6 +47,7 @@ const AddProduct = () => {
         price: '',
         quantity: 0
     }
+    const toastBL = useRef(null);
     const [toggle, setToggle] = useState(false);
     const [inputCt, setInputCt] = useState('');
     const [categories, setCategories] = useState(["All"])
@@ -94,6 +100,7 @@ const AddProduct = () => {
         setInformation(initialProduct);
         setImages([]);
         setCreateObjectURL([]);
+        showBottomLeft()
     }
     const handleCtChange = (e) => {
         setInputCt(e.target.value);
@@ -123,8 +130,12 @@ const AddProduct = () => {
     const printCategory = categories.map((category, index) => {
         return <option key={index} value={category}>{category}</option>
     })
+    const showBottomLeft = () => {
+        toastBL.current.show({severity:'success', summary: 'Successfully added', detail:'New product added to shop', life: 3000});
+    }
     return (
         <div className={styles.wrapper}>
+            <Toast ref={toastBL} position="bottom-right" />
             <h1 className={styles.title}>Product Form</h1>
             <div className={styles.formContainer}>
                 <form className={styles.form} action={'Send Data'} onSubmit={handleSubmit}>
