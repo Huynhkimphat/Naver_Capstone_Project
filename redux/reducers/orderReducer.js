@@ -3,6 +3,7 @@ import * as Types from '../types/orderType'
 const initialState = {
     data: {
         code: "",
+        customerId:"",
         date: "",
         totalPrice: -1,
         status: "",
