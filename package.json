@@ -12,13 +12,17 @@
     "@reduxjs/toolkit": "^1.8.6",
     "axios": "^1.1.2",
     "chart.js": "^3.9.1",
+    "file-saver": "^2.0.5",
     "firebase": "^9.10.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.25",
     "jwt-decode": "^3.1.2",
     "next": "12.3.1",
     "nookies": "^2.5.2",
     "primeflex": "^3.2.1",
     "primeicons": "^6.0.1",
     "primereact": "^8.6.1",
+    "quill": "^1.3.7",
     "react": "18.2.0",
     "react-chartjs-2": "^4.3.1",
     "react-data-table-component": "^7.5.3",
@@ -29,7 +33,8 @@
     "react-redux": "^8.0.4",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@redux-devtools/core": "^3.13.1",
