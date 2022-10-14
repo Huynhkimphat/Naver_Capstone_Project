@@ -1,25 +1,26 @@
 import "primeicons/primeicons.css";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/themes/lara-light-indigo/theme.css"
 import "primereact/resources/primereact.css";
 import React, { useEffect, useState, useRef } from 'react';
-import { FaFileExcel } from 'react-icons/fa'
-// import DataTable from 'react-data-table-component';
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
-import { InputNumber } from "primereact/inputnumber";
 import { Dropdown } from "primereact/dropdown";
 import { Ripple } from "primereact/ripple";
 import Router from "next/router";
 import { BsEye } from "react-icons/bs";
 import orderService from "../../../services/api/admin/orderService";
 import updateField from "../../../services/api/admin/updateField";
+import { Button } from "primereact/button";
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md gap-4',
-    exportTable: 'w-[100%] flex justify-between items-center',
+    exportTable: 'w-[100%] flex justify-end items-center gap-2',
     select: 'px-4 py-2 rounded-md shadow-lg',
-    btnExport: 'px-4 py-2 rounded-md bg-[#5842BD] text-white flex items-center gap-2 shadow-lg'
+    btnExport: 'px-4 py-2 rounded-md bg-[#5842BD] text-white flex items-center gap-2 shadow-lg',
+    approved: "bg-green-500 px-2 py-1 rounded-lg text-white font-semibold",
+    reject: "bg-red-500 px-2 py-1 rounded-lg text-white font-semibold",
+    pending: "bg-yellow-500 px-2 py-1 rounded-lg text-white font-semibold"
 }
 
 const AdminOrders = (props) => {
@@ -29,7 +30,14 @@ const AdminOrders = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
     const [selectedProduct, setSelectedProduct] = useState(null)
-
+    const [filteredData, setFilteredData] = useState([])
+    const dt = useRef(null);
+    const cols = [
+        { field: 'code', header: 'Code' },
+        { field: 'date', header: 'Date' },
+        { field: 'totalPrice', header: 'Price' },
+        { field: 'status', header: 'Status' }
+    ];
     const statuses = [
         "APPROVED",
         "PENDING",
@@ -40,9 +48,6 @@ const AdminOrders = (props) => {
         { label: "PENDING", value: "PENDING" },
         { label: "REJECT", value: "REJECT" }
     ];
-    const dataTableFuncMap = {
-        products2: setProducts2,
-    };
     const template = {
         layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
         'PrevPageLink': (options) => {
@@ -119,24 +124,10 @@ const AdminOrders = (props) => {
     useEffect(() => {
         orderService.getOrdersAll().then(res => {
             setProducts2([...products2, ...res])
+            setFilteredData([...products2, ...res])
         })
     }, []);
 
-    const getStatusLabel = (status) => {
-        switch (status) {
-            case "APPROVED":
-                return "Approved";
-
-            case "REJECT":
-                return "Reject";
-
-            case "PENDING":
-                return "Pending";
-
-            default:
-                return "NA";
-        }
-    };
     const onRowEditComplete = (e) => {
         let _products2 = [...products2];
         let { newData, index } = e;
@@ -144,16 +135,6 @@ const AdminOrders = (props) => {
         _products2[index] = newData;
 
         setProducts2(_products2);
-    };
-
-    const textEditor = (options) => {
-        return (
-            <InputText
-                type="text"
-                value={options.value}
-                onChange={(e) => options.editorCallback(e.target.value)}
-            />
-        );
     };
     const statusEditor = (options) => {
         const handleChange = (e) => {
@@ -185,21 +166,10 @@ const AdminOrders = (props) => {
         );
     };
 
-    const priceEditor = (options) => {
-        return (
-            <InputNumber
-                value={options.value}
-                onValueChange={(e) => options.editorCallback(e.value)}
-                mode="currency"
-                currency="USD"
-                locale="en-US"
-            />
-        );
-    };
-
     const statusBodyTemplate = (rowData) => {
+        const cssStyle = rowData.status.toLowerCase();
         return (
-            <span className={`customer-badge status-${rowData.status}`}>
+            <span className={styles[cssStyle]}>
                 {rowData.status}
             </span>
         );
@@ -232,24 +202,38 @@ const AdminOrders = (props) => {
         if (e.value.field === 'detail')
             Router.push(`/admin/order/${path}`)
     }
+
+    const exportColumns = cols.map(col => ({ title: col.header, dataKey: col.field }));
+    const exportPdf = () => {
+        import('jspdf').then(jsPDF => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default(0, 0);
+                doc.autoTable(exportColumns, filteredData);
+                doc.save('products.pdf');
+            })
+        })
+    }
+    const exportCSV = () => {
+        dt.current.exportCSV();
+    }
     return (
-        // Export File Excel
+        // Export File Excel & PDF
         <div className={styles.wrapper}>
             <div className={styles.exportTable}>
-                {/* <select className={styles.select} defaultValue='All'>
-                    <option value="All">All</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Rejected">Rejected</option>
-                </select> */}
-                <button className={styles.btnExport}>
-                    <FaFileExcel></FaFileExcel>
-                    <span>Export</span>
-                </button>
+                <Button type="button"
+                    icon="pi pi-file-pdf"
+                    onClick={exportPdf}
+                    className="p-button-warning mr-2"
+                />
+                <Button
+                    icon="pi pi-file-excel"
+                    className="p-button-success"
+                    onClick={exportCSV} />
             </div>
             {/* Orders List Table */}
             <div>
                 <DataTable
+                    ref={dt}
                     value={products2}
                     editMode="row"
                     editable="true"
@@ -267,7 +251,8 @@ const AdminOrders = (props) => {
                     onSelectionChange={onCellSelect}
                     showGridlines
                     dataKey="code"
-                    emptyMessage="No customers found."
+                    emptyMessage="No orders found."
+                    onValueChange={ftData => setFilteredData(ftData)}
                 >
                     <Column
                         field="code"
@@ -276,7 +261,12 @@ const AdminOrders = (props) => {
                         filter
                         filterPlaceholder="Search by code"
                         // editor={(options) => textEditor(options)}
-                        style={{ width: "20%", minWidth: "14rem", padding:"0 0 0 10px", textAlign:"center" }}
+                        style={{
+                            width: "20%",
+                            minWidth: "14rem",
+                            padding: "0 0 0 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
                     <Column
                         field="date"
@@ -284,7 +274,12 @@ const AdminOrders = (props) => {
                         sortable
                         filter
                         filterPlaceholder="Date"
-                        style={{ width: "20%", minWidth: "14rem", padding:"0 0 0 10px", textAlign:"center"}}
+                        style={{
+                            width: "20%",
+                            minWidth: "14rem",
+                            padding: "0 0 0 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
                     <Column
                         field="totalPrice"
@@ -294,7 +289,12 @@ const AdminOrders = (props) => {
                         // editor={(options) => priceEditor(options)}
                         filter
                         filterPlaceholder="Price"
-                        style={{ width: "20%", minWidth: "10rem", padding:"0 0 0 10px", textAlign:"center"}}
+                        style={{
+                            width: "20%",
+                            minWidth: "10rem",
+                            padding: "0 0 0 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
                     <Column
                         field="status"
@@ -306,7 +306,12 @@ const AdminOrders = (props) => {
                         body={statusBodyTemplate}
                         editor={(options) => statusEditor(options)}
                         filterElement={statusRowFilterTemplate}
-                        style={{ width: "20%", minWidth: "8rem", padding:"5px 0 5px 10px", textAlign:"center"}}
+                        style={{
+                            width: "20%",
+                            minWidth: "8rem",
+                            padding: "5px 0 5px 10px",
+                            textAlign: "center"
+                        }}
                     ></Column>
                     {/* <Column
                         rowEditor
@@ -315,8 +320,12 @@ const AdminOrders = (props) => {
                     ></Column> */}
                     <Column
                         field="detail"
-                        headerStyle={{ width: "10%", minWidth: "3rem" , textAlign:"center"}}
-                        bodyStyle={{ textAlign: "center", textAlign:"center" }}
+                        header="Detail"
+                        headerStyle={{ width: "10%", minWidth: "3rem", textAlign: "center" }}
+                        bodyStyle={{
+                            textAlign: "center",
+                            textAlign: "center"
+                        }}
                         body={<BsEye className="m-auto"></BsEye>}
                     ></Column>
                 </DataTable>
