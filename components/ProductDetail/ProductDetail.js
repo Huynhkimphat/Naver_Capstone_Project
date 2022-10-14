@@ -39,15 +39,15 @@ const ProductDetail = ({ product }) => {
             <thead>
               <tr>
                 <td>Width</td>
-                <td>Heigh</td>
+                <td>Height</td>
                 <td>Depth</td>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>200</td>
-                <td>150</td>
-                <td>60</td>
+                <td>{product[0].configuration.width}</td>
+                <td>{product[0].configuration.height}</td>
+                <td>{product[0].configuration.depth}</td>
               </tr>
             </tbody>
           </table>
