@@ -4,7 +4,7 @@ import Banner from "../../components/Banner/Banner";
 import ProductList from "../../components/ProductList/ProductList";
 import AttentionContent from "../../components/AttentionContent/AttentionContent";
 import { useRouter } from "next/router";
-
+import SearchInput from "../../components/SearchInput/SearchInput"
 const styles = {
     wrapper: "container mx-auto mt-10",
     title: "md:text-3xl text-xl text-bold mx-auto mb-4 ml-8 cursor-pointer",
@@ -30,6 +30,7 @@ export default function AllProductPage({ title = "All Products" }) {
                     )}
                     {title.toUpperCase()}
                 </div>
+                <SearchInput/>
                 <Filter />
                 <ProductList />
                 <AttentionContent />
