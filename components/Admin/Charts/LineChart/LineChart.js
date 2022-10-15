@@ -19,7 +19,7 @@ const LineChart = (props) => {
         ],
     })
     const getDataDateOrder = dataLine.labels.map((month, index) => {
-        return orders.filter((order) => {
+        return orders?.filter((order) => {
             return order.date.split("/")[1] == index + 1
         }).length;
     })

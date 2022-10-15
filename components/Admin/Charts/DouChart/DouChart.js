@@ -21,7 +21,7 @@ const DouChart = (props) => {
         ],
     })
     const getOrderStatus = dataDou.labels.map((label) => {
-      return orders.filter((order) => {
+      return orders?.filter((order) => {
         return order.status == label.toUpperCase();
       }).length;
     })
