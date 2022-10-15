@@ -42,7 +42,7 @@ const LineChart = (props) => {
                     },
                 ],
             })
-    }, [])
+    }, [orders])
     return (
         <div className={styles.lineChart}>
             <div className={styles.titleLineChart}>
