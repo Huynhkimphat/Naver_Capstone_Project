@@ -1,22 +1,42 @@
-import React from 'react';
-import {Doughnut} from "react-chartjs-2";
+import React, { useEffect, useState } from 'react';
+import { Doughnut } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import orderService from '../../../../services/api/admin/orderService';
+import { useSelector } from 'react-redux';
 Chart.defaults.scale.grid.display = false;
 const styles = {
     douChart:
         "w-full flex items-center justify-start p-[1rem] shadow-lg sm:w-[30%]",
 }
-const dataDou = {
-    labels: ["Approved", "Rejected", "Pending"],
-    datasets: [
-        {
-            data: [35, 35, 30],
-            backgroundColor: ["#76FF03", "#F50057"  ,"#FFD600"],
-            hoverBackgroundColor: ["#1FAA00", "#D50000", "#FFAB00"],
-        },
-    ],
-};
 const DouChart = (props) => {
+    const orders = useSelector(state => state.rootReducer.order.orderList)
+    const [dataDou, setDataDou] = useState({
+        labels: ["Approved", "Reject", "Pending"],
+        datasets: [
+            {
+                data: [0, 0, 0],
+                backgroundColor: ["#76FF03", "#F50057", "#FFD600"],
+                hoverBackgroundColor: ["#1FAA00", "#D50000", "#FFAB00"],
+            },
+        ],
+    })
+    const getOrderStatus = dataDou.labels.map((label) => {
+      return orders?.filter((order) => {
+        return order.status == label.toUpperCase();
+      }).length;
+    })
+    useEffect(() => {
+      setDataDou({
+        ...dataDou,
+        datasets: [
+            {
+                data: getOrderStatus,
+                backgroundColor: ["#76FF03", "#F50057", "#FFD600"],
+                hoverBackgroundColor: ["#1FAA00", "#D50000", "#FFAB00"],
+            }
+        ],
+      })
+    },[orders])
     return (
         <div className={styles.douChart}>
             <Doughnut data={dataDou} height="190px" />

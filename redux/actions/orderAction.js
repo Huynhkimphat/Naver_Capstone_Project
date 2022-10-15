@@ -9,4 +9,9 @@ const updateStatus = (data) => ({
     type: Types.UPDATE_STATUS,
     payload: { data }
 })
-export { chooseOrder, updateStatus };
+
+const getOrders = (data) => ({
+    type: Types.GET_ORDERS,
+    payload: { data }
+})
+export { chooseOrder, updateStatus, getOrders };

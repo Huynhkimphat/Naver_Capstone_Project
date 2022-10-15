@@ -1,2 +1,3 @@
 export const CHOOSE_ORDER = "CHOOSE_ORDER"
 export const UPDATE_STATUS = "UPDATE_STATUS"
+export const GET_ORDERS = "GET_ORDERS"

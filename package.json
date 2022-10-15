@@ -14,6 +14,7 @@
     "chart.js": "^3.9.1",
     "file-saver": "^2.0.5",
     "firebase": "^9.10.0",
+    "framer-motion": "^7.5.3",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
     "jwt-decode": "^3.1.2",
