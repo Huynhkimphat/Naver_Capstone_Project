@@ -25,7 +25,7 @@ const LineChart = (props) => {
     })
     const getMonth = () => {
         let newDate = new Date();
-        return dataLine.labels.slice(0,newDate.getMonth()+1)
+        return dataLine.labels.slice(0, newDate.getMonth() + 1)
     }
     useEffect(() => {
         setDataLine(
@@ -46,11 +46,7 @@ const LineChart = (props) => {
     return (
         <div className={styles.lineChart}>
             <div className={styles.titleLineChart}>
-                <h3 className="text-6 font-medium">Total Customer: {"229"}</h3>
-                <select className={styles.btnLineChart}>
-                    <option value="year">Year</option>
-                    <option value="month">Month</option>
-                </select>
+                <h3 className="text-6 font-medium">Total Orders: {orders.length}</h3>
             </div>
             <Line data={dataLine} height="190px" />
         </div>
