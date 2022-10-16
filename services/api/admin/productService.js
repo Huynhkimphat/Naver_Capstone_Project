@@ -64,16 +64,12 @@ const productService = {
             // doc.data() will be undefined in this case
             console.log("No such document!");
         }
-
-
     },
 
     async UpdateProduct(productID,dataUpdate) {
         const washingtonRef = doc(db, "product",productID);
         await updateDoc(washingtonRef, dataUpdate);
-
     },
-
 }
 
 export default productService;
