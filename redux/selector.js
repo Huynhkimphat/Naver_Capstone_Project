@@ -4,5 +4,6 @@ const AppSelector = {
   getCategory: (state) => state.rootReducer.category.category,
   getUserImageUrl: (state) => state.rootReducer.user.user.imageUrl,
   getProduct: (state) => state.rootReducer.product.products,
+  getProductID: (state) => state.rootReducer.product.productId,
 };
 export default AppSelector;

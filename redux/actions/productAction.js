@@ -5,4 +5,9 @@ const setProductList = (data) => ({
   payload: { data },
 });
 
-export { setProductList };
+const setProductDetail = (data) => ({
+  type: Types.GET_PRODUCT_ID,
+  payload: { data },
+});
+
+export { setProductList,setProductDetail };
