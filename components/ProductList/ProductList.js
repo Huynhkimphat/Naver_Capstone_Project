@@ -25,7 +25,11 @@ let productAmount = 4;
 let startIndexProduct = 0;
 let endIndexProduct = startIndexProduct + productAmount;
 
-const ProductList = ({ viewCollection = false, category }) => {
+const ProductList = ({
+  viewCollection = false,
+  category,
+  priceDescSort = 2,
+}) => {
   const router = useRouter();
   const productList = useSelector((state) => AppSelector.getProduct(state));
   const [productListByCate, setProductListByCate] = useState([]);
@@ -45,7 +49,7 @@ const ProductList = ({ viewCollection = false, category }) => {
         : productList
     );
     setIsLoading(false);
-  }, [category, productList]);
+  }, [category, productList, priceDescSort]);
 
   useEffect(() => {
     setProductListUIUpdate(
@@ -53,6 +57,27 @@ const ProductList = ({ viewCollection = false, category }) => {
     );
     setIsLoading(false);
   }, [productListByCate]);
+
+  useEffect(() => {
+    if (priceDescSort == 0) {
+      const cateList=[...productListByCate]
+      setProductListByCate(
+        cateList.sort((a, b) =>
+          Number(a.price) > Number(b.price) ? 1 : -1
+        )
+      );
+    }
+    if (priceDescSort == 1) {
+      const cateList=[...productListByCate]
+      setProductListByCate(
+        cateList.sort((a, b) =>
+          Number(a.price) < Number(b.price) ? 1 : -1
+        )
+      );
+    }
+  }, [priceDescSort]);
+
+
 
   const loadMore = () => {
     if (viewCollection) {
@@ -84,7 +109,7 @@ const ProductList = ({ viewCollection = false, category }) => {
             wrapperClass=""
             visible={true}
           />
-        ) : 
+        ) :
         (
           productListUIUpdate.map((item) => (
             <div key={item.id} className={styles.item}>

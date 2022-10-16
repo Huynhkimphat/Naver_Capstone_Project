@@ -12,15 +12,12 @@ const styles = {
 // const listCategory = [];
 
 const categoryList = [
-  { id: 1, name: "Crockery" },
-  { id: 2, name: "Furniture" },
-  { id: 3, name: "Homeware" },
-  { id: 4, name: "Plant pots" },
-  { id: 5, name: "Chairs" },
-  { id: 6, name: "Cutlery" },
+  { id: 1, name: "Desc",value:0 },
+  { id: 2, name: "Asc", value:1 },
 ];
 
-const Filter = () => {
+const Filter = ({handleFilterUpdate}) => {
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.groupFilter}>
@@ -49,10 +46,10 @@ const Filter = () => {
         </div>
         {/*  price filter */}
         <div className={styles.filterContainer}>
-          <select className={styles.selectionFilter}>
+          <select className={styles.selectionFilter} onChange={(e)=>{handleFilterUpdate(e.target.value)}}>
             <option className={styles.defaultOption}>Price</option>
             {categoryList.map((item) => (
-              <option key={item.id} value={item.name}>
+              <option key={item.id} value={item.value}>
                 {item.name}
               </option>
             ))}

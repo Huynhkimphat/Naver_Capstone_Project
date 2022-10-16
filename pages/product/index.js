@@ -6,6 +6,7 @@ import AttentionContent from "../../components/AttentionContent/AttentionContent
 import { useRouter } from "next/router";
 import { Puff } from "react-loader-spinner";
 import SearchInput from "../../components/SearchInput/SearchInput";
+import { useState } from "react";
 const styles = {
   wrapper: "container mx-auto mt-10",
   title: "md:text-3xl text-xl text-bold mx-auto mb-4 ml-8 cursor-pointer",
@@ -13,7 +14,16 @@ const styles = {
 };
 
 export default function AllProductPage({ title = "All Products" }) {
+  const [priceDesc, setPriceDesc] = useState(2);
   const router = useRouter();
+
+
+  //if 2 -> not sort
+  // if 1 -> acs
+  //  if 0 ->desc
+  const updatePriceFilter = (desc) => {
+    setPriceDesc(desc);
+  };
   return (
     <Layout>
       <div className={styles.wrapper}>
@@ -32,9 +42,10 @@ export default function AllProductPage({ title = "All Products" }) {
           {title.toUpperCase()}
         </div>
         <SearchInput />
-        <Filter />
-        {!router.pathname.includes('[slug]') || router.query.slug ? <ProductList category={router.query.slug} />
-        : (
+        <Filter handleFilterUpdate={updatePriceFilter}/>
+        {!router.pathname.includes("[slug]") || router.query.slug ? (
+          <ProductList category={router.query.slug} priceDescSort={priceDesc} />
+        ) : (
           <Puff
             height="80"
             width="80"
