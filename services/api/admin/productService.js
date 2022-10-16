@@ -65,6 +65,7 @@ const productService = {
             console.log("No such document!");
         }
 
+
     },
 
     async UpdateProduct(productID,dataUpdate) {
@@ -72,7 +73,6 @@ const productService = {
         await updateDoc(washingtonRef, dataUpdate);
 
     },
-
 
 }
 

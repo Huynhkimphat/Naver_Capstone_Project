@@ -42,6 +42,7 @@ const styles = {
 };
 
 const ProductDetail = (props) => {
+
   const initialProduct = useSelector((state) => AppSelector.getProductID(state));
 
   const dispatch = useDispatch();
@@ -80,6 +81,7 @@ const ProductDetail = (props) => {
       const i = event.target.files[0];
       setImages([...images, i]);
       setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
+
     }
   };
   // Remove selected image
@@ -90,6 +92,7 @@ const ProductDetail = (props) => {
     createObjectURL.splice(e.target.value, 1);
     setCreateObjectURL([...createObjectURL]);
   }
+
 
  /* const imageList = createObjectURL.map((image, index) => {
     return (
@@ -128,10 +131,12 @@ const ProductDetail = (props) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
+
     productService.UpdateProduct(props.id, information);
    /* setInformation(initialProduct);
     setImages([]);
     setCreateObjectURL([]);*/
+
     showBottomLeft()
   }
   const handleCtChange = (e) => {
@@ -298,10 +303,8 @@ const ProductDetail = (props) => {
                 name="imageProduct"
                 title=" "
                 multiple
-
                 onChange={uploadToClient} />
             <div className={styles.imgContainer}>
-
               {imageList}
             </div>
             <label className={styles.label} htmlFor="description">Additional Description</label>
