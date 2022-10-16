@@ -42,24 +42,7 @@ const styles = {
 };
 
 const ProductDetail = (props) => {
-  const [productUpdate, setProductUpdate] = useState({})
   const initialProduct = useSelector((state) => AppSelector.getProductID(state));
-
-  useEffect(() => {
-    setProductUpdate(
-    {
-      id: "1000",
-      code: "f230fh0g3",
-      name: "Bamboo Watch",
-      description: "Product Description",
-      price: "100.000",
-      category: "Accessories",
-      quantity: 24,
-      inventoryStatus: "INSTOCK",
-      rating: 5,
-    }
-    )
-}, []);
 
   const dispatch = useDispatch();
 
@@ -70,8 +53,10 @@ const ProductDetail = (props) => {
 
   useEffect(() => {
     setInformation(initialProduct)
-
   }, [initialProduct]);
+
+
+
   console.log(initialProduct)
 
   const toastBL = useRef(null);
@@ -79,9 +64,12 @@ const ProductDetail = (props) => {
   const [inputCt, setInputCt] = useState('');
   const [categories, setCategories] = useState(["All"])
   const [countryList, setCountryList] = useState([]);
+
   const [images, setImages] = useState([]);
   const [createObjectURL, setCreateObjectURL] = useState([]);
   const [information, setInformation] = useState(initialProduct);
+
+
 
 
   // Upload images from Computer to Browser & Show all images in Form
@@ -333,8 +321,7 @@ const ProductDetail = (props) => {
                 onChange={handleChange}
             />
             <button className={styles.submit} type="submit">
-              <IoIosAddCircle size='20px'></IoIosAddCircle>
-              <span>Add Product</span>
+              <span>Update Product</span>
             </button>
           </form>
         </div>
