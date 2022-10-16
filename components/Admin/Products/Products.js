@@ -32,9 +32,8 @@ const AdProducts = (props) => {
     const productList = useSelector((state) => AppSelector.getProduct(state));
     const dispatch = useDispatch();
     const statuses = [
-        "APPROVED",
-        "PENDING",
-        "REJECT"
+        "IN STOCK",
+        "OUT OF STOCK",
     ];
 
     const onCustomPage = (event) => {
@@ -52,7 +51,6 @@ const AdProducts = (props) => {
     };
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
-        console.log(e.value.rowData.id)
         const path = e.value.rowData.id
         if (e.value.field === 'detail')
             Router.push(`/admin/product/update/${path}`)
@@ -69,7 +67,7 @@ const AdProducts = (props) => {
         return (
         <Dropdown value={options.value} 
         options={statuses} 
-        onChange={(e) => options.filterApplyCallback(e.value)} 
+        onChange={(e) => options.filterApplyCallback(e?.value)} 
         itemTemplate={statusItemTemplate} 
         placeholder="Select a Status" 
      
@@ -156,7 +154,7 @@ const AdProducts = (props) => {
                         }}
 
                     ></Column>
-                    <Column field="status"
+                    <Column field="quantity"
                      header="Status"
                       showFilterMenu={false}
                       sortable
@@ -169,8 +167,8 @@ const AdProducts = (props) => {
                         textAlign: "center"
                         }}
                        editor={(options) => TableServices.statusEditor(options)}
-                       body={statusBodyTemplate} 
                        filterElement={statusRowFilterTemplate}
+                       body={TableServices.checkStatus}
                     ></Column>
                     <Column
                         field="price"

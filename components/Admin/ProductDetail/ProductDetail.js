@@ -67,7 +67,6 @@ const ProductDetail = (props) => {
   const [inputCt, setInputCt] = useState('');
   const [categories, setCategories] = useState(["All"])
   const [countryList, setCountryList] = useState([]);
-
   const [images, setImages] = useState([]);
   const [createObjectURL, setCreateObjectURL] = useState([]);
   const [information, setInformation] = useState(initialProduct);
@@ -81,7 +80,6 @@ const ProductDetail = (props) => {
       const i = event.target.files[0];
       setImages([...images, i]);
       setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
-
     }
   };
   // Remove selected image
@@ -131,12 +129,7 @@ const ProductDetail = (props) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-
     productService.UpdateProduct(props.id, information);
-   /* setInformation(initialProduct);
-    setImages([]);
-    setCreateObjectURL([]);*/
-
     showBottomLeft()
   }
   const handleCtChange = (e) => {

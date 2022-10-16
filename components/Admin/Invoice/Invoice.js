@@ -90,7 +90,6 @@ const Invoice = () => {
         }
     }
     useEffect(() => {
-        console.log(selectedUser);
         orderService.getOrdersById(selectedUser.email).then(res => {
             setOrders(res)
             setOrderFiltered(res)
