@@ -82,16 +82,16 @@ const Overview = (props) => {
             return (
                 <div key={index} className={styles.productItem}>
                     <div className={styles.productLeft}>
-                        <Image height="50px" width="50px" src={product.images[0]} alt={""} />
+                        <Image height="50px" width="50px" src={product?.images[0]} alt={""} />
                         <div className={styles.productQuantity}>
-                            <span>{product.name}</span>
+                            <span>{product?.name}</span>
                             <span>{topProducts[index]?.amount} sold</span>
                         </div>
                     </div>
                     <div className={styles.productRight}>
                         <div className={styles.productRightItem}>
                             <span>Inventory</span>
-                            <span>{product.quantity}</span>
+                            <span>{product?.quantity}</span>
                         </div>
                         <div className={styles.productRightItem}>
                             <span>Sale</span>
@@ -99,7 +99,7 @@ const Overview = (props) => {
                         </div>
                         <div className={styles.productRightItem}>
                             <span>Prices</span>
-                            <span>{product.price} VNĐ</span>
+                            <span>{product?.price} VNĐ</span>
                         </div>
                         <div className={styles.productRightItem}>
                             <span>Best Seller</span>

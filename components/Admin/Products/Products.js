@@ -30,6 +30,7 @@ const AdProducts = (props) => {
     const [pageInputTooltip, setPageInputTooltip] = useState('Press \'Enter\' key to go to this page.');
     const [selectedProduct, setSelectedProduct] = useState(null)
     const productList = useSelector((state) => AppSelector.getProduct(state));
+    const dispatch = useDispatch();
     const statuses = [
         "APPROVED",
         "PENDING",
@@ -49,20 +50,6 @@ const AdProducts = (props) => {
 
         setProducts(_products);
     };
-
-    useEffect(() => {
-        // (async () => {
-        //     try {
-        //         const data = await productApi.getAll()
-        //         setProducts(data)
-        //         dispatch(onGetProductsList(data))
-        //         dispatch(onUpdateProductStatus('Success fetch'))
-        //     } catch (error) {
-        //         dispatch(onUpdateProductStatus('Error fetch'))
-        //     }
-        // })()
-    }, []);
-
     const onCellSelect = (e) => {
         setSelectedProduct(e.value)
         console.log(e.value.rowData.id)
@@ -74,11 +61,6 @@ const AdProducts = (props) => {
     const statusBodyTemplate = (rowData) => {
         return <span className={`customer-badge status-${rowData.status}`}>{rowData.status}</span>;
     }
-
-    // const statusItemTemplate = (option) => {
-    //     return <span className={`customer-badge status-${option}`}>{option}</span>;
-    // }
-
     const statusItemTemplate = (option) => {
         return <span className={`${option}`}>{option}</span>;
     };
@@ -94,13 +76,13 @@ const AdProducts = (props) => {
         showClear />
         );
     }
-
-
-    const dispatch = useDispatch();
-
     useEffect(() => {
-        productService.getAllProducts().then((res) => dispatch(setProductList(res)));
-    }, []);
+        productService.getAllProducts().then(res => {
+            productService.getAllProducts().then(res => {
+                dispatch(setProductList(res))
+            })
+        })
+    },[])
     return (
         <div className={styles.wrapper}>
             {/* Feature */}

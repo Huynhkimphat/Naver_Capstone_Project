@@ -13,7 +13,7 @@ const styles = {
 export const imageBodyTemplate = (rowData) => {
     return <div className='rounded-sm'>
         <Image
-            src={rowData.images}
+            src={rowData.imageUrl}
             alt="" title=""
             width="100%"
             height="100%"

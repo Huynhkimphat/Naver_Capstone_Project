@@ -15,6 +15,7 @@ import userService from "../../../services/api/admin/userService";
 import updateField from "../../../services/api/admin/updateField";
 import { useDispatch } from "react-redux";
 import * as TableServices from './TableServices'
+import { chooseUser, setUser } from '../../../redux/actions/userAction';
 
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
@@ -26,6 +27,7 @@ const styles = {
 
 
 const Users = () => {
+    const dispatch = useDispatch();
     const [selectedCustomers, setSelectedCustomers] = useState(null);
     const [filteredData, setFilteredData] = useState([])
     const [filters, setFilters] = useState({
@@ -40,31 +42,17 @@ const Users = () => {
     });
     const [globalFilterValue, setGlobalFilterValue] = useState('');
     const [loading, setLoading] = useState(true);
-    const representatives = [
-        {name: "Amy Elsner", image: 'amyelsner.png'},
-        {name: "Anna Fali", image: 'annafali.png'},
-        {name: "Asiya Javayant", image: 'asiyajavayant.png'},
-        {name: "Bernardo Dominic", image: 'bernardodominic.png'},
-        {name: "Elwin Sharvill", image: 'elwinsharvill.png'},
-        {name: "Ioni Bowcher", image: 'ionibowcher.png'},
-        {name: "Ivan Magalhaes",image: 'ivanmagalhaes.png'},
-        {name: "Onyama Limba", image: 'onyamalimba.png'},
-        {name: "Stephen Shaw", image: 'stephenshaw.png'},
-        {name: "XuXue Feng", image: 'xuxuefeng.png'}
-    ];
-
-    const statuses = [
-        'unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal'
-    ];
-
-
     const [users2, setUsers2] = useState([]);
 
     useEffect(() => {
-        userService.getUsersAll().then(res => {
-            setUsers2([...users2, ...res])
-            setFilteredData([...users2, ...res])
+        userService.getAllUsers().then(res => {
+            setUsers2(res)
         })
+
+        // userService.getUsersAll().then(res => {
+        //     setUsers2([...users2, ...res])
+        //     setFilteredData([...users2, ...res])
+        // })
     }, []);
 
     const onGlobalFilterChange = (e) => {
@@ -97,7 +85,8 @@ const Users = () => {
     }
 
     const onRowSelect = (event) => {
-        Router.push(`/admin/users/${event.data.id}`)
+        dispatch(chooseUser(event.data))
+        Router.push(`/admin/users/${event.data.email}`)
     }
     const onRowUnselect = (event) => {
         console.log(event)
@@ -130,7 +119,7 @@ const Users = () => {
                     rows={10}
                     paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" 
                     rowsPerPageOptions={[10, 25, 50]}
-                    dataKey="id"
+                    dataKey="email"
                     rowHover 
                     selectionMode="single"
                     selection={selectedCustomers} 
@@ -171,7 +160,7 @@ const Users = () => {
                         style={{ minWidth: '16rem' }}
                         body={addressBodyTemplate} />
                     <Column
-                        field="date"
+                        field="userDate"
                         header="Date"
                         headerStyle={{ width: "20%", minWidth: "8rem" }}
                         sortable filterField="date"
@@ -183,12 +172,6 @@ const Users = () => {
                         style={{ minWidth: '6rem' }}
                         body={phoneBodyTemplate}
                         filterElement={balanceFilterTemplate} />
-                    <Column
-                        field="detail"
-                        headerStyle={{ width: "10%", minWidth: "1rem" }}
-                        bodyStyle={{ textAlign: "center"}}
-                        body={<BsEye></BsEye>}
-                    ></Column>
                 </DataTable>
             </div>
         </div>
