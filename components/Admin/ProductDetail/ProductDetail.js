@@ -55,7 +55,9 @@ const ProductDetail = (props) => {
     setInformation(initialProduct)
   }, [initialProduct]);
 
-
+ /* useEffect(() => {
+    setCreateObjectURL(initialProduct?.images)
+  }, [initialProduct?.images]);*/
 
   console.log(initialProduct)
 
@@ -82,12 +84,24 @@ const ProductDetail = (props) => {
   };
   // Remove selected image
   const handleRemove = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     images.splice(e.target.value, 1);
-    setImages([...images])
+    setImages([])
     createObjectURL.splice(e.target.value, 1);
     setCreateObjectURL([...createObjectURL]);
   }
+
+ /* const imageList = createObjectURL.map((image, index) => {
+    return (
+        <div key={index} className=" flex flex-col gap-1 items-end bg-admin_color px-1 rounded-md pt-1">
+          <button className='text-white mr-1' value={index} onClick={handleRemove}>X</button>
+          <div>
+            <Image className='rounded-xl' src={image} width={100} height={100} alt=""></Image>
+          </div>
+        </div>
+    )
+  })*/
+
   const imageList = createObjectURL.map((image, index) => {
     return (
         <div key={index} className=" flex flex-col gap-1 items-end bg-admin_color px-1 rounded-md pt-1">
@@ -98,6 +112,7 @@ const ProductDetail = (props) => {
         </div>
     )
   })
+
   const handleChange = (e) => {
     const data = e.target.name in information.configuration ? {
       ...information,
@@ -113,10 +128,10 @@ const ProductDetail = (props) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    productService.addProduct(information, images);
-    setInformation(initialProduct);
+    productService.UpdateProduct(props.id, information);
+   /* setInformation(initialProduct);
     setImages([]);
-    setCreateObjectURL([]);
+    setCreateObjectURL([]);*/
     showBottomLeft()
   }
   const handleCtChange = (e) => {
@@ -148,7 +163,8 @@ const ProductDetail = (props) => {
     return <option key={index} value={category}>{category}</option>
   })
   const showBottomLeft = () => {
-    toastBL.current.show({severity:'success', summary: 'Successfully added', detail:'New product added to shop', life: 3000});
+    toastBL.current.show({severity:'success', summary: 'Successfully update', detail:'update new' +
+          ' product', life: 3000});
   }
   return (
       <div className={styles.wrapper}>
@@ -282,9 +298,10 @@ const ProductDetail = (props) => {
                 name="imageProduct"
                 title=" "
                 multiple
-                required
+
                 onChange={uploadToClient} />
             <div className={styles.imgContainer}>
+
               {imageList}
             </div>
             <label className={styles.label} htmlFor="description">Additional Description</label>
