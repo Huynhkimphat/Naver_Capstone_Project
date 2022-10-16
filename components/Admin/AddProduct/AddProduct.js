@@ -34,12 +34,12 @@ const styles = {
 const AddProduct = () => {
     const initialProduct = {
         name: '',
-        category: 0,
+        category: "NA",
         configuration: {
             brand: "",
             color: "",
             height: "",
-            madeIn: "",
+            madeIn: "NA",
             material: "",
             width: ""
         },
@@ -50,7 +50,7 @@ const AddProduct = () => {
     const toastBL = useRef(null);
     const [toggle, setToggle] = useState(false);
     const [inputCt, setInputCt] = useState('');
-    const [categories, setCategories] = useState(["All"])
+    const [categories, setCategories] = useState([])
     const [countryList, setCountryList] = useState([]);
     const [images, setImages] = useState([]);
     const [createObjectURL, setCreateObjectURL] = useState([]);
@@ -107,7 +107,7 @@ const AddProduct = () => {
     }
     const handleCtSave = (e) => {
         e.preventDefault();
-        if(!inputCt) return;
+        if (!inputCt) return;
         categoryService.addCategory(inputCt);
         setCategories([...categories, inputCt]);
         setInputCt('')
@@ -131,7 +131,7 @@ const AddProduct = () => {
         return <option key={index} value={category}>{category}</option>
     })
     const showBottomLeft = () => {
-        toastBL.current.show({severity:'success', summary: 'Successfully added', detail:'New product added to shop', life: 3000});
+        toastBL.current.show({ severity: 'success', summary: 'Successfully added', detail: 'New product added to shop', life: 3000 });
     }
     return (
         <div className={styles.wrapper}>
@@ -161,15 +161,16 @@ const AddProduct = () => {
                             value={information.category}
                             onChange={handleChange}
                             required>
+                            <option className="hidden">Category</option>
                             {printCategory}
                         </select>
-                        <IoIosAddCircle className={!toggle ? styles.addCategory: "hidden"} size={30} onClick={() => setToggle(!toggle)}></IoIosAddCircle>
+                        <IoIosAddCircle className={!toggle ? styles.addCategory : "hidden"} size={30} onClick={() => setToggle(!toggle)}></IoIosAddCircle>
                         <AiFillEyeInvisible className={toggle ? styles.hiddenAddCt : "hidden"} size={30} onClick={() => setToggle(!toggle)}></AiFillEyeInvisible>
                         <input
                             className={toggle ? `${styles.inputCategory}` : "hidden"}
                             type="text"
                             placeholder='Your category'
-                            value = {inputCt}
+                            value={inputCt}
                             onChange={handleCtChange}></input>
                         <button className={toggle ? styles.btnCtSave : 'hidden'} onClick={handleCtSave}>Save</button>
                     </div>
@@ -253,6 +254,7 @@ const AddProduct = () => {
                                 value={information.configuration.madeIn}
                                 onChange={handleChange}
                                 required>
+                                <option className="hidden">Country</option>
                                 {countriesOption}
                             </select>
                         </div>
