@@ -49,7 +49,7 @@ const OrderDetail = () => {
         userService.getUserByEmail(customerId).then(res => setUser(res));
         productService.getProductsByIds(productListDetail).then(res => setProducts(res))
     }, [])
-    const ordersList = productListDetail.map((order, index) => {
+    const ordersList = productListDetail?.map((order, index) => {
         return (
             <div key={order.productId}
                 className={styles.productContainer}>   

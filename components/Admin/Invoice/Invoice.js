@@ -1,111 +1,137 @@
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import InvoiceHeader from './InvoiceHeader/InvoiceHeader';
-import InvoiceContent from './InvoiceContent/InvoiceContent';
-import InvoiceTotal from './InvoiceTotal/InvoiceTotal';
+import Product from '../../../static/Product1.png'
+import 'primeicons/primeicons.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
+import { InputText } from 'primereact/inputtext';
+import orderService from '../../../services/api/admin/orderService';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { chooseOrder } from '../../../redux/actions/orderAction';
+
 const styles = {
-    wrapper: 'mx-auto w-full p-4 mt-4 flex flex-col shadow-lg rounded-md',
-    feature: 'w-[100%] flex justify-between items-center gap-4 flex-wrap',
+    wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
+    header: 'w-full flex items-center justify-between bg-admin_color p-4 rounded-md',
+    headerInfo: 'flex flex-col gap-4 text-white',
+    headerTitle:
+        'font-semibold text-2xl text-xl bg-white text-admin_color w-fit px-3 py-2 rounded-md',
+    headerName: 'font-semibold text-xl',
+    headerContact: 'flex flex-col gap-2',
+    invoice: 'p-4 flex flex-col gap-2',
+    invoiceHeader: 'flex justify-between',
+    invoiceTitle: 'bg-admin_color px-3 py-2 w-fit text-xl text-white rounded-md',
+    invoiceSearch: "p-input-icon-right",
+    invoiceSrchIcon: "pi pi-search",
+    ordersContainer:
+        'border-t-2 border-admin_color pt-8 flex flex-col gap-4 max-h-96 overflow-y-scroll',
+    totalContainer: 'w-full rounded-md flex justify-end p-4 border-t-4 px-4',
+    total: 'px-4 font-semibold text-xl',
+    orderContainer: "flex justify-between p-4 bg-[#EEEEEE] rounded-md flex-wrap",
+    codeCol: 'flex flex-col items-center w-[30%]',
+    commonCol: 'flex flex-col items-center w-[15%]',
+    buttonDetail: 'bg-admin_color px-2 py-1 rounded-md text-white font-semibold w-[15%]'
 }
-
 const Invoice = () => {
-    const [orderDetail, setorderDetail] = useState([]);
-
-    useEffect(() => {
-        setorderDetail([
-            {
-                id: "1000",
-                code: "f230fh0g3",
-                name: "Bamboo Watch",
-                description: "Product Description",
-                image: "bamboo-watch.jpg",
-                price: 65,
-                category: "Accessories",
-                quantity: 2,
-                inventoryStatus: "INSTOCK",
-                rating: 5,
-            },
-            {
-                id: "1001",
-                code: "nvklal433",
-                name: "Black Watch",
-                description: "Product Description",
-                image: "black-watch.jpg",
-                price: 72,
-                category: "Accessories",
-                quantity: 3,
-                inventoryStatus: "OUTOFSTOCK",
-                rating: 4,
-            }
-        ])
-    }, []);
-
-    const SumofProduct = (rowData) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD"
-        }).format(rowData.price * rowData.quantity);
+    const router = useRouter();
+    const [orderFiltered, setOrderFiltered] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [inputSearch, setInputSearch] = useState('')
+    const [total, setTotal] = useState(null)
+    const dispatch = useDispatch();
+    const handleClickDetail = (id) => {
+        const filterRow = orderFiltered.filter((item) => {
+            return item.id === id
+        })
+        const order = filterRow[0];
+        dispatch(chooseOrder({
+            ...order,
+            code: order.id,
+            date: order.orderDate,
+        }))
+        router.push(`/admin/order/${id}`)
     }
-
-    const priceBodyTemplate = (rowData) => {
-        return new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD"
-        }).format(rowData.price);
-    };
-
+    const printOrdersList = orderFiltered.map((item, index) => {
+        return (
+            <div key={item?.id} className={styles.orderContainer}>
+                <div className={styles.codeCol}>
+                    <span>Code</span>
+                    <span>{item?.id}</span>
+                </div>
+                <div className={styles.commonCol}>
+                    <span>Date</span>
+                    <span>{item?.orderDate}</span>
+                </div>
+                <div className={styles.commonCol}>
+                    <span>Total</span>
+                    <span>{item?.totalPrice} VNĐ</span>
+                </div>
+                <div className={styles.commonCol}>
+                    <span>Status</span>
+                    <span>{item?.status}</span>
+                </div>
+                <button
+                    className={styles.buttonDetail}
+                    onClick={() => handleClickDetail(item?.id)}
+                >Detail</button>
+            </div>
+        )
+    })
+    const handleInputChange = (e) => {
+        setInputSearch(e.target.value)
+        if (!e.target.value)
+            setOrderFiltered(orders)
+        else {
+            const fil = orders.filter((item) => {
+                return item.id.includes(e.target.value)
+            })
+            setOrderFiltered(fil)
+        }
+    }
+    useEffect(() => {
+        orderService.getOrdersById("19521501@gm.uit.edu.vn").then(res => {
+            setOrders(res)
+            setOrderFiltered(res)
+        })
+    }, [])
+    useEffect(() => {
+        const calculateTotal = orderFiltered.reduce((prev, cur) => {
+            return prev + cur.totalPrice;
+        }, 0)
+        setTotal(calculateTotal)
+    }, [orderFiltered])
     return (
         <div className={styles.wrapper}>
-            <div>
-                <div>
-                    <div>
-                        <InvoiceHeader></InvoiceHeader>
-                        <InvoiceContent></InvoiceContent>
-                        <DataTable
-                            value={orderDetail}
-                            dataKey="id"
-                            showGridlines
-                            responsiveLayout="scroll"
-                        >
-                            <Column
-                                field="id"
-                                header="ID"
-                                sortable
-                                style={{ width: "20%" }}
-                            ></Column>
-                            <Column
-                                field="name"
-                                header="Name"
-                                sortable
-
-                                style={{ width: "20%" }}
-                            ></Column>
-                            <Column
-                                field="quantity"
-                                header="Quantity"
-                                sortable
-                                style={{ width: "20%" }}
-                            ></Column>
-                            <Column
-                                field="price"
-                                header="Price"
-                                sortable
-                                body={priceBodyTemplate}
-                                style={{ width: "20%" }}
-                            ></Column>
-                            <Column
-                                field="total"
-                                header="Total"
-                                body={SumofProduct}
-                                style={{ width: "20%" }}
-                            ></Column>
-
-                        </DataTable>
-                        {/*Total money pay*/}
-                        <InvoiceTotal></InvoiceTotal>
+            <div className={styles.header}>
+                <div className={styles.headerInfo}>
+                    <h1 className={styles.headerTitle}>Customer Information</h1>
+                    <h1 className={styles.headerName}>Name: Nguyen Duc Hieu</h1>
+                    <div className={styles.headerContact}>
+                        <span>ID: 321321</span>
+                        <span>Email: hieulechanhklK@mgai.com</span>
+                        <span>Phone: 0813908117</span>
+                        <span>Address: Khu Phố 6, Phường Linh Trung, Thủ Đức, TP. HCM</span>
                     </div>
                 </div>
+                <Image className='rounded-md' src={Product} alt='' width={200} height={200} />
+            </div>
+            <div className={styles.invoice}>
+                <div className={styles.invoiceHeader}>
+                    <h1 className={styles.invoiceTitle}>Invoice</h1>
+                    <span className={styles.invoiceSearch}>
+                        <InputText
+                            value={inputSearch}
+                            onChange={handleInputChange}
+                            placeholder="Search by code" />
+                        <i className={styles.invoiceSrchIcon} />
+                    </span>
+                </div>
+                <div className={styles.ordersContainer}>
+                    {printOrdersList}
+                </div>
+            </div>
+            <div className={styles.totalContainer}>
+                <h1 className={styles.total}>Total: {total} VNĐ</h1>
             </div>
         </div>);
 };
