@@ -8,14 +8,16 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import AppSelector from "../../redux/selector";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 import Router from 'next/router';
 const styles = {
   wrapper: "lg:p-14 md:p-12 p-6",
   container: "grid md:grid-cols-4 grid-cols-2 gap-x-6 gap-y-8",
+  item: "flex flex-col items-center",
   img: "hover:cursor-pointer",
   name: "mt-6 mb-2 text-lg md:text-sm lg:text-xl hover:cursor-pointer",
-  price: "text-lg md:text-sm lg:text-lg hover:cursor-pointer ",
+  price: "text-lg md:text-sm lg:text-lg hover:cursor-pointer",
   btnContainer: "text-center",
   btnViewCollection:
     "mt-8 bg-zinc-50 py-4 px-8 w-full md:w-auto hover:text-[#FA4A0C] hover:bg-zinc-200 hover:duration-300 hover:rounded-xl",
@@ -142,14 +144,21 @@ const ProductList = ({ viewCollection = false, category }) => {
       <div className={styles.container}>
         {productListUIUpdate.map((item) => (
           <div key={item.id} className={styles.item}>
-            <div className={styles.name}>
-              <span
-                className={styles.textColorHover}
-                onClick={() => goToProductDetail(item.id)}
-              >
-                {item.name}
-              </span>
-            </div>
+            <Image
+              src={item?.images[0]}
+              width={350}
+              height={350}
+              alt=""
+              objectFit="contain"
+            />
+            <Link
+              className={styles.textColorHover}
+              href={`/product/${item.id}`}
+              onClick={() => goToProductDetail(item.id)}
+            >
+              {item.name}
+            </Link>
+            <div className={styles.name}></div>
             <div className={styles.price}>
               <span className={styles.textColorHover}>{item.price}</span>
             </div>
