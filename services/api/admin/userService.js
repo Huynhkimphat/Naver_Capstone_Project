@@ -1,7 +1,8 @@
-import { collection, getDocs } from "firebase/firestore"
-import { db } from "../../../lib/firebase";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore"
+import { db } from "../../../lib/firebase"
 
-const userService = { 
+
+const userService = {
     async getAllUsers () {
         const ref = await getDocs(collection(db, "users"));
         return ref.docs.map((doc => {
@@ -9,5 +10,4 @@ const userService = {
         }))
     },
 }
-
 export default userService;

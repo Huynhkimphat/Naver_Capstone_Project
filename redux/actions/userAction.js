@@ -12,4 +12,8 @@ const resetUser = () => ({
   type: Types.RESET_USER,
   payload: {},
 });
-export { setUserEmail, setUser, resetUser };
+const chooseUser = (data) => ({
+  type: Types.CHOOSE_USER,
+  payload: { data }
+})
+export { setUserEmail, setUser, resetUser, chooseUser };

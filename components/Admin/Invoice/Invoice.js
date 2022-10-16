@@ -7,7 +7,7 @@ import 'primereact/resources/primereact.css';
 import { InputText } from 'primereact/inputtext';
 import orderService from '../../../services/api/admin/orderService';
 import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { chooseOrder } from '../../../redux/actions/orderAction';
 
 const styles = {
@@ -34,6 +34,7 @@ const styles = {
 }
 const Invoice = () => {
     const router = useRouter();
+    const { selectedUser } = useSelector(state => state.rootReducer.user)
     const [orderFiltered, setOrderFiltered] = useState([]);
     const [orders, setOrders] = useState([]);
     const [inputSearch, setInputSearch] = useState('')
@@ -89,11 +90,12 @@ const Invoice = () => {
         }
     }
     useEffect(() => {
-        orderService.getOrdersById("19521501@gm.uit.edu.vn").then(res => {
+        console.log(selectedUser);
+        orderService.getOrdersById(selectedUser.email).then(res => {
             setOrders(res)
             setOrderFiltered(res)
         })
-    }, [])
+    }, [selectedUser])
     useEffect(() => {
         const calculateTotal = orderFiltered.reduce((prev, cur) => {
             return prev + cur.totalPrice;
@@ -105,12 +107,12 @@ const Invoice = () => {
             <div className={styles.header}>
                 <div className={styles.headerInfo}>
                     <h1 className={styles.headerTitle}>Customer Information</h1>
-                    <h1 className={styles.headerName}>Name: Nguyen Duc Hieu</h1>
+                    <h1 className={styles.headerName}>Name: {selectedUser?.name}</h1>
                     <div className={styles.headerContact}>
-                        <span>ID: 321321</span>
-                        <span>Email: hieulechanhklK@mgai.com</span>
-                        <span>Phone: 0813908117</span>
-                        <span>Address: Khu Phố 6, Phường Linh Trung, Thủ Đức, TP. HCM</span>
+                        <span>ID: {selectedUser?.email}</span>
+                        <span>Email: {selectedUser?.email}</span>
+                        <span>Phone: {selectedUser?.phone}</span>
+                        <span>Address: {selectedUser?.address}</span>
                     </div>
                 </div>
                 <Image className='rounded-md' src={Product} alt='' width={200} height={200} />
