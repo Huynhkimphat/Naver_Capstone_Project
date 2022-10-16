@@ -1,22 +1,24 @@
+import { useState, useEffect, useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Logo from "../../static/Logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 // import { MdLightMode } from "react-icons/md";
 // import { MdModeNight } from "react-icons/md";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import { useState, useEffect, useContext } from "react";
 import { AuthenUserContext } from "../../context/AuthUserContext";
 import categoryService from "../../services/api/categoryService";
 import userService from "../../services/api/userService";
-import { useDispatch, useSelector } from "react-redux";
+import productService from "../../services/api/productService";
+import cartService from "../../services/api/cartService";
 import { setCategory } from "../../redux/actions/categoryAction";
 import { setUser } from "../../redux/actions/userAction";
-import AppSelector from "../../redux/selector";
-import { useRouter } from "next/router";
-import productService from "../../services/api/productService";
 import { setProductList } from "../../redux/actions/productAction";
+import { setCart } from "../../redux/actions/cartAction";
+import AppSelector from "../../redux/selector";
 
 const styles = {
   wrapper: "px-8 py-2",
@@ -55,6 +57,13 @@ const Header = () => {
       userService
         .getUserByEmail(userEmail)
         .then((res) => dispatch(setUser(res)));
+      cartService.getCartByEmail(userEmail).then((res) => {
+        if (!res.length) {
+          console.log("Creating New Cart For ", userEmail);
+          cartService.createNewCartById(userEmail);
+        }
+        dispatch(setCart(res));
+      });
     }
     categoryService.getCategory().then((res) => dispatch(setCategory(res)));
     productService

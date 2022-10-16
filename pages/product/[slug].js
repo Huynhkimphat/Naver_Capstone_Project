@@ -18,13 +18,12 @@ export default function ProductDetailPage() {
     const productId = router.query.slug;
     const productList = useSelector((state) => AppSelector.getProduct(state));
     const product = productList.filter((item) => item.id === productId);
-
     return (
         <Layout>
             {router.query.slug ? (
                 <div className={styles.wrapper}>
                     <ProductDetail product={product} />
-                    <ProductList />
+                    <ProductList category={product[0].category} viewCollection={true} />
                     <AttentionContent />
                     <Banner />
                 </div>

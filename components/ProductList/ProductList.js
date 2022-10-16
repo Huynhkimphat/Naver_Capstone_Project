@@ -1,14 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import Product1 from "../../static/Product1.png";
-import Product2 from "../../static/Product2.png";
-import Product3 from "../../static/Product3.png";
-import Product4 from "../../static/Product4.png";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import AppSelector from "../../redux/selector";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Puff } from "react-loader-spinner";
 
 import Router from "next/router";
 const styles = {
@@ -31,16 +28,31 @@ let endIndexProduct = startIndexProduct + productAmount;
 const ProductList = ({ viewCollection = false, category }) => {
   const router = useRouter();
   const productList = useSelector((state) => AppSelector.getProduct(state));
-
-  const productListByCate = category
-    ? productList.filter((product) => product.category === category)
-    : productList;
-
-  const productListUI = productListByCate.slice(
-    startIndexProduct,
-    endIndexProduct
+  const [productListByCate, setProductListByCate] = useState([]);
+  const [isLoading, setIsLoading] = useState(category ? true : false);
+  const [productListUIUpdate, setProductListUIUpdate] = useState(
+    productList.slice(startIndexProduct, endIndexProduct)
   );
-  const [productListUIUpdate, setProductListUI] = useState(productListUI);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setProductListByCate(
+      category
+        ? productList.filter(
+            (product) =>
+              product.category.toLowerCase() === category.toLowerCase()
+          )
+        : productList
+    );
+    setIsLoading(false);
+  }, [category, productList]);
+
+  useEffect(() => {
+    setProductListUIUpdate(
+      productListByCate.slice(startIndexProduct, endIndexProduct)
+    );
+    setIsLoading(false);
+  }, [productListByCate]);
 
   const loadMore = () => {
     if (viewCollection) {
@@ -49,37 +61,53 @@ const ProductList = ({ viewCollection = false, category }) => {
     if (endIndexProduct + 1 <= productList.length) {
       const newProductListUIUpdate = [
         ...productListUIUpdate,
-        ...productList.slice(endIndexProduct, endIndexProduct + productAmount),
+        ...productListByCate.slice(
+          endIndexProduct,
+          endIndexProduct + productAmount
+        ),
       ];
       endIndexProduct += productAmount;
-      setProductListUI(newProductListUIUpdate);
+      setProductListUIUpdate(newProductListUIUpdate);
     }
   };
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        {productListUIUpdate.map((item) => (
-          <div key={item.id} className={styles.item}>
-            <Image
-              src={item?.images[0]}
-              width={350}
-              height={350}
-              alt=""
-              objectFit="contain"
-            />
-            <Link
-              className={styles.textColorHover}
-              href={`/product/${item.id}`}
-            >
-              {item.name}
-            </Link>
-            <div className={styles.name}></div>
-            <div className={styles.price}>
-              <span className={styles.textColorHover}>{item.price}</span>
+        {isLoading ? (
+          <Puff
+            height="80"
+            width="80"
+            radisu={1}
+            color="#4fa94d"
+            ariaLabel="puff-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        ) : 
+        (
+          productListUIUpdate.map((item) => (
+            <div key={item.id} className={styles.item}>
+              <Image
+                src={item?.images[0]}
+                width={350}
+                height={350}
+                alt=""
+                objectFit="contain"
+              />
+              <Link
+                className={styles.textColorHover}
+                href={`/product/${item.id}`}
+              >
+                {item.name}
+              </Link>
+              <div className={styles.name}></div>
+              <div className={styles.price}>
+                <span className={styles.textColorHover}>{item.price}</span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
       <div className={styles.btnContainer} onClick={loadMore}>
         <button className={styles.btnViewCollection}>
