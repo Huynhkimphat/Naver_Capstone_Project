@@ -34,7 +34,7 @@ const styles = {
 const AddProduct = () => {
     const initialProduct = {
         name: '',
-        category: "NA",
+        category: "",
         configuration: {
             brand: "",
             color: "",
@@ -100,7 +100,7 @@ const AddProduct = () => {
         setInformation(initialProduct);
         setImages([]);
         setCreateObjectURL([]);
-        showBottomLeft()
+        showBottomLeft();
     }
     const handleCtChange = (e) => {
         setInputCt(e.target.value);
@@ -146,10 +146,10 @@ const AddProduct = () => {
                         id='name'
                         name="name"
                         value={information.name}
+                        title="Please type your new product name"
                         required
                         minLength={4}
                         maxLength={40}
-                        title="Please type your new product name"
                         onChange={handleChange}
                     />
                     <label className={styles.label} htmlFor="category">Product Category</label>
@@ -161,7 +161,7 @@ const AddProduct = () => {
                             value={information.category}
                             onChange={handleChange}
                             required>
-                            <option className="hidden">Category</option>
+                            <option className="hidden" value="">Category</option>
                             {printCategory}
                         </select>
                         <IoIosAddCircle className={!toggle ? styles.addCategory : "hidden"} size={30} onClick={() => setToggle(!toggle)}></IoIosAddCircle>
@@ -254,7 +254,7 @@ const AddProduct = () => {
                                 value={information.configuration.madeIn}
                                 onChange={handleChange}
                                 required>
-                                <option className="hidden">Country</option>
+                                <option className="hidden" value="">Country</option>
                                 {countriesOption}
                             </select>
                         </div>
