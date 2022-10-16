@@ -32,6 +32,7 @@ const styles = {
     hiddenAddCt: 'rounded-full text-admin_color cursor-pointer',
 }
 const AddProduct = () => {
+
     const initialProduct = {
         name: '',
         category: "NA",
