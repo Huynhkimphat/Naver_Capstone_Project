@@ -43,6 +43,7 @@ const styles = {
 
 const ProductDetail = (props) => {
 
+
   const initialProduct = useSelector((state) => AppSelector.getProductID(state));
 
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ const ProductDetail = (props) => {
       setImages([...images, i]);
       setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
 
+
     }
   };
   // Remove selected image
@@ -92,6 +94,7 @@ const ProductDetail = (props) => {
     createObjectURL.splice(e.target.value, 1);
     setCreateObjectURL([...createObjectURL]);
   }
+
 
 
  /* const imageList = createObjectURL.map((image, index) => {
@@ -105,6 +108,7 @@ const ProductDetail = (props) => {
     )
   })*/
 
+
   const imageList = createObjectURL.map((image, index) => {
     return (
         <div key={index} className=" flex flex-col gap-1 items-end bg-admin_color px-1 rounded-md pt-1">
@@ -115,6 +119,8 @@ const ProductDetail = (props) => {
         </div>
     )
   })
+
+
 
   const handleChange = (e) => {
     const data = e.target.name in information.configuration ? {
@@ -132,10 +138,12 @@ const ProductDetail = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+
     productService.UpdateProduct(props.id, information);
    /* setInformation(initialProduct);
     setImages([]);
     setCreateObjectURL([]);*/
+
 
     showBottomLeft()
   }
@@ -168,8 +176,10 @@ const ProductDetail = (props) => {
     return <option key={index} value={category}>{category}</option>
   })
   const showBottomLeft = () => {
+
     toastBL.current.show({severity:'success', summary: 'Successfully update', detail:'update new' +
           ' product', life: 3000});
+
   }
   return (
       <div className={styles.wrapper}>
