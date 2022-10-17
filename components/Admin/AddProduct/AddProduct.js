@@ -300,20 +300,18 @@ const AddProduct = () => {
                         placeholder='ex: $5'
                         onChange={handleChange}
                     />
-                    <Scroll className={styles.inputContainer}>
-                        <label className={styles.label} htmlFor="quantity">Quantity</label>
-                        <input
-                            className={styles.inputPrice}
-                            type="number"
-                            id="quantity"
-                            name="quantity"
-                            required
-                            title="It should be the number"
-                            value={information.quantity}
-                            placeholder='ex: 0 to Number'
-                            onChange={handleChange}
-                        />
-                    </Scroll>
+                    <label className={styles.label} htmlFor="quantity">Quantity</label>
+                    <input
+                        className={styles.inputPrice}
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        required
+                        title="It should be the number"
+                        value={information.quantity}
+                        placeholder='ex: 0 to Number'
+                        onChange={handleChange}
+                    />
                     <button className={styles.submit} type="submit">
                         <IoIosAddCircle size='20px'></IoIosAddCircle>
                         <span>Add Product</span>
