@@ -35,14 +35,14 @@ const ProductList = ({
   const [productListByCate, setProductListByCate] = useState([]);
   const [isLoading, setIsLoading] = useState(category ? true : false);
   const [productListUIUpdate, setProductListUIUpdate] = useState(
-    productList.slice(startIndexProduct, endIndexProduct)
+    productList?.slice(startIndexProduct, endIndexProduct)
   );
 
   useEffect(() => {
     setIsLoading(true);
     setProductListByCate(
       category
-        ? productList.filter(
+        ? productList?.filter(
             (product) =>
               product.category.toLowerCase() === category.toLowerCase()
           )
@@ -53,7 +53,7 @@ const ProductList = ({
 
   useEffect(() => {
     setProductListUIUpdate(
-      productListByCate.slice(startIndexProduct, endIndexProduct)
+      productListByCate?.slice(startIndexProduct, endIndexProduct)
     );
     setIsLoading(false);
   }, [productListByCate]);
@@ -111,7 +111,7 @@ const ProductList = ({
           />
         ) :
         (
-          productListUIUpdate.map((item) => (
+          productListUIUpdate?.map((item) => (
             <div key={item.id} className={styles.item}>
               <Image
                 src={item?.images[0]}
