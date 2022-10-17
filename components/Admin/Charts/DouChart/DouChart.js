@@ -3,10 +3,11 @@ import { Doughnut } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import orderService from '../../../../services/api/admin/orderService';
 import { useSelector } from 'react-redux';
+import Scroll from '../../Animation/Scroll';
 Chart.defaults.scale.grid.display = false;
 const styles = {
     douChart:
-        "w-full flex items-center justify-start p-[1rem] shadow-lg sm:w-[30%]",
+        "w-full flex items-center justify-center p-[1rem] shadow-lg sm:w-[30%]",
 }
 const DouChart = (props) => {
     const orders = useSelector(state => state.rootReducer.order.orderList)
@@ -38,9 +39,9 @@ const DouChart = (props) => {
       })
     },[orders])
     return (
-        <div className={styles.douChart}>
+        <Scroll style={styles.douChart} scroll="translateX(10px)">
             <Doughnut data={dataDou} height="190px" />
-        </div>
+        </Scroll>
     );
 };
 

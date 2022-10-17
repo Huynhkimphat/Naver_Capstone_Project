@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Pie } from "react-chartjs-2";
 import Chart from "chart.js/auto";
+import Scroll from '../../Animation/Scroll';
 Chart.defaults.scale.grid.display = false;
 const styles = {
     douChart:
@@ -19,9 +20,9 @@ const dataPie = {
 };
 const PieChart = (props) => {
     return (
-        <div className={styles.douChart}>
+        <Scroll style={styles.douChart}>
             <Pie data={dataPie}></Pie>
-        </div>
+        </Scroll>
     );
 };
 
