@@ -9,7 +9,7 @@ import { Toast } from 'primereact/toast';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
-
+import Scroll from "../Animation/Scroll"
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     title: 'border-b-2 py-4 text-2xl font-semibold',
@@ -30,6 +30,7 @@ const styles = {
     btnCtSave: 'bg-admin_color px-4 py-2 rounded-md text-white',
     addCategory: 'bg-admin_color rounded-full text-white cursor-pointer',
     hiddenAddCt: 'rounded-full text-admin_color cursor-pointer',
+    inputContainer: "flex flex-col gap-2"
 }
 const AddProduct = () => {
 
@@ -97,7 +98,12 @@ const AddProduct = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        productService.addProduct(information, images);
+        const newProduct = {
+            ...information,
+            price: Number(information.price),
+            quantity: Number(information.quantity)
+        }
+        productService.addProduct(newProduct, images);
         setInformation(initialProduct);
         setImages([]);
         setCreateObjectURL([]);
@@ -294,18 +300,20 @@ const AddProduct = () => {
                         placeholder='ex: $5'
                         onChange={handleChange}
                     />
-                    <label className={styles.label} htmlFor="quantity">Quantity</label>
-                    <input
-                        className={styles.inputPrice}
-                        type="number"
-                        id="quantity"
-                        name="quantity"
-                        required
-                        title="It should be the number"
-                        value={information.quantity}
-                        placeholder='ex: 0 to Number'
-                        onChange={handleChange}
-                    />
+                    <Scroll className={styles.inputContainer}>
+                        <label className={styles.label} htmlFor="quantity">Quantity</label>
+                        <input
+                            className={styles.inputPrice}
+                            type="number"
+                            id="quantity"
+                            name="quantity"
+                            required
+                            title="It should be the number"
+                            value={information.quantity}
+                            placeholder='ex: 0 to Number'
+                            onChange={handleChange}
+                        />
+                    </Scroll>
                     <button className={styles.submit} type="submit">
                         <IoIosAddCircle size='20px'></IoIosAddCircle>
                         <span>Add Product</span>
