@@ -114,7 +114,9 @@ const Invoice = () => {
                         <span>Address: {selectedUser?.address}</span>
                     </div>
                 </div>
-                <Image className='rounded-md' src={Product} alt='' width={200} height={200} />
+                <div className='rounded-md px-10'>
+                    <Image className='rounded-md' src={selectedUser?.imageUrl} alt='' width={150} height={150} />
+                </div>
             </div>
             <div className={styles.invoice}>
                 <div className={styles.invoiceHeader}>
