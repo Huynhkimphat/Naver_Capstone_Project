@@ -63,7 +63,7 @@ const ProductList = ({
       const cateList=[...productListByCate]
       setProductListByCate(
         cateList.sort((a, b) =>
-          Number(a.price) > Number(b.price) ? 1 : -1
+          Number(a.price) < Number(b.price) ? 1 : -1
         )
       );
     }
@@ -71,7 +71,7 @@ const ProductList = ({
       const cateList=[...productListByCate]
       setProductListByCate(
         cateList.sort((a, b) =>
-          Number(a.price) < Number(b.price) ? 1 : -1
+          Number(a.price) > Number(b.price) ? 1 : -1
         )
       );
     }

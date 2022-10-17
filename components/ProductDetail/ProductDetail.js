@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import Image from "next/image";
 import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "../../redux/actions/cartAction";
 
 const styles = {
   wrapper: " container mx-auto flex flex-col lg:flex-row p-4 ",
@@ -25,10 +27,16 @@ const styles = {
   btnPus: "hover:bg-[#cccccc]",
 };
 const ProductDetail = ({ product }) => {
+  const dispatch =useDispatch();
   const [valueInput, setValueInput] = useState(0);
 
   const handleAddToCart = () => {
-    console.log(product);
+    const preparingProduct ={
+      productId: product[0].id,
+      amount: valueInput,
+      total: product[0].price * valueInput, 
+    }
+    dispatch(addProductToCart(preparingProduct))
     console.log(valueInput);
   };
 

@@ -5,4 +5,9 @@ const setCart = (data) => ({
     payload: { data },
 });
 
-export { setCart };
+const addProductToCart = (data) =>({
+    type: Types.ADD_PRODUCT_TO_CART,
+    payload: {data},
+})
+
+export { setCart, addProductToCart };
