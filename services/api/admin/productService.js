@@ -1,4 +1,4 @@
-import { setDoc, doc, collection, updateDoc, FieldPath, arrayUnion, query, where, documentId, getDoc, getDocs} from "firebase/firestore";
+import { setDoc, doc, collection, updateDoc, serverTimestamp, arrayUnion, query, where, documentId, getDoc, getDocs} from "firebase/firestore";
 import { db, storage } from "../../../lib/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { async } from "@firebase/util";
@@ -6,7 +6,10 @@ import { async } from "@firebase/util";
 const productService = {
     async addProduct(data, images) {
         const newDocRef = doc(collection(db, "product"));
-        await setDoc(newDocRef, data);
+        await setDoc(newDocRef, {
+            ...data,
+            createdOn: serverTimestamp(),
+        });
         // Upload image
         images.forEach((image, index) => {
             const imgType = image.type.split("/")[1];
