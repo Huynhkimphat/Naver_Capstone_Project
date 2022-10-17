@@ -126,8 +126,15 @@ const AdminOrders = (props) => {
     }
     useEffect(() => {
         orderService.getOrdersAll().then(res => {
-            setProducts2([...products2, ...res])
-            setFilteredData([...products2, ...res])
+            const orderExcuted = res.map((ord) => {
+                const orDate = (new Date(ord.date.seconds * 1000)).toString().split("(")[0];
+                return {
+                    ...ord,
+                    date: orDate
+              }
+            })
+            setProducts2([...products2, ...orderExcuted])
+            setFilteredData([...products2, ...orderExcuted])
         })
     }, []);
 

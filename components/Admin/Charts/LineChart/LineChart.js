@@ -19,9 +19,26 @@ const LineChart = (props) => {
         datasets: [
         ],
     })
+    const convertMonth = (month) => {
+        return [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "July",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        ].indexOf(month) + 1
+    }
     const getDataDateOrder = dataLine.labels.map((month, index) => {
         return orders?.filter((order) => {
-            return order.date.split("/")[1] == index + 1
+            const date = new Date(order.date.seconds * 1000);
+            return convertMonth(date.toString().split(" ")[1]) == index + 1
         }).length;
     })
     const getMonth = () => {

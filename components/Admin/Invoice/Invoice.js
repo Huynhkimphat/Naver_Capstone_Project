@@ -27,10 +27,10 @@ const styles = {
         'border-t-2 border-admin_color pt-8 flex flex-col gap-4 max-h-96 overflow-y-scroll',
     totalContainer: 'w-full rounded-md flex justify-end p-4 border-t-4 px-4',
     total: 'px-4 font-semibold text-xl',
-    orderContainer: "flex justify-between p-4 bg-[#EEEEEE] rounded-md flex-wrap",
+    orderContainer: "flex justify-between p-4 bg-[#EEEEEE] rounded-md flex-wrap items-start",
     codeCol: 'flex flex-col items-center w-[30%]',
-    commonCol: 'flex flex-col items-center w-[15%]',
-    buttonDetail: 'bg-admin_color px-2 py-1 rounded-md text-white font-semibold w-[15%]'
+    commonCol: 'flex flex-col items-center w-[15%] text-center',
+    buttonDetail: 'bg-admin_color px-2 py-1 rounded-md text-white my-auto font-semibold w-[15%]'
 }
 const Invoice = () => {
     const router = useRouter();
@@ -91,8 +91,15 @@ const Invoice = () => {
     }
     useEffect(() => {
         orderService.getOrdersById(selectedUser.email).then(res => {
-            setOrders(res)
-            setOrderFiltered(res)
+            const orderExcuted = res.map((ord) => {
+                const orDate = (new Date(ord.orderDate.seconds * 1000)).toString().split("(")[0];
+                return {
+                    ...ord,
+                    orderDate: orDate
+              }
+            })
+            setOrders(orderExcuted)
+            setOrderFiltered(orderExcuted)
         })
     }, [selectedUser])
     useEffect(() => {
