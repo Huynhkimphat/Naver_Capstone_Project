@@ -3,6 +3,7 @@ import * as Products from "../types/productType";
 const initialState = {
   products: [],
   status: "",
+  productId : {}
 };
 
 const productsReducer = (state = initialState, action) => {
@@ -14,10 +15,17 @@ const productsReducer = (state = initialState, action) => {
       };
     case Products.UPDATE_STATUS:
       let _status = action.payload.status;
+
       return {
         products: [...state.products],
         status: _status,
       };
+      case Products.GET_PRODUCT_ID:
+
+        return {
+          productId: action.payload.data,
+          status: state.status,
+        };
     default:
       return state;
   }

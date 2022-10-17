@@ -5,10 +5,13 @@ import { Dropdown } from "primereact/dropdown";
 import { Ripple } from 'primereact/ripple';
 import Product1 from '../../../static/Product1.png'
 import Link from "next/link";
+import React from "react";
 const styles = {
     redSelect: 'w-[100%] bg-red-500 p-2 rounded-md text-sm text-white font-semibold',
     greenSelect: 'bg-green-500 p-2 rounded-md text-sm text-white font-semibold',
     yellowSelect: 'bg-yellow-500 p-2 rounded-md text-sm text-white font-semibold',
+    inStock: "bg-green-500 px-2 py-1 rounded-lg text-white font-semibold",
+    outStock: "bg-red-500 px-2 py-1 rounded-lg text-white font-semibold",
 }
 export const imageBodyTemplate = (rowData) => {
     return <div className='rounded-sm'>
@@ -98,17 +101,21 @@ export const statusBodyTemplate = (rowData) => {
 };
 
 export const priceBodyTemplate = (rowData) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("vi", {
         style: "currency",
-        currency: "USD"
+        currency: "VND"
     }).format(rowData.price);
 };
 
 export const checkStatus = (rowData) => {
-   if (rowData.quantity > 1){
-       return `In stock (${rowData.quantity}) `
-   }
-   else {
-       return 'Out of stock'
-   }
+
+    return rowData.quantity > 1 ? (
+        <span className={styles.inStock}>
+                IN STOCK
+            </span>
+    ) : (
+        <span className={styles.outStock}>
+                OUT OF STOCK
+            </span>
+    )
 };

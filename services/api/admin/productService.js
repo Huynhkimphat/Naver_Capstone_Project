@@ -44,7 +44,7 @@ const productService = {
 
 
     },
-    
+
     async getProductsByIds(data) {
         const ref = collection(db, "product")
         return await Promise.all(
@@ -53,7 +53,27 @@ const productService = {
                 return { ...snap.data() }
             })
         )
-    }
+    },
+    async getProductDetail(productId) {
+        const docRef = doc(db, "product", productId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return { ...docSnap.data() }
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+
+
+    },
+
+    async UpdateProduct(productID,dataUpdate) {
+        const washingtonRef = doc(db, "product",productID);
+        await updateDoc(washingtonRef, dataUpdate);
+
+    },
+
 }
 
 export default productService;
