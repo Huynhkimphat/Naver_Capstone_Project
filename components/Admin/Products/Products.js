@@ -13,12 +13,15 @@ import AppSelector from "../../../redux/selector";
 import {useDispatch, useSelector} from "react-redux";
 import productService from "../../../services/api/productService";
 import {setProductList} from "../../../redux/actions/productAction";
+import { Ripple } from "primereact/ripple";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
 import {checkStatus} from "./TableServices";
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     dataTable: 'mt-4',
-    approved: "bg-green-500 px-2 py-1 rounded-lg text-white font-semibold",
-    reject: "bg-red-500 px-2 py-1 rounded-lg text-white font-semibold",
+    instock: "bg-green-500 px-2 py-1 rounded-lg text-white font-semibold",
+    outofstock: "bg-red-500 px-2 py-1 rounded-lg text-white font-semibold",
     pending: "bg-yellow-500 px-2 py-1 rounded-lg text-white font-semibold"
 }
 
@@ -32,15 +35,89 @@ const AdProducts = (props) => {
     const productList = useSelector((state) => AppSelector.getProduct(state));
     const dispatch = useDispatch();
     const statuses = [
-        "IN STOCK",
-        "OUT OF STOCK",
+        "INSTOCK",
+        "OUTOFSTOCK",
     ];
 
+    const statuses2 = [
+        { label: "INSTOCK", value: "INSTOCK" },
+        { label: "OUTOFSTOCK", value: "OUTOFSTOCK" },
+    ];
+
+    const template = {
+        layout: 'PrevPageLink PageLinks NextPageLink RowsPerPageDropdown CurrentPageReport',
+        'PrevPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Previous</span>
+                    <Ripple />
+                </button>
+            )
+        },
+        'NextPageLink': (options) => {
+            return (
+                <button type="button" className={options.className} onClick={options.onClick} disabled={options.disabled}>
+                    <span className="p-3">Next</span>
+                    <Ripple />
+                </button>
+            )
+        },
+        'PageLinks': (options) => {
+            if ((options.view.startPage === options.page && options.view.startPage !== 0) || (options.view.endPage === options.page && options.page + 1 !== options.totalPages)) {
+                const className = classNames(options.className, { '': true });
+
+                return <span className={className} style={{ userSelect: 'none' }}>...</span>;
+            }
+
+            return (
+                <button type="button" className={options.className} onClick={options.onClick}>
+                    {options.page + 1}
+                    <Ripple />
+                </button>
+            )
+        },
+        'RowsPerPageDropdown': (options) => {
+            const dropdownOptions = [
+                { label: 5, value: 5 },
+                { label: 10, value: 10 },
+                { label: 20, value: 20 },
+                { label: 'All', value: options.totalRecords }
+            ];
+
+            return <Dropdown value={options.value} options={dropdownOptions} onChange={options.onChange} />;
+        },
+        'CurrentPageReport': (options) => {
+            return (
+                <span className="mx-3" style={{ color: 'var(--text-color)', userSelect: 'none' }}>
+                    Go to <InputText size="2" className="ml-1" value={currentPage} tooltip={pageInputTooltip}
+                        onKeyDown={(e) => onPageInputKeyDown(e, options)} onChange={onPageInputChange} />
+                </span>
+            )
+        }
+    };
     const onCustomPage = (event) => {
         setFirst(event.first);
         setRows(event.rows);
         setCurrentPage(event.page + 1);
     }
+    const onPageInputChange = (event) => {
+        setCurrentPage(event.target.value);
+    }
+    const onPageInputKeyDown = (event, options) => {
+        if (event.key === 'Enter') {
+            const page = parseInt(currentPage);
+            if (page < 1 || page > options.totalPages) {
+                setPageInputTooltip(`Value must be between 1 and ${options.totalPages}.`);
+            }
+            else {
+                const first = currentPage ? options.rows * (page - 1) : 0;
+
+                setFirst(first);
+                setPageInputTooltip('Press \'Enter\' key to go to this page.');
+            }
+        }
+    }
+
     const onRowEditComplete = (e) => {
         let _products = [...products];
         let { newData, index } = e;
@@ -56,24 +133,65 @@ const AdProducts = (props) => {
             Router.push(`/admin/product/update/${path}`)
     }
 
+    const statusEditor = (options) => {
+        const handleChange = (e) => {
+            // ID: options.rowData.code
+            const productID = options.rowData.code;
+            // Value: e.value
+            const value = e.value;
+            options.editorCallback(e.value)
+            console.log(productID, value, options)
+            updateField.byId(productID, "status", value);
+        }
+        return (
+            <Dropdown
+                value={options.value}
+                options={statuses2}
+                optionLabel="label"
+                optionValue="value"
+                onChange={handleChange}
+                placeholder="Select a Status"
+                itemTemplate={(option) => {
+                    return (
+                        <span
+                            className={`product-badge status-${option.value.toLowerCase()}`}>
+                            {option.label}
+                        </span>
+                    );
+                }}
+            />
+        );
+    };
+
     const statusBodyTemplate = (rowData) => {
-        return <span className={`customer-badge status-${rowData.status}`}>{rowData.status}</span>;
-    }
+        const cssStyle = rowData?.status.toLowerCase();
+        return (
+            <span className={styles[cssStyle]}>
+                {rowData.status}
+            </span>
+        );
+    };
+    console.log();
+    // const statusBodyTemplate = (rowData) => {
+    //     return <span className={`customer-badge status-${rowData.status}`}>{rowData.status}</span>;
+    // }
+
     const statusItemTemplate = (option) => {
         return <span className={`${option}`}>{option}</span>;
     };
-    
     const statusRowFilterTemplate = (options) => {
         return (
-        <Dropdown value={options.value} 
-        options={statuses} 
-        onChange={(e) => options.filterApplyCallback(e?.value)} 
-        itemTemplate={statusItemTemplate} 
-        placeholder="Select a Status" 
-     
-        showClear />
+            <Dropdown
+                value={options.value}
+                options={statuses}
+                onChange={(e) => { options.filterApplyCallback(e.value) }}
+                itemTemplate={statusItemTemplate}
+                placeholder="Select a Status"
+                showClear
+            />
         );
-    }
+    };
+
     useEffect(() => {
         productService.getAllProducts().then(res => {
             productService.getAllProducts().then(res => {
@@ -94,7 +212,7 @@ const AdProducts = (props) => {
                     dataKey="id"
                     onRowEditComplete={onRowEditComplete}
                     paginator
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                    paginatorTemplate={template}
                     rowsPerPageOptions={[5, 10, 20]}
                     first={first} rows={rows}
                     onPage={onCustomPage}
@@ -154,21 +272,22 @@ const AdProducts = (props) => {
                         }}
 
                     ></Column>
-                    <Column field="quantity"
-                     header="Status"
-                      showFilterMenu={false}
-                      sortable
-                      filter
-                       filterMenuStyle={{ width: '7rem' }} 
-                       style={{
-                        width: "15%",
-                        minWidth: "6rem",
-                        padding: "5px 0 5px 10px",
-                        textAlign: "center"
+                        <Column
+                        field="status"
+                        header="Status"
+                        sortable
+                        showFilterMenu={false}
+                        filterMenuStyle={{ width: "14rem" }}
+                        filter
+                        body={statusBodyTemplate}
+                        editor={(options) => statusEditor(options)}
+                        filterElement={statusRowFilterTemplate}
+                        style={{
+                            width: "20%",
+                            minWidth: "8rem",
+                            padding: "5px 0 5px 10px",
+                            textAlign: "center"
                         }}
-                       editor={(options) => TableServices.statusEditor(options)}
-                       filterElement={statusRowFilterTemplate}
-                       body={TableServices.checkStatus}
                     ></Column>
                     <Column
                         field="price"
