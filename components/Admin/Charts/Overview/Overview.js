@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import userService from '../../../../services/api/admin/userService';
 import productService from '../../../../services/api/admin/productService';
 import categoryService from '../../../../services/api/admin/categoryService'
+import Scroll from '../../Animation/Scroll';
 const styles = {
     overView: "w-full p-4 shadow-lg sm:w-[65%] overflow-hidden sm:h-73",
     ovHeader: "flex justify-evenly flex-wrap gap-3",
@@ -111,7 +112,7 @@ const Overview = (props) => {
         });
     };
     return (
-        <div className={styles.overView}>
+        <Scroll style={styles.overView}>
             <div className={styles.ovHeader}>
                 <div className={styles.ovHitem}>
                     <FiUser size="2.0rem" color="#FFB402"></FiUser>
@@ -146,7 +147,7 @@ const Overview = (props) => {
                 <h2 className={styles.titleTopPD}>Top Products</h2>
                 <div className={styles.productList}>{printTopProduct()}</div>
             </div>
-        </div>
+        </Scroll>
     );
 };
 

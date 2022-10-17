@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { useSelector } from 'react-redux';
+import Scroll from '../../Animation/Scroll';
 Chart.defaults.scale.grid.display = false;
 const styles = {
     lineChart: "w-full p-4 shadow-lg sm:w-[65%]",
@@ -44,12 +45,12 @@ const LineChart = (props) => {
             })
     }, [orders])
     return (
-        <div className={styles.lineChart}>
+        <Scroll style={styles.lineChart} scroll="translateY(10px)">
             <div className={styles.titleLineChart}>
                 <h3 className="text-6 font-medium">Total Orders: {orders.length}</h3>
             </div>
             <Line data={dataLine} height="190px" />
-        </div>
+        </Scroll>
     );
 };
 
