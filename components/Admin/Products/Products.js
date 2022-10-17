@@ -10,13 +10,11 @@ import * as TableServices from './TableServices'
 import Feature from './Feature/Feature';
 import { BsEye } from 'react-icons/bs';
 import AppSelector from "../../../redux/selector";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import productService from "../../../services/api/productService";
-import {setProductList} from "../../../redux/actions/productAction";
+import { setProductList } from "../../../redux/actions/productAction";
 import { Ripple } from "primereact/ripple";
 import { InputText } from "primereact/inputtext";
-import { Button } from "primereact/button";
-import {checkStatus} from "./TableServices";
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     dataTable: 'mt-4',
@@ -133,49 +131,14 @@ const AdProducts = (props) => {
             Router.push(`/admin/product/update/${path}`)
     }
 
-    const statusEditor = (options) => {
-        const handleChange = (e) => {
-            // ID: options.rowData.code
-            const productID = options.rowData.code;
-            // Value: e.value
-            const value = e.value;
-            options.editorCallback(e.value)
-            console.log(productID, value, options)
-            updateField.byId(productID, "status", value);
-        }
-        return (
-            <Dropdown
-                value={options.value}
-                options={statuses2}
-                optionLabel="label"
-                optionValue="value"
-                onChange={handleChange}
-                placeholder="Select a Status"
-                itemTemplate={(option) => {
-                    return (
-                        <span
-                            className={`product-badge status-${option.value.toLowerCase()}`}>
-                            {option.label}
-                        </span>
-                    );
-                }}
-            />
-        );
-    };
-
     const statusBodyTemplate = (rowData) => {
-        const cssStyle = rowData?.status.toLowerCase();
         return (
-            <span className={styles[cssStyle]}>
-                {rowData.status}
+            <span value={rowData.quantity ? "INSTOCK" : "OUTOFSTOCK"}
+                className={`${rowData.quantity ? styles.instock : styles.outofstock}`}>
+                {rowData.quantity ? "INSTOCK" : "OUTOFSTOCK"}
             </span>
         );
     };
-    console.log();
-    // const statusBodyTemplate = (rowData) => {
-    //     return <span className={`customer-badge status-${rowData.status}`}>{rowData.status}</span>;
-    // }
-
     const statusItemTemplate = (option) => {
         return <span className={`${option}`}>{option}</span>;
     };
@@ -195,10 +158,16 @@ const AdProducts = (props) => {
     useEffect(() => {
         productService.getAllProducts().then(res => {
             productService.getAllProducts().then(res => {
-                dispatch(setProductList(res))
+                const pdl = res.map((product,index) => {
+                  return {
+                    ...product,
+                    status: product.quantity ? "INSTOCK" : "OUTOFSTOCK"
+                  }
+                })
+                dispatch(setProductList(pdl))
             })
         })
-    },[])
+    }, [])
     return (
         <div className={styles.wrapper}>
             {/* Feature */}
@@ -272,7 +241,7 @@ const AdProducts = (props) => {
                         }}
 
                     ></Column>
-                        <Column
+                    <Column
                         field="status"
                         header="Status"
                         sortable
@@ -280,7 +249,6 @@ const AdProducts = (props) => {
                         filterMenuStyle={{ width: "14rem" }}
                         filter
                         body={statusBodyTemplate}
-                        editor={(options) => statusEditor(options)}
                         filterElement={statusRowFilterTemplate}
                         style={{
                             width: "20%",
