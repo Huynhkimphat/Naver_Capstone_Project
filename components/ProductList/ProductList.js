@@ -21,10 +21,6 @@ const styles = {
   textColorHover: "hover:text-[#FA4A0C]",
 };
 
-let productAmount = 4;
-let startIndexProduct = 0;
-let endIndexProduct = startIndexProduct + productAmount;
-
 const ProductList = ({
   viewCollection = false,
   category,
@@ -34,11 +30,14 @@ const ProductList = ({
   const productList = useSelector((state) => AppSelector.getProduct(state));
   const [productListByCate, setProductListByCate] = useState([]);
   const [isLoading, setIsLoading] = useState(category ? true : false);
-  const [productListUIUpdate, setProductListUIUpdate] = useState(
-    productList?.slice(startIndexProduct, endIndexProduct)
-  );
+  const [productListUIUpdate, setProductListUIUpdate] = useState([]);
+
+  const productAmount = 4;
+  const startIndexProduct = 0;
+  const [endIndex, setEndIndex] = useState(4);
 
   useEffect(() => {
+    setEndIndex(4);
     setIsLoading(true);
     setProductListByCate(
       category
@@ -49,49 +48,41 @@ const ProductList = ({
         : productList
     );
     setIsLoading(false);
-  }, [category, productList, priceDescSort]);
+  }, [category, productList, priceDescSort, router]);
 
   useEffect(() => {
+    setIsLoading(true);
     setProductListUIUpdate(
-      productListByCate?.slice(startIndexProduct, endIndexProduct)
+      productListByCate?.slice(startIndexProduct, endIndex)
     );
     setIsLoading(false);
   }, [productListByCate]);
 
   useEffect(() => {
     if (priceDescSort == 0) {
-      const cateList=[...productListByCate]
+      const cateList = [...productListByCate];
       setProductListByCate(
-        cateList.sort((a, b) =>
-          Number(a.price) < Number(b.price) ? 1 : -1
-        )
+        cateList.sort((a, b) => (Number(a.price) < Number(b.price) ? 1 : -1))
       );
     }
     if (priceDescSort == 1) {
-      const cateList=[...productListByCate]
+      const cateList = [...productListByCate];
       setProductListByCate(
-        cateList.sort((a, b) =>
-          Number(a.price) > Number(b.price) ? 1 : -1
-        )
+        cateList.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
       );
     }
   }, [priceDescSort]);
-
-
 
   const loadMore = () => {
     if (viewCollection) {
       return router.push(`/category/${category.toLowerCase()}`);
     }
-    if (endIndexProduct + 1 <= productList.length) {
+    if (endIndex + 1 <= productList.length) {
       const newProductListUIUpdate = [
         ...productListUIUpdate,
-        ...productListByCate.slice(
-          endIndexProduct,
-          endIndexProduct + productAmount
-        ),
+        ...productListByCate.slice(endIndex, endIndex + productAmount),
       ];
-      endIndexProduct += productAmount;
+      setEndIndex(endIndex + productAmount);
       setProductListUIUpdate(newProductListUIUpdate);
     }
   };
@@ -109,8 +100,7 @@ const ProductList = ({
             wrapperClass=""
             visible={true}
           />
-        ) :
-        (
+        ) : (
           productListUIUpdate?.map((item) => (
             <div key={item.id} className={styles.item}>
               <Image
