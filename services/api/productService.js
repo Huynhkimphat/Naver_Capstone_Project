@@ -12,14 +12,11 @@ const productService = {
   async getAllProducts() {
     const querySnapshot = await getDocs(collection(db, "product"));
     return querySnapshot.docs.map((doc) => {
-      const createdDate = doc.data().configuration.createdOn;
+      const createdDate = doc.data().createdOn;
       return {
         id: doc.id,
         ...doc.data(),
-        configuration: {
-          ...doc.data().configuration,
-          createdOn: createdDate?.toDate()?.toDateString()
-        },
+        createdOn: createdDate?.toDate()?.toDateString(),
       };
     });
   },
