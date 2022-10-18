@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { collection, getDocs, setDoc, doc, query } from "firebase/firestore";
+import { collection, getDocs,getDoc, setDoc, doc, query } from "firebase/firestore";
 import { db, auth, provider } from "../lib/firebase";
 import { signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -29,8 +29,8 @@ const AuthenUserProvider = ({ children }) => {
       const cookies = parseCookies();
       const userData = await signInWithPopup(auth, provider);
       setIsLoading(true);
-      const googleAccountUser = doc(db, "users", userData.user.email);
-      if (googleAccountUser.empty) {
+      const googleAccountUser = await  getDoc(doc(db, "users", userData.user.email));
+      if (!googleAccountUser) {
         await addUserToFirebase(userData.user);
       }
       setCurrentUser(userData.user);
