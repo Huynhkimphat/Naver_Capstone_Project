@@ -22,14 +22,17 @@ const orderService = {
 
     async getOrdersById(id) {
         const orderRef = collection(db, "orders");
-        const qr = query(orderRef, where("customerId", "==", id));
+        const qr = query(orderRef);
         const querySnapshot = await getDocs(qr)
-        return querySnapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data()
-        }
+        const orders = querySnapshot.docs.map((doc) => {
+            const createdDate = doc.data().orderDate;
+            return {
+                id: doc.id,
+                ...doc.data(),
+                orderDate: createdDate?.toDate()?.toDateString()
+            }
         })
+        return orders.filter(order => order.customerId === id)
     }
 }
 export default orderService;
