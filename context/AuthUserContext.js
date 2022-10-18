@@ -30,7 +30,8 @@ const AuthenUserProvider = ({ children }) => {
       const userData = await signInWithPopup(auth, provider);
       setIsLoading(true);
       const googleAccountUser = await  getDoc(doc(db, "users", userData.user.email));
-      if (!googleAccountUser) {
+      console.log(googleAccountUser.data());
+      if (!googleAccountUser.data()) {
         await addUserToFirebase(userData.user);
       }
       setCurrentUser(userData.user);
