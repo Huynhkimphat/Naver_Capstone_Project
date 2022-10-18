@@ -1,9 +1,12 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addProductToCart } from "../../redux/actions/cartAction";
+import AppSelector from "../../redux/selector";
+import cartService from "../../services/api/cartService";
+import { useRouter } from "next/router";
 
 const styles = {
   wrapper: " container mx-auto flex flex-col lg:flex-row p-4 ",
@@ -27,18 +30,27 @@ const styles = {
   btnPus: "hover:bg-[#cccccc]",
 };
 const ProductDetail = ({ product }) => {
+  const router= useRouter();
   const dispatch =useDispatch();
   const [valueInput, setValueInput] = useState(0);
+  const cart = useSelector(state=>AppSelector.getCart(state))
+  const [isAdd,setIsAdd]= useState(false);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
+    setIsAdd(true);
     const preparingProduct ={
       productId: product[0].id,
       amount: valueInput,
       total: product[0].price * valueInput, 
     }
-    dispatch(addProductToCart(preparingProduct))
-    console.log(valueInput);
+    dispatch(addProductToCart(preparingProduct));
   };
+
+  useEffect(()=>{
+    if(isAdd){
+      cartService.updateCart(cart.id,cart);
+    }
+  },[cart])
 
   return (
     <div className={styles.wrapper}>

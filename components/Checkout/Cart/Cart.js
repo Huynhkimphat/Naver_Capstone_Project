@@ -4,6 +4,8 @@ import Product1 from "../../../static/Product1.png";
 import Product2 from "../../../static/Product2.png";
 import Product3 from "../../../static/Product3.png";
 import Product4 from "../../../static/Product4.png";
+import { useSelector } from "react-redux";
+import AppSelector from "../../../redux/selector";
 
 import { HiArrowNarrowLeft } from "react-icons/hi";
 
@@ -14,6 +16,10 @@ const styles = {
     "flex font-semibold text-indigo-600 text-sm mt-10 items-center gap-x-4 hover:text-[red]",
 };
 export default function Cart({ orderNo }) {
+
+  const cart = useSelector(state=> AppSelector.getCart(state))
+
+
   const cartLists = [
     {
       id: 1,

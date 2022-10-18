@@ -7,6 +7,7 @@ import {
   query,
   serverTimestamp,
   addDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
@@ -33,6 +34,20 @@ const cartService = {
     } catch (error) {
       console.log("Fail to create new cart", error);
     }
+  },
+
+  async updateCart(id, data) {
+    const docRef = doc(db, "cart", id);
+
+    updateDoc(docRef, data)
+      .then((docRef) => {
+        console.log(
+          "A New Document Field has been added to an existing document"
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
 };
 

@@ -16,6 +16,7 @@ const cartReducer = (state = initialState, action) => {
       const productInfo = action.payload.data;
       let isExist = 0;
       const productList = state.cart?.productListDetail.map(value => Object.assign({}, value)) || []; 
+      const total =state.cart.total;
       productList.forEach((item) => {
         if (item.productId === productInfo.productId) {
           item.amount = item.amount + productInfo.amount;
@@ -24,10 +25,12 @@ const cartReducer = (state = initialState, action) => {
         }
       });
       !isExist && productList.push(productInfo);
+      total+=Number(productInfo.total);
       return {
         cart: {
           ...state.cart,
           productListDetail: productList,
+          total:total,
         },
         status: state.status,
       };
