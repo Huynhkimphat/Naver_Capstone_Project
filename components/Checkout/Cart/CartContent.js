@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
+import { useDispatch } from "react-redux";
+import { updateProductInCart } from "../../../redux/actions/cartAction";
 
 const styles = {
   tableContentContainer: "flex items-center hover:bg-gray-100 -mx-8 px-6 py-5",
@@ -20,14 +22,29 @@ const styles = {
   disabled: "text-[#ccc]",
 };
 
-export default function CartContent({ data, orderNo }) {
+export default function CartContent({ cart, orderNo }) {
+  const dispatch = useDispatch();
+  if (!cart) {
+    cart = [{ productName: "Please add some product to your cart" }];
+  }
+
+  const adjustProduct = (data, type) => {
+    dispatch(updateProductInCart({ productId: data.productId, type: type, price: data.price }));
+  };
+
   return (
     <div>
-      {data.map((data) => (
-        <div key={data.id} className={styles.tableContentContainer}>
+      {cart.map((data) => (
+        <div key={data.productId} className={styles.tableContentContainer}>
           <div className={styles.contentDetail}>
             <div className={styles.imageContainer}>
-              <Image className={styles.image} src={data.image} alt="" />
+              <Image
+                className={styles.image}
+                src={data.image}
+                alt=""
+                width={100}
+                height={100}
+              />
             </div>
             <div className={styles.contentDetailContainer}>
               <span className={styles.productName}>{data.productName}</span>
@@ -37,15 +54,20 @@ export default function CartContent({ data, orderNo }) {
           </div>
           <div className={styles.contentQuantity}>
             <span className={styles.totalInMobile}>
-              Total: {data.quantity * data.price} VND
+              Total: {data.total} VND
             </span>
             <div className={styles.contentQuantityAmount}>
-              <HiMinus className={orderNo ? styles.disabled : ""} />
+              <HiMinus
+                className={orderNo ? styles.disabled : ""}
+                onClick={() => {
+                  adjustProduct(data, "minus");
+                }}
+              />
               <input
                 className="mx-2 border text-center w-8"
                 type="text"
                 disabled={orderNo}
-                value={data.quantity}
+                value={data.amount}
               />
               <HiPlus className={orderNo ? styles.disabled : ""} />
             </div>
@@ -53,9 +75,7 @@ export default function CartContent({ data, orderNo }) {
               Remove
             </div>
           </div>
-          <span className={styles.contentAmount}>
-            {data.quantity * data.price} VND
-          </span>
+          <span className={styles.contentAmount}>{data.total} VND</span>
         </div>
       ))}
     </div>

@@ -10,4 +10,9 @@ const addProductToCart = (data) =>({
     payload: {data},
 })
 
-export { setCart, addProductToCart };
+const updateProductInCart = (data) => ({
+    type: Types.UPDATE_PRODUCT_IN_CART,
+    payload: {data},
+})
+
+export { setCart, addProductToCart, updateProductInCart };
