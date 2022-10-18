@@ -73,7 +73,11 @@ const productService = {
 
     async UpdateProduct(productID,dataUpdate) {
         const washingtonRef = doc(db, "product",productID);
-        await updateDoc(washingtonRef, dataUpdate);
+        await updateDoc(washingtonRef, {
+            ...dataUpdate,
+            quantity: Number(dataUpdate.quantity),
+            price: Number(dataUpdate.price)
+        });
 
     },
 
