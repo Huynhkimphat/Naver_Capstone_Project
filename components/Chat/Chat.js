@@ -16,7 +16,7 @@ import { db } from '../../lib/firebase';
 
 const styles = {
     popupContainer: "fixed right-8 bottom-8 z-50",
-    chatForm: "absolute flex flex-col justify-between bottom-4 sm:bottom-0 right-2 w-[300px] h-[85vh] sm:h-[300px] bg-white rounded-xl shadow-2xl",
+    chatForm: "absolute transition duration-1000 flex flex-col justify-between bottom-4 sm:bottom-0 right-2 w-[300px] h-[85vh] sm:h-[300px] bg-white rounded-xl shadow-2xl",
     header: 'w-full h-[10%] sm:h-[14%] bg-admin_color px-3 sm:px-2 flex items-center rounded-xl justify-between',
     headerRow: 'w-[80%] flex items-center text-white gap-3 sm:gap-2',
     bodyChat: 'w-full h-[80%] sm:h-[72%] px-3 py-1 sm:px-2 flex flex-col overflow-y-scroll gap-2 shadow-lg',
