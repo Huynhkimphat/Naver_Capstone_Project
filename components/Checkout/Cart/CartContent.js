@@ -29,7 +29,19 @@ export default function CartContent({ cart, orderNo }) {
   }
 
   const adjustProduct = (data, type) => {
-    dispatch(updateProductInCart({ productId: data.productId, type: type, price: data.price }));
+    if (
+      (type === "minus" && data.amount === 0) ||
+      (type === "plus" && data.amount === Number(data.quantity))
+    ) {
+      return;
+    }
+    dispatch(
+      updateProductInCart({
+        productId: data.productId,
+        type: type,
+        price: data.price,
+      })
+    );
   };
 
   return (
@@ -69,7 +81,12 @@ export default function CartContent({ cart, orderNo }) {
                 disabled={orderNo}
                 value={data.amount}
               />
-              <HiPlus className={orderNo ? styles.disabled : ""} />
+              <HiPlus
+                className={orderNo ? styles.disabled : ""}
+                onClick={() => {
+                  adjustProduct(data, "plus");
+                }}
+              />
             </div>
             <div href="#" className={styles.removeButton}>
               Remove

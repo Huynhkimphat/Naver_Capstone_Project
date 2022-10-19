@@ -57,6 +57,21 @@ const cartReducer = (state = initialState, action) => {
           status: state.status,
         };
       }
+      if (action.payload.data.type === "plus") {
+        productListToUpdate.forEach((product) => {
+          if (product.productId === action.payload.data.productId) {
+            product.amount = product.amount + 1;
+            product.total = product.amount * action.payload.data.price;
+          }
+        });
+        return {
+          cart: {
+            ...state.cart,
+            productListDetail: productListToUpdate,
+          },
+          status: state.status,
+        };
+      }
     default:
       return state;
   }
