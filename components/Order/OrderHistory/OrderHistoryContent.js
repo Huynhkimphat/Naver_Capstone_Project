@@ -22,16 +22,16 @@ export default function OrderHistoryContent({ data }) {
             <div
               className={styles.contentDetailContainer}
               onClick={() => {
-                router.push(`/order/${data.orderNo}`);
+                router.push(`/order/${data?.id}`);
               }}
             >
               <span className={styles.orderName}>
-                {data.orderNo}- Total: {data.total} VND
+                {data.id}- Total: {data.totalPrice} VND
               </span>
             </div>
           </div>
           <div className={styles.contentCreatedOn}>
-            {new Date(data.createdOn.toString()).toDateString()}
+            {data.orderDate}
           </div>
         </div>
       ))}

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import AppSelector from "../../../redux/selector";
 
 import { HiArrowNarrowLeft } from "react-icons/hi";
+import { useEffect, useState } from "react";
 
 const styles = {
   cartBorder: "flex shadow-md my-10",
@@ -17,40 +18,35 @@ const styles = {
 };
 export default function Cart({ orderNo }) {
 
-  const cart = useSelector(state=> AppSelector.getCart(state))
+  const {productListDetail} = useSelector(state=> AppSelector.getCart(state))
 
+  const product = useSelector(state => AppSelector.getProduct(state));
 
-  const cartLists = [
-    {
-      id: 1,
-      productName: "Chair1",
-      brandName: "Brand1",
-      price: 1000000,
-      image: Product1,
-      quantity: 1,
-    },
-    {
-      id: 2,
-      productName: "Chair2",
-      brandName: "Brand2",
-      price: 10000,
-      image: Product2,
-      quantity: 100,
-    },
-    {
-      id: 3,
-      productName: "Chair3",
-      brandName: "Brand3",
-      price: 100,
-      image: Product3,
-      quantity: 500,
-    },
-  ];
+  const [productCartUI,setProductCartUI]= useState(productListDetail);
+
+  const setUpProductCartUI = (product,cartList)=>{
+    return cartList.map(item=> {
+      const itemDetail = product.filter(pro => pro.id===item.productId);
+      return {
+        ...item,
+        productName: itemDetail[0].name,
+        price:itemDetail[0].price,
+        image: itemDetail[0].images[0],
+        brandName: itemDetail[0].configuration.brand,
+        quantity: itemDetail[0].quantity,
+      }
+    })
+  }
+
+  useEffect(()=>{
+    setProductCartUI(setUpProductCartUI(product,productListDetail));
+  },[productListDetail,product])
+
   return (
     <div className={styles.cartBorder}>
       <div className={styles.cart}>
         <CartHeader orderNo={orderNo} />
-        <CartContent data={cartLists} orderNo={orderNo} />
+        <CartContent cart={productCartUI} orderNo={orderNo} />
         <div className={styles.backButton}>
           <HiArrowNarrowLeft />
           Continue Shopping
