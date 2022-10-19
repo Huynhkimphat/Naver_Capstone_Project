@@ -5,6 +5,7 @@ import Footer from "../Footer/Footer";
 import { useState, useContext, useEffect } from "react";
 import { Puff } from "react-loader-spinner";
 import { AuthenUserContext } from "../../context/AuthUserContext";
+import Chat from "../Chat/Chat";
 
 const styles = {
   container: ``,
@@ -45,6 +46,7 @@ export default function Layout({ children }) {
         />
       ) : (
         <div className={styles.content}>
+          <Chat></Chat>
           <Header />
           <div className={styles.main}>{children}</div>
           <div className={styles.footer}>
