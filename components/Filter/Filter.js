@@ -9,8 +9,8 @@ const styles = {
   title: "mx-4",
 };
 const priceList = [
-  { id: 1, name: "Asc", value: 0 },
-  { id: 2, name: "Desc", value: 1 },
+  { id: 1, name: "Desc", value: 0 },
+  { id: 2, name: "Acs", value: 1 },
 ];
 const dateList = [
   { id: 3, name: "Newest", vavlue: 0 },
