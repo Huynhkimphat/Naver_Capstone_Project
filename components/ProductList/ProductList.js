@@ -37,7 +37,6 @@ const ProductList = ({
   const productAmount = 4;
   const startIndexProduct = 0;
   const [endIndex, setEndIndex] = useState(4);
-  console.log(productNameSearch);
 
   useEffect(() => {
     setEndIndex(4);
@@ -50,36 +49,39 @@ const ProductList = ({
           )
         : productList
     );
-    setProductListByName(
-      productNameSearch
-        ? productList?.filter(
-            (product) =>
-              product.name.toLowerCase() === productNameSearch.toLowerCase()
-          )
-        : productList
-    );
 
     setIsLoading(false);
-  }, [category, productList, priceDescSort, productNameSearch, router]);
+  }, [category, productList, router, productNameSearch]);
+
+  useEffect(() => {
+    setProductListByName(
+      productNameSearch
+        ? productListByCate?.filter(
+            (product) =>
+              product.name.toLowerCase().includes(productNameSearch.toLowerCase())
+          )
+        : productListByCate
+    );
+  }, [productListByCate, productNameSearch]);
 
   useEffect(() => {
     setIsLoading(true);
     setProductListUIUpdate(
-      productListByCate?.slice(startIndexProduct, endIndex)
+      productListByName?.slice(startIndexProduct, endIndex)
     );
     setIsLoading(false);
-  }, [productListByCate]);
+  }, [productListByName]);
 
   useEffect(() => {
     if (priceDescSort == 0) {
-      const cateList = [...productListByCate];
-      setProductListByCate(
+      const cateList = [...productListByName];
+      setProductListByName(
         cateList.sort((a, b) => (Number(a.price) < Number(b.price) ? 1 : -1))
       );
     }
     if (priceDescSort == 1) {
-      const cateList = [...productListByCate];
-      setProductListByCate(
+      const cateList = [...productListByName];
+      setProductListByName(
         cateList.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
       );
     }
@@ -92,7 +94,7 @@ const ProductList = ({
     if (endIndex + 1 <= productList.length) {
       const newProductListUIUpdate = [
         ...productListUIUpdate,
-        ...productListByCate.slice(endIndex, endIndex + productAmount),
+        ...productListByName.slice(endIndex, endIndex + productAmount),
       ];
       setEndIndex(endIndex + productAmount);
       setProductListUIUpdate(newProductListUIUpdate);

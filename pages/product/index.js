@@ -19,8 +19,7 @@ export default function AllProductPage({ title = "All Products" }) {
   const router = useRouter();
 
   const searchProduct = (name) => {
-    setProductName = name;
-    console.log(name);
+    setProductName(name);
   };
   //if 2 -> not sort
   // if 1 -> acs
