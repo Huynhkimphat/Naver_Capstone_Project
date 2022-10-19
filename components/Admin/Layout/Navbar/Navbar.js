@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
 import { AuthenUserContext } from "../../../../context/AuthUserContext"
-import { AiOutlineDashboard, AiOutlineHistory, AiOutlineUser } from 'react-icons/ai';
-import { BsCardChecklist } from 'react-icons/bs';
+import { AiOutlineDashboard, AiOutlineUser } from 'react-icons/ai';
+import { BsCardChecklist, BsChatRightDots } from 'react-icons/bs';
 import { BiCategory, BiHomeAlt, BiLogOut } from 'react-icons/bi';
 import { motion } from 'framer-motion';
 const styles = {
@@ -55,6 +55,17 @@ const Navbar = (props) => {
                     <div className={styles.item}>
                         <BiCategory></BiCategory>
                         <a>Products</a>
+                    </div>
+                </motion.div>
+            </Link>
+            <Link href='/admin/chat'>
+                <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                    <div className={styles.item}>
+                        <BsChatRightDots></BsChatRightDots>
+                        <a>Chat</a>
                     </div>
                 </motion.div>
             </Link>

@@ -83,7 +83,7 @@ const Overview = (props) => {
             return (
                 <div key={index} className={styles.productItem}>
                     <div className={styles.productLeft}>
-                        <Image height="50px" width="50px" src={product?.images[0]} alt={""} />
+                        <Image height="50px" width="50px" src={product?.images ? product?.images[0] : undefined} alt={""} />
                         <div className={styles.productQuantity}>
                             <span>{product?.name}</span>
                             <span>{topProducts[index]?.amount} sold</span>
