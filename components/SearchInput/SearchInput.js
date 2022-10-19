@@ -14,8 +14,8 @@ const SearchInput = () => {
     console.log(setProductSearch);
   };
   return (
-    <form>
-      <div className={styles.wrapper}>
+
+       <div className={styles.wrapper}>
         <input
           type="text"
           placeholder="Search here"
@@ -29,7 +29,7 @@ const SearchInput = () => {
           <AiOutlineSearch size={30} />
         </button>
       </div>
-    </form>
+  
   );
 };
 export default SearchInput;
