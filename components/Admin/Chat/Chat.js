@@ -13,16 +13,17 @@ import { db } from '../../../lib/firebase';
 import { useInView } from 'framer-motion';
 import { RiChatSmile2Fill } from 'react-icons/ri'
 import EmojiPicker from 'emoji-picker-react';
+import Hello from '../../../static/hello.png'
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex shadow-lg rounded-md gap-4',
     content: 'w-full h-[65vh] justify-between  flex gap-2',
-    userContainer: 'w-[30%] h-full p-2 overflow-y-scroll flex flex-col gap-2 scrollbar-hide',
-    user: 'flex items-center justify-start gap-2 bg-gray-500 p-2 rounded-md cursor-pointer',
+    userContainer: 'w-[30%] h-[96%] p-2 bg-admin_color rounded-md overflow-y-scroll flex flex-col gap-2 scrollbar-hide',
+    user: 'flex items-center justify-start gap-2 bg-white p-2 rounded-md cursor-pointer',
     messageContainer: ' overflow-y-auto flex w-[70%] h-full flex-col p-4 gap-2 justify-between',
-    message: 'flex flex-col gap-4 overflow-y-scroll px-2',
+    message: 'h-[85%] flex flex-col gap-4 overflow-y-scroll px-2 border-2 border-admin_color rounded-md',
     inputContainer: 'h-[15%] relative flex justify-around items-center p-2 border-2 rounded-md',
     btnSend: "w-[10%] flex items-center justify-center",
-    msg: 'w-full flex',
+    msg: 'w-full flex text-white',
     msgLeft: "justify-start",
     msgRight: "justify-end"
 }
@@ -41,17 +42,17 @@ const Chat = () => {
     const printUsers = users.map((user, index) => {
         return (
             <div key={user?.email} className={styles.user} onClick={() => setChooseUser(user)}>
-                <Image src={user?.imageUrl} alt="" width={50} height={50}></Image>
-                <span>{user?.name}</span>
+                <Image className='rounded-md' src={user?.imageUrl} alt="" width={50} height={50}></Image>
+                <span className='text-admin_color font-semibold'>{user?.name}</span>
             </div>
         )
     })
     const printMessages = messages?.map((message, index) => {
         return (
             <div key={index} className={`${styles.msg} ${message?.sender != user?.email ? styles.msgLeft : styles.msgRight} ${index == 0 ? "mt-auto" : ""}`}>
-                <div className=' max-w-[60%] flex flex-col flex-wrap'>
-                    <p className='break-all bg-slate-400 p-2 rounded-md'>{message?.content}</p>
-                    <span>9:93 PM</span>
+                <div className={`max-w-[60%] flex flex-col flex-wrap`}>
+                    <p className={`break-all p-2 rounded-md ${message?.sender == user?.email ? "bg-admin_second_color" : "bg-slate-400"}`}>{message?.content}</p>
+                    <span className=' text-slate-400'>9:93 PM</span>
                 </div>
             </div>
         )
@@ -133,9 +134,13 @@ const Chat = () => {
                     {printUsers}
                 </div>
                 <div className={styles.messageContainer}>
-                    <div className={styles.message}>
+                    <div className={`${styles.message} ${hide ? "items-center scrollbar-hide": ""}`}>
                         {printMessages}
                         <div style={{ float: "left", clear: "both" }} id='last' ref={msgRef}></div>
+                        <div className={`h-[70%] w-[50%] flex flex-col items-center gap-8 ${hide ? "block" : "hidden"}`}>
+                            <h1 className='font-semibold text-admin_color text-2xl'>Say something</h1>
+                            <Image src={Hello} alt=""></Image>
+                        </div>
                     </div>
                     <div className={`${styles.inputContainer} ${hide ? "hidden" : "block"}`}>
                         {/* <div className={`absolute bottom-[110%] left-0 ${toggleEmoji ? 'block' : "hidden"}`}>
