@@ -25,16 +25,19 @@ const ProductList = ({
   viewCollection = false,
   category,
   priceDescSort = 2,
+  productNameSearch,
 }) => {
   const router = useRouter();
   const productList = useSelector((state) => AppSelector.getProduct(state));
   const [productListByCate, setProductListByCate] = useState([]);
+  const [productListByName, setProductListByName] = useState([]);
   const [isLoading, setIsLoading] = useState(category ? true : false);
   const [productListUIUpdate, setProductListUIUpdate] = useState([]);
 
   const productAmount = 4;
   const startIndexProduct = 0;
   const [endIndex, setEndIndex] = useState(4);
+  console.log(productNameSearch);
 
   useEffect(() => {
     setEndIndex(4);
@@ -47,8 +50,17 @@ const ProductList = ({
           )
         : productList
     );
+    setProductListByName(
+      productNameSearch
+        ? productList?.filter(
+            (product) =>
+              product.name.toLowerCase() === productNameSearch.toLowerCase()
+          )
+        : productList
+    );
+
     setIsLoading(false);
-  }, [category, productList, priceDescSort, router]);
+  }, [category, productList, priceDescSort, productNameSearch, router]);
 
   useEffect(() => {
     setIsLoading(true);
