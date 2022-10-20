@@ -2,6 +2,7 @@ import {
   collection,
   doc,
   getDocs,
+  getDoc,
   query,
   updateDoc,
   where,
@@ -41,6 +42,12 @@ const orderService = {
       };
     });
     return orders.filter((order) => order.customerId === id);
+  },
+
+  async getOrderById(id){
+    const querySnapshot = await getDoc(doc(db, "orders", id));
+    const order = querySnapshot.data();
+    return order;
   },
 
   async createOrder(data) {

@@ -12,6 +12,7 @@ import { confirmDialog } from "primereact/confirmdialog"; // To use confirmDialo
 import { HiArrowNarrowLeft } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import Router, { useRouter } from "next/router";
+import orderService from "../../../services/api/admin/orderService";
 
 const styles = {
   cartBorder: "flex shadow-md my-10",
@@ -24,9 +25,16 @@ export default function Cart({ orderNo }) {
 
   const cart = useSelector((state) => AppSelector.getCart(state));
 
+  const [order, setOrder] = useState(null);
+
+  // useEffect
+  useEffect(() => {
+    orderNo && orderService.getOrderById(orderNo).then((res) => setOrder(res));
+  }, []);
+
   const product = useSelector((state) => AppSelector.getProduct(state));
 
-  const [productCartUI, setProductCartUI] = useState(cart.productListDetail);
+  const [productCartUI, setProductCartUI] = useState([]);
 
   const updateCartOrNot = () => {
     if (!orderNo) {
@@ -60,15 +68,21 @@ export default function Cart({ orderNo }) {
   };
 
   useEffect(() => {
-    setProductCartUI(setUpProductCartUI(product, cart.productListDetail));
-  }, [cart.productListDetail, product]);
+    if (order) {
+      return setProductCartUI(
+        setUpProductCartUI(product, order.productListDetail)
+      );
+    }
+    !orderNo &&
+      setProductCartUI(setUpProductCartUI(product, cart.productListDetail));
+  }, [cart.productListDetail, product, order, orderNo]);
 
   return (
     <div className={styles.cartBorder}>
       <div className={styles.cart}>
         <CartHeader orderNo={orderNo} />
         <CartContent cart={productCartUI} orderNo={orderNo} />
-        <div className={styles.backButton} label="Confirm" onClick={confirm1} >
+        <div className={styles.backButton} label="Confirm" onClick={confirm1}>
           <HiArrowNarrowLeft />
           Continue Shopping
         </div>

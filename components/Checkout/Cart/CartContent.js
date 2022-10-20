@@ -30,6 +30,7 @@ export default function CartContent({ cart, orderNo }) {
   }
 
   const adjustProduct = (data, type) => {
+    if(orderNo)return;
     if (
       (type === "minus" && data.amount === 0) ||
       (type === "plus" && data.amount === Number(data.quantity))
@@ -48,8 +49,7 @@ export default function CartContent({ cart, orderNo }) {
   const deleteProduct = (data) => {
     // reSetCurrentProduct();
     // console.log(data)
-    dispatch(deleteProductInCart(data.productId));
-    console.log("Hi");
+    !orderNo && dispatch(deleteProductInCart(data.productId));
   };
 
   return (
@@ -103,7 +103,7 @@ export default function CartContent({ cart, orderNo }) {
                 }}
               />
             </div>
-            <button
+            {!orderNo && <button
               href="#"
               className={styles.removeButton}
               onClick={() => {
@@ -112,7 +112,7 @@ export default function CartContent({ cart, orderNo }) {
             >
               {" "}
               Remove
-            </button>
+            </button>}
           </div>
           <span className={styles.contentAmount}>
             {new Intl.NumberFormat("vi-VN", {
