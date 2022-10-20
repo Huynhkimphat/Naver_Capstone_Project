@@ -17,7 +17,7 @@ const dateList = [
   { id: 4, name: "Oldest", vavlue: 1 },
 ];
 
-const Filter = ({ handleFilterUpdate }) => {
+const Filter = ({ handleFilterPriceUpdate, handleFilterDateUpdate }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.groupFilter}>
@@ -27,7 +27,7 @@ const Filter = ({ handleFilterUpdate }) => {
           <select
             className={styles.selectionFilter}
             onChange={(e) => {
-              handleFilterUpdate(e.target.value);
+              handleFilterPriceUpdate(e.target.value);
             }}
           >
             <option className={styles.defaultOption}>Option</option>
@@ -45,7 +45,12 @@ const Filter = ({ handleFilterUpdate }) => {
         <div className={styles.title}>Sorting by: </div>
         {/*  date added filter*/}
         <div className={styles.filterContainer}>
-          <select className={styles.selectionFilter}>
+          <select
+            className={styles.selectionFilter}
+            onChange={(e) => {
+              handleFilterDateUpdate(e.target.value);
+            }}
+          >
             <option className={styles.defaultOption}>Date Added</option>
             {dateList.map((item) => (
               <option key={item.id} value={item.name}>

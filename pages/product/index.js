@@ -15,6 +15,7 @@ const styles = {
 
 export default function AllProductPage({ title = "All Products" }) {
   const [priceDesc, setPriceDesc] = useState(2);
+  const [dateDesc, setDateDesc] = useState(2);
   const [productName, setProductName] = useState("");
   const router = useRouter();
 
@@ -24,8 +25,15 @@ export default function AllProductPage({ title = "All Products" }) {
   //if 2 -> not sort
   // if 1 -> acs
   //  if 0 ->desc
+
+  //if 2 -> not Sort
+  //if 1-> newest
+  //if 0 -> oldest
   const updatePriceFilter = (desc) => {
     setPriceDesc(desc);
+  };
+  const updateDateFilter = (desc) => {
+    setDateDesc(desc);
   };
   return (
     <Layout>
@@ -45,11 +53,15 @@ export default function AllProductPage({ title = "All Products" }) {
           {title.toUpperCase()}
         </div>
         <SearchInput handleSearchInput={searchProduct} />
-        <Filter handleFilterUpdate={updatePriceFilter} />
+        <Filter
+          handleFilterPriceUpdate={updatePriceFilter}
+          handleFilterDateUpdate={updateDateFilter}
+        />
         {!router.pathname.includes("[slug]") || router.query.slug ? (
           <ProductList
             category={router.query.slug}
             priceDescSort={priceDesc}
+            dateDescSort={dateDesc}
             productNameSearch={productName}
           />
         ) : (
