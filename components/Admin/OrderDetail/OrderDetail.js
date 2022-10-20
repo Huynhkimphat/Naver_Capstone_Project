@@ -56,9 +56,11 @@ const OrderDetail = () => {
                 <div className='flex flex-col gap-2'>
                     <h1 className={styles.productName}>Name: {products[index]?.name}</h1>
                     <span className={styles.productItInfo}>Category: {products[index]?.category}</span>
-                    <span className={styles.productItInfo}>Price: {products[index]?.price} VNĐ</span>
+                   
+                    <span className={styles.productItInfo}>Price:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[index]?.price)} VNĐ</span>
                     <span className={styles.productItInfo}>Qt: {order.amount} Item</span>
-                    <h1 className={styles.productName}>Total: {order.total} VNĐ via (COD)</h1>
+                   
+                    <h1 className={styles.productName}>Total:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}VNĐ via (COD)</h1>
                     <span>Tracking Status on: 11:30PM, Today</span>
                 </div>
                 <Image className='rounded-2xl' src={products[index]?.images[0]} width={200} height={200} alt=""></Image>
@@ -99,7 +101,8 @@ const OrderDetail = () => {
                         {ordersList}
                         {/* Total */}
                         <div className={styles.totalPrice}>
-                            <span className={styles.finalPrice}>Total: {totalPrice} VNĐ</span>
+                       
+                            <span className={styles.finalPrice}>Total:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)} VNĐ</span>
                         </div>
                     </div>
                     {/* Button */}

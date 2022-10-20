@@ -148,7 +148,13 @@ const ProductList = ({
               </Link>
               <div className={styles.name}></div>
               <div className={styles.price}>
-                <span className={styles.textColorHover}>{item.price}</span>
+                <span className={styles.textColorHover}>
+                  {" "}
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(item.price)}
+                </span>
               </div>
             </div>
           ))

@@ -78,7 +78,9 @@ const ProductDetail = ({ product }) => {
           Made By: {product[0].configuration.material}
         </div>
         <div className={styles.productPrice}>
-          {product[0].price} - Left in stock: {product[0].quantity}
+        
+
+        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[0].price)} - Left in stock: {product[0].quantity}
         </div>
 
         <div className={styles.descriptionTitle}>Description</div>
