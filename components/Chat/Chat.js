@@ -41,17 +41,21 @@ const Chat = () => {
     // Input
     const [inputMsg, setInputMsg] = useState('');
     const [messages, setMessages] = useState([]);
-
+    // const [timeFLag, setTimeFlag] = useState('');
+    let timeFlag = "";
+    let checkTime = false;
+    let today = new Date().toDateString();
     useEffect(() => {
         const cookies = nookies.get()["token"];
         setToken(cookies)
         // Fetch conversation
-        chatService.getAllMessagesById(user?.email==undefined ? "none" : user?.email)
-        .then(res => {
-            setMessages(res.messages)})
+        chatService.getAllMessagesById(user?.email == undefined ? "none" : user?.email)
+            .then(res => {
+                setMessages(res.messages)
+            })
     }, [user])
     useEffect(() => {
-        const userId = user?.email==undefined ? "none" : user?.email;
+        const userId = user?.email == undefined ? "none" : user?.email;
         const ref = doc(db, "chat", userId)
         const unsub = onSnapshot(ref, (doc) => {
             if (userId != "none") {
@@ -97,14 +101,31 @@ const Chat = () => {
             })
     }
     const printMessages = messages?.map((msg, index) => {
+        const time = msg.createdOn.toDate();
+        // console.log(time.toDateString());
+        // console.log(time.toLocaleTimeString([], {timeStyle: 'short'}));
+        const date = time.toDateString();
+        const msgTime = time.toLocaleTimeString([], { timeStyle: 'short' });
+        const isToday = today === date ? true : false;
+        checkTime = timeFlag != date ? true : false;
+        timeFlag = checkTime ? date : timeFlag;
         return (
-            <div key={index} className={`${styles.msgContainer} ${user?.email == msg?.sender ? styles.msgRight : styles.msgLeft}`}>
-                <div className={styles.msg}>
-                    <p className={` ${styles.paragraph} ${user?.email == msg?.sender ? "bg-admin_second_color" : "bg-slate-500"}`}>{msg?.content}</p>
-                    <span className='text-slate-500'>9:30 PM</span>
+            <>
+                <div className={`w-full flex justify-center border-b-2 border-admin_color text-center my-4 ${checkTime ? "block" : "hidden"}`}>
+                    <h1 className='text-xs text-white bg-admin_color px-2 py-1 rounded-t-lg'>{isToday ? "Today" : date}</h1>
                 </div>
-            </div>
-
+                <div key={index} className={`${styles.msgContainer} ${user?.email == msg?.sender ? styles.msgRight : styles.msgLeft}`}>
+                    <div className={styles.msg}>
+                        <motion.p
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                            className={` ${styles.paragraph} ${user?.email == msg?.sender ? "bg-admin_second_color" : "bg-slate-500"}`}>
+                            {msg?.content}
+                        </motion.p>
+                        <span className='text-slate-500 text-sm'>{msgTime}</span>
+                    </div>
+                </div>
+            </>
         )
     })
     return (
@@ -151,13 +172,18 @@ const Chat = () => {
                                 onKeyDown={handleEnter}
                             >
                             </InputText>
-                            <Button
-                                aria-label="Discord"
-                                className={styles.btnSend}
-                                onClick={handleSend}
+                            <motion.div
+                                whileHover={{ scale: 1.1 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
                             >
-                                <i className="pi pi-send"></i>
-                            </Button>
+                                <Button
+                                    aria-label="Discord"
+                                    className={styles.btnSend}
+                                    onClick={handleSend}
+                                >
+                                    <i className="pi pi-send"></i>
+                                </Button>
+                            </motion.div>
                         </div>
 
                     </motion.div>
