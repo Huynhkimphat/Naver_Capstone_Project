@@ -13,6 +13,7 @@ import { InputText } from 'primereact/inputtext';
 import chatService from '../../services/api/admin/chatService';
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
+import userService from '../../services/api/userService';
 
 const styles = {
     popupContainer: "fixed right-8 bottom-8 z-50",
@@ -78,6 +79,11 @@ const Chat = () => {
                 sender: user?.email,
                 createdOn: Timestamp.now(),
             })
+            userService.updateUser({
+                ...user,
+                lastMessage: Timestamp.now()
+            })
+            setInputMsg('');
         } else {
             if (inputMsg) {
                 chatService.setMessageByID(user?.email, {
@@ -85,9 +91,13 @@ const Chat = () => {
                     sender: user?.email,
                     createdOn: Timestamp.now(),
                 })
+                userService.updateUser({
+                    ...user,
+                    lastMessage: Timestamp.now()
+                })
+                setInputMsg('');
             }
         }
-        setInputMsg('');
     }
     const handleEnter = (e) => {
         if (e.key === "Enter")

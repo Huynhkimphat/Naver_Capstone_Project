@@ -16,4 +16,9 @@ const chooseUser = (data) => ({
   type: Types.CHOOSE_USER,
   payload: { data }
 })
-export { setUserEmail, setUser, resetUser, chooseUser };
+// For realtime chat
+const onListenUser = (data) => ({
+  type: Types.LISTEN_USER,
+  payload: { data }
+})
+export { setUserEmail, setUser, resetUser, chooseUser, onListenUser };

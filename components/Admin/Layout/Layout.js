@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Logo from "../../../static/Logo.png";
 import { AiOutlineMenuUnfold } from "react-icons/ai";
 import { GrNotification } from "react-icons/gr";
 import Navbar from "./Navbar/Navbar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AppSelector from "../../../redux/selector";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { db } from "../../../lib/firebase";
 import { collection, doc, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import notificationService from "../../../services/api/admin/notificationService";
+import { onListenUser } from "../../../redux/actions/userAction";
+import 'primeicons/primeicons.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import 'primereact/resources/primereact.css';
+import { Toast } from 'primereact/toast';
+import { adminSend } from "../../../redux/actions/chatAction";
+
 const styles = {
   wrapper: "w-full select-none",
   header:
@@ -25,6 +32,9 @@ const styles = {
 };
 const AdminLayout = (props) => {
   const router = useRouter()
+  const toastTR = useRef(null);
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.rootReducer.user.user)
   const userImg = useSelector(state => AppSelector.getUserImageUrl(state))
   const [toggleMenu, setToggleMenu] = useState(false);
   const [notification, setNotification] = useState([])
@@ -32,9 +42,37 @@ const AdminLayout = (props) => {
   const handleToggle = () => {
     setToggleMenu(!toggleMenu);
   };
+  const showTopLeft = (msg) => {
+    if (msg.sender != user.email) {
+      toastTR?.current?.show({ severity: 'info', summary: msg.id, detail: `Message: ${msg.content}`, life: 3000 });
+    }
+  }
   useEffect(() => {
     notificationService.getNotifications().then(res => setNotification(res))
-  }, [])
+
+    // For chat notification
+    const q = query(collection(db, "chat"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          // console.log("New data: ", change.doc.data());
+        }
+        if (change.type === "modified") {
+          const data = change.doc.data().messages;
+          showTopLeft({
+            ...data[data.length - 1],
+            id: change.doc.id
+          })
+        }
+        if (change.type === "removed") {
+          console.log("Removed data: ", change.doc.data());
+        }
+      });
+    });
+    return () => {
+      unsubscribe()
+    }
+  }, [db])
   useEffect(() => {
     (
       async () => {
@@ -62,6 +100,7 @@ const AdminLayout = (props) => {
   })
   return (
     <div className={styles.wrapper}>
+      <Toast ref={toastTR} position="top-right" />
       <div className={styles.header}>
         <motion.div
           onClick={() => router.push("/")}
