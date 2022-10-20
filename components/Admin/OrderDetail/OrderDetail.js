@@ -57,7 +57,7 @@ const OrderDetail = () => {
                     <h1 className={styles.productName}>Name: {products[index]?.name}</h1>
                     <span className={styles.productItInfo}>Category: {products[index]?.category}</span>
                    
-                    <span className={styles.productItInfo}>Price:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[index]?.price)} VNĐ</span>
+                    <span className={styles.productItInfo}>Price:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products[index]?.price)} VNĐ</span>
                     <span className={styles.productItInfo}>Qt: {order.amount} Item</span>
                    
                     <h1 className={styles.productName}>Total:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}VNĐ via (COD)</h1>
