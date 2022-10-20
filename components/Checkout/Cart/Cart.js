@@ -29,11 +29,11 @@ export default function Cart({ orderNo }) {
       const itemDetail = product.filter(pro => pro.id===item.productId);
       return {
         ...item,
-        productName: itemDetail[0].name,
-        price:itemDetail[0].price,
-        image: itemDetail[0].images[0],
-        brandName: itemDetail[0].configuration.brand,
-        quantity: itemDetail[0].quantity,
+        productName: itemDetail[0]?.name,
+        price:itemDetail[0]?.price,
+        image: itemDetail[0]?.images[0],
+        brandName: itemDetail[0]?.configuration?.brand,
+        quantity: itemDetail[0]?.quantity,
       }
     })
   }

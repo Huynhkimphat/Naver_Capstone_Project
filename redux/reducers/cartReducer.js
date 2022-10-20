@@ -5,6 +5,14 @@ const initialState = {
   status: "",
 };
 
+const caculateTotal = (productList) => {
+  var total = 0;
+  productList.forEach((product) => {
+    total += product.total;
+  });
+  return total;
+};
+
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case Cart.SET_CART:
@@ -13,8 +21,22 @@ const cartReducer = (state = initialState, action) => {
         status: state.status,
       };
     case Cart.DELETE_PRODUCT_IN_CART:
+      const productListToDelete =
+        state.cart?.productListDetail.map((value) =>
+          Object.assign({}, value)
+        ) || [];
       return {
-        cart: {},
+        cart: {
+          ...state.cart,
+          productListDetail: productListToDelete.filter(
+            (product) => product.productId !== action.payload.data
+          ),
+          total: caculateTotal(
+            productListToDelete.filter(
+              (product) => product.productId !== action.payload.data
+            )
+          ),
+        },
         status: "",
       };
     case Cart.ADD_PRODUCT_TO_CART:
@@ -58,6 +80,7 @@ const cartReducer = (state = initialState, action) => {
           cart: {
             ...state.cart,
             productListDetail: productListToUpdate,
+            total: caculateTotal(productListToUpdate),
           },
           status: state.status,
         };
@@ -73,6 +96,7 @@ const cartReducer = (state = initialState, action) => {
           cart: {
             ...state.cart,
             productListDetail: productListToUpdate,
+            total: caculateTotal(productListToUpdate),
           },
           status: state.status,
         };

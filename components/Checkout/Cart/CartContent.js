@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { updateProductInCart } from "../../../redux/actions/cartAction";
 import { deleteProductInCart } from "../../../redux/actions/cartAction";
 import { useState } from "react-redux";
@@ -44,14 +44,11 @@ export default function CartContent({ cart, orderNo }) {
       })
     );
   };
-  // const [currentProduct, setCurrentProduct] = useState("");
-  const reSetCurrentProduct = () => {
-    setCurrentProduct(null);
-  };
 
-  const deleteProduct = () => {
+  const deleteProduct = (data) => {
     // reSetCurrentProduct();
-    dispatch(deleteProductInCart());
+    // console.log(data)
+    dispatch(deleteProductInCart(data.productId));
     console.log("Hi");
   };
 
@@ -103,7 +100,7 @@ export default function CartContent({ cart, orderNo }) {
               href="#"
               className={styles.removeButton}
               onClick={() => {
-                deleteProduct();
+                deleteProduct(data);
               }}
             >
               {" "}

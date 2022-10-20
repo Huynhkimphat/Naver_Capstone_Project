@@ -14,9 +14,9 @@ const updateProductInCart = (data) => ({
   type: Types.UPDATE_PRODUCT_IN_CART,
   payload: { data },
 });
-const deleteProductInCart = () => ({
+const deleteProductInCart = (data) => ({
   type: Types.DELETE_PRODUCT_IN_CART,
-  payload: {},
+  payload: {data},
 });
 
 export { setCart, addProductToCart, updateProductInCart, deleteProductInCart };
