@@ -5,10 +5,11 @@ import "primeicons/primeicons.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css"
 import "primereact/resources/primereact.css";
 import { Button } from 'primereact/button';
-import userService from '../../../services/api/admin/userService';
+// import userService from '../../../services/api/admin/userService';
+import userService from '../../../services/api/userService';
 import chatService from '../../../services/api/admin/chatService';
 import { useSelector } from 'react-redux';
-import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query, Timestamp, where } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 import { useInView } from 'framer-motion';
 import { RiChatSmile2Fill } from 'react-icons/ri'
@@ -18,7 +19,7 @@ const styles = {
     wrapper: 'mx-auto w-full p-4 flex shadow-lg rounded-md gap-4',
     content: 'w-full h-[65vh] justify-between  flex gap-2',
     userContainer: 'w-[30%] h-[96%] p-2 bg-admin_color rounded-md overflow-y-scroll flex flex-col gap-2 scrollbar-hide',
-    user: 'flex items-center justify-start gap-2 bg-white p-2 rounded-md cursor-pointer',
+    user: 'flex items-center justify-start gap-2 bg-white p-2 rounded-md cursor-pointer transition-opacity',
     messageContainer: ' overflow-y-auto flex w-[70%] h-full flex-col p-4 gap-2 justify-between',
     message: 'h-[85%] flex flex-col gap-4 pt-4 overflow-y-scroll px-2 border-2 border-admin_color rounded-md',
     inputContainer: 'h-[15%] relative flex justify-around items-center p-2 border-2 rounded-md',
@@ -78,6 +79,10 @@ const Chat = () => {
                 sender: user.email,
                 createdOn: Timestamp.now()
             })
+            userService.updateUser({
+                ...chooseUser,
+                lastMessage: Timestamp.now()
+            })
             setInputMsg('');
             scrollToBottom();
         }
@@ -88,6 +93,12 @@ const Chat = () => {
                     sender: user.email,
                     createdOn: Timestamp.now()
                 })
+                userService.updateUser({
+                    ...chooseUser,
+                    lastMessage: Timestamp.now()
+                })
+                setInputMsg('');
+                scrollToBottom();
             }
         }
     }
@@ -107,7 +118,21 @@ const Chat = () => {
         setInputMsg(inputMsg + emojiData.unified)
     }
     useEffect(() => {
-        userService.getAllUsers().then(res => setUsers(res))
+        // userService.getAllUsers().then(res => setUsers(res))
+
+        // Text Zone
+        const q = query(collection(db, "users"), orderBy("lastMessage"));
+        const unsub = onSnapshot(q, (querySnapshot) => {
+            const newData = [];
+            querySnapshot.forEach((doc) => {
+                newData.push(doc.data());
+            });
+            setUsers(newData.reverse())
+        })
+        return () => {
+            unsub()
+        }
+        // 
     }, [])
     useEffect(() => {
         chatService.getAllMessagesById(chooseUser.email).then(res => {

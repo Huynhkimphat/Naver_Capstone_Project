@@ -5,6 +5,7 @@ const initialState = {
   email: "",
   status: "",
   selectedUser: {},
+  userListener: []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -14,6 +15,7 @@ const userReducer = (state = initialState, action) => {
         user: state.user,
         status: state.status,
         email: action.payload.data,
+        userListener: state.userListener,
         selectedUser: state.selectedUser,
       };
     case User.SET_USER:
@@ -21,6 +23,7 @@ const userReducer = (state = initialState, action) => {
         user: action.payload.data,
         status: state.status,
         email: state.email,
+        userListener: state.userListener,
         selectedUser: state.selectedUser,
       };
     case User.RESET_USER:
@@ -28,6 +31,7 @@ const userReducer = (state = initialState, action) => {
         user: [],
         status: "",
         email: "",
+        userListener: state.userListener,
         selectedUser: {},
       };
     case User.CHOOSE_USER:
@@ -35,7 +39,16 @@ const userReducer = (state = initialState, action) => {
         user: state.user,
         status: state.status,
         email: state.email,
+        userListener: state.userListener,
         selectedUser: action.payload.data,
+      }
+    case User.LISTEN_USER:
+      return {
+        user: state.user,
+        status: state.status,
+        email: state.email,
+        userListener: action.payload.data,
+        selectedUser: state.selectedUser,
       }
     default:
       return state;
