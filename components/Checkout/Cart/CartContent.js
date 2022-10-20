@@ -3,7 +3,8 @@ import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { updateProductInCart } from "../../../redux/actions/cartAction";
-
+import { deleteProductInCart } from "../../../redux/actions/cartAction";
+import { useState } from "react-redux";
 const styles = {
   tableContentContainer: "flex items-center hover:bg-gray-100 -mx-8 px-6 py-5",
   contentDetail: "flex w-1/2",
@@ -42,6 +43,16 @@ export default function CartContent({ cart, orderNo }) {
         price: data.price,
       })
     );
+  };
+  // const [currentProduct, setCurrentProduct] = useState("");
+  const reSetCurrentProduct = () => {
+    setCurrentProduct(null);
+  };
+
+  const deleteProduct = () => {
+    // reSetCurrentProduct();
+    dispatch(deleteProductInCart());
+    console.log("Hi");
   };
 
   return (
@@ -88,9 +99,16 @@ export default function CartContent({ cart, orderNo }) {
                 }}
               />
             </div>
-            <div href="#" className={styles.removeButton}>
+            <button
+              href="#"
+              className={styles.removeButton}
+              onClick={() => {
+                deleteProduct();
+              }}
+            >
+              {" "}
               Remove
-            </div>
+            </button>
           </div>
           <span className={styles.contentAmount}>{data.total} VND</span>
         </div>
