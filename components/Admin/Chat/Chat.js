@@ -20,7 +20,7 @@ const styles = {
     userContainer: 'w-[30%] h-[96%] p-2 bg-admin_color rounded-md overflow-y-scroll flex flex-col gap-2 scrollbar-hide',
     user: 'flex items-center justify-start gap-2 bg-white p-2 rounded-md cursor-pointer',
     messageContainer: ' overflow-y-auto flex w-[70%] h-full flex-col p-4 gap-2 justify-between',
-    message: 'h-[85%] flex flex-col gap-4 overflow-y-scroll px-2 border-2 border-admin_color rounded-md',
+    message: 'h-[85%] flex flex-col gap-4 pt-4 overflow-y-scroll px-2 border-2 border-admin_color rounded-md',
     inputContainer: 'h-[15%] relative flex justify-around items-center p-2 border-2 rounded-md',
     btnSend: "w-[10%] flex items-center justify-center",
     msg: 'w-full flex text-white',
@@ -39,6 +39,9 @@ const Chat = () => {
     const [hide, setHide] = useState(true)
     const msgRef = useRef(null)
     const isInView = useInView(msgRef);
+    let timeFlag = "";
+    let checkTime = false;
+    let today = new Date().toDateString();
     const printUsers = users.map((user, index) => {
         return (
             <div key={user?.email} className={styles.user} onClick={() => setChooseUser(user)}>
@@ -48,13 +51,24 @@ const Chat = () => {
         )
     })
     const printMessages = messages?.map((message, index) => {
+        const time = message?.createdOn.toDate();
+        const date = time.toDateString();
+        const msgTime = time.toLocaleTimeString([], { timeStyle: 'short' });
+        const isToday = today === date ? true : false;
+        checkTime = timeFlag != date ? true : false;
+        timeFlag = checkTime ? date : timeFlag;
         return (
-            <div key={index} className={`${styles.msg} ${message?.sender != user?.email ? styles.msgLeft : styles.msgRight} ${index == 0 ? "mt-auto" : ""}`}>
-                <div className={`max-w-[60%] flex flex-col flex-wrap`}>
-                    <p className={`break-all p-2 rounded-md ${message?.sender == user?.email ? "bg-admin_second_color" : "bg-slate-400"}`}>{message?.content}</p>
-                    <span className=' text-slate-400'>9:93 PM</span>
+            <>
+                <div className={`flex border-b-2 border-admin_color justify-center ${checkTime ? "block" : "hidden"}`}>
+                    <h1 className='text-white bg-admin_color rounded-t-lg px-2'>{isToday ? "Today" : date}</h1>
                 </div>
-            </div>
+                <div key={index} className={`${styles.msg} ${message?.sender != user?.email ? styles.msgLeft : styles.msgRight} ${index == 0 ? "mt-auto" : ""}`}>
+                    <div className={`max-w-[60%] flex flex-col flex-wrap`}>
+                        <p className={`break-all p-2 rounded-md ${message?.sender == user?.email ? "bg-admin_second_color" : "bg-slate-400"}`}>{message?.content}</p>
+                        <span className=' text-slate-400 text-sm'>{msgTime}</span>
+                    </div>
+                </div>
+            </>
         )
     })
     const handleSend = () => {
@@ -134,7 +148,7 @@ const Chat = () => {
                     {printUsers}
                 </div>
                 <div className={styles.messageContainer}>
-                    <div className={`${styles.message} ${hide ? "items-center scrollbar-hide": ""}`}>
+                    <div className={`${styles.message} ${hide ? "items-center scrollbar-hide" : ""}`}>
                         {printMessages}
                         <div style={{ float: "left", clear: "both" }} id='last' ref={msgRef}></div>
                         <div className={`h-[70%] w-[50%] flex flex-col items-center gap-8 ${hide ? "block" : "hidden"}`}>
