@@ -11,12 +11,10 @@ import { useRouter } from "next/router";
 import { db } from "../../../lib/firebase";
 import { collection, doc, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import notificationService from "../../../services/api/admin/notificationService";
-import { onListenUser } from "../../../redux/actions/userAction";
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
 import { Toast } from 'primereact/toast';
-import { adminSend } from "../../../redux/actions/chatAction";
 
 const styles = {
   wrapper: "w-full select-none",
