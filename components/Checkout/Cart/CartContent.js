@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { HiPlus } from "react-icons/hi";
 import { HiMinus } from "react-icons/hi";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateProductInCart } from "../../../redux/actions/cartAction";
 import { deleteProductInCart } from "../../../redux/actions/cartAction";
 import { useState } from "react-redux";
@@ -69,7 +69,14 @@ export default function CartContent({ cart, orderNo }) {
             <div className={styles.contentDetailContainer}>
               <span className={styles.productName}>{data.productName}</span>
               <span className={styles.brandName}>{data.brandName}</span>
-              <span className={styles.price}>{data.price} VND</span>
+
+              <span className={styles.price}>
+                {new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(data.price)}{" "}
+                VND
+              </span>
             </div>
           </div>
           <div className={styles.contentQuantity}>
@@ -107,7 +114,13 @@ export default function CartContent({ cart, orderNo }) {
               Remove
             </button>
           </div>
-          <span className={styles.contentAmount}>{data.total} VND</span>
+          <span className={styles.contentAmount}>
+            {new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }).format(data.total)}
+            VND
+          </span>
         </div>
       ))}
     </div>

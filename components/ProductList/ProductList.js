@@ -56,9 +56,8 @@ const ProductList = ({
   useEffect(() => {
     setProductListByName(
       productNameSearch
-        ? productListByCate?.filter(
-            (product) =>
-              product.name.toLowerCase().includes(productNameSearch.toLowerCase())
+        ? productListByCate?.filter((product) =>
+            product.name.toLowerCase().includes(productNameSearch.toLowerCase())
           )
         : productListByCate
     );
@@ -132,7 +131,13 @@ const ProductList = ({
               </Link>
               <div className={styles.name}></div>
               <div className={styles.price}>
-                <span className={styles.textColorHover}>{item.price}</span>
+                <span className={styles.textColorHover}>
+                  {" "}
+                  {new Intl.NumberFormat("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  }).format(item.price)}
+                </span>
               </div>
             </div>
           ))
