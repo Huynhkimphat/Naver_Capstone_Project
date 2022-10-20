@@ -12,6 +12,11 @@ const cartReducer = (state = initialState, action) => {
         cart: action.payload.data[0],
         status: state.status,
       };
+    case Cart.DELETE_PRODUCT_IN_CART:
+      return {
+        cart: {},
+        status: "",
+      };
     case Cart.ADD_PRODUCT_TO_CART:
       const productInfo = action.payload.data;
       let isExist = 0;
