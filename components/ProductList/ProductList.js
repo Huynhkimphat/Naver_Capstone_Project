@@ -25,6 +25,7 @@ const ProductList = ({
   viewCollection = false,
   category,
   priceDescSort = 2,
+  dateDescSort = 2,
   productNameSearch,
 }) => {
   const router = useRouter();
@@ -56,9 +57,8 @@ const ProductList = ({
   useEffect(() => {
     setProductListByName(
       productNameSearch
-        ? productListByCate?.filter(
-            (product) =>
-              product.name.toLowerCase().includes(productNameSearch.toLowerCase())
+        ? productListByCate?.filter((product) =>
+            product.name.toLowerCase().includes(productNameSearch.toLowerCase())
           )
         : productListByCate
     );
@@ -86,6 +86,22 @@ const ProductList = ({
       );
     }
   }, [priceDescSort]);
+
+  useEffect(() => {
+    if (dateDescSort == 0) {
+      const cateList = [...productListByName];
+      setProductListByName(
+        cateList.sort((a, b) => Number(a.createdOn) - Number(b.createdOn))
+      );
+    }
+    // console.log("Hi");
+    if (dateDescSort == 1) {
+      const cateList = [...productListByName];
+      setProductListByName(
+        cateList.sort((a, b) => Number(a.createdOn) - Number(b.createdOn))
+      );
+    }
+  }, [dateDescSort]);
 
   const loadMore = () => {
     if (viewCollection) {
