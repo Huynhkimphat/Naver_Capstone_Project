@@ -1,6 +1,6 @@
 import { setDoc, doc, collection, updateDoc, serverTimestamp, arrayUnion, query, where, documentId, getDoc, getDocs} from "firebase/firestore";
 import { db, storage } from "../../../lib/firebase";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
+import { getDownloadURL, ref, uploadBytesResumable,deleteObject } from "firebase/storage"
 import { async } from "@firebase/util";
 
 const productService = {
@@ -71,14 +71,44 @@ const productService = {
 
     },
 
-    async UpdateProduct(productID,dataUpdate) {
-        const washingtonRef = doc(db, "product",productID);
-        await updateDoc(washingtonRef, {
-            ...dataUpdate,
-            quantity: Number(dataUpdate.quantity),
-            price: Number(dataUpdate.price)
+    async UpdateProduct(productID, dataUpdate, updateImage) {
+        const docRef = doc(db, "product", productID);
+        await updateDoc(docRef, dataUpdate);
+        const newDocRef = doc(collection(db, "product"));
+        //update image
+        updateImage.forEach((image, index) => {
+            //const imgType = image.type.toString().split("/")[1];
+            const storageRef = ref(storage, `product/${productID}/${image.name.toString()}`);
+            const uploadTask = uploadBytesResumable(storageRef, image)
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const prog = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                },
+                (error) => console.log(error),
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref)
+                        .then(async (url) => {
+                            const imgName = `img_${index}`;
+                            await updateDoc(docRef, {
+                                images: arrayUnion(url)
+                            })
+                        })
+                }
+            )
         });
 
+    },
+    async DeleteProductImage(imgURL) {
+        if (imgURL === "") {
+            console.log("Nothing image to update")
+        } else {
+            //delete image
+            const desertRef = ref(storage, imgURL);
+            await deleteObject(desertRef)
+        }
     },
 
 }
