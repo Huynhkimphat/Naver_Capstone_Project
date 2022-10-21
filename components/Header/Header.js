@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from 'framer-motion'
 import { useRouter } from "next/router";
 import Logo from "../../static/Logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -21,7 +22,7 @@ import { setCart } from "../../redux/actions/cartAction";
 import AppSelector from "../../redux/selector";
 
 const styles = {
-  wrapper: "px-8 py-2",
+  wrapper: "px-8 py-2 shadow-md",
   content: "flex-1 flex justify-between",
   logoContainer: "flex items-center",
   logo: "cursor-pointer object-contain",
@@ -86,20 +87,21 @@ const Header = () => {
   }, []);
 
   const categoryRender = categoryList.map((item) => (
-    <div
+    <motion.div
+      whileHover={{ scale: 1.2 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
       key={item.name}
-      className={`${styles.button} ${
-        router.query.slug?.toString().includes(item.name.toLowerCase())
-          ? styles.activeButton
-          : ""
-      }`}
+      className={`${styles.button} ${router.query.slug?.toString().includes(item.name.toLowerCase())
+        ? styles.activeButton
+        : ""
+        }`}
       onClick={() => {
         handleHeaderNavClick(item);
       }}
       value={item.name}
     >
       {item.name}
-    </div>
+    </motion.div>
   ));
   return (
     <div className={styles.wrapper}>
@@ -118,23 +120,34 @@ const Header = () => {
           <div className={styles.searchIcon}>
             <AiOutlineSearch />
           </div>
-          <Link href="/checkout" className={styles.cartIcon}>
-            <AiOutlineShoppingCart />
-          </Link>
+          <motion.div
+            className="cursor-pointer"
+            whileHover={{ scale: 1.2 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}>
+            <Link href="/checkout" className={styles.cartIcon}>
+              <AiOutlineShoppingCart />
+            </Link>
+          </motion.div>
           {!currentUser ? (
             <Link href="/login" className={styles.userIcon}>
               Log In
             </Link>
           ) : (
-            <Link href="/user" className={""}>
-              <Image
-                className={styles.userImage}
-                src={`https://res.cloudinary.com/demo/image/fetch/${userImageUrl}`}
-                width={20}
-                height={20}
-                alt={""}
-              />
-            </Link>
+            <motion.div
+              className="h-fit cursor-pointer"
+              whileHover={{ scale: 1.3 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <Link href="/user" className={""}>
+                <Image
+                  className={styles.userImage}
+                  src={`https://res.cloudinary.com/demo/image/fetch/${userImageUrl}`}
+                  width={20}
+                  height={20}
+                  alt={""}
+                />
+              </Link>
+            </motion.div>
           )}
 
           <div className={styles.hamburgerMenuIcon}>
@@ -145,10 +158,12 @@ const Header = () => {
         </div>
       </div>
       {/* Navbar For  Mobile*/}
-      {isOpenHamburgerMenu && (
-        <div className={styles.headerNavMobile}>{categoryRender}</div>
-      )}
-    </div>
+      {
+        isOpenHamburgerMenu && (
+          <div className={styles.headerNavMobile}>{categoryRender}</div>
+        )
+      }
+    </div >
   );
 };
 

@@ -14,17 +14,18 @@ import chatService from '../../services/api/admin/chatService';
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import userService from '../../services/api/userService';
+import Scroll from '../Admin/Animation/Scroll'
 
 const styles = {
     popupContainer: "fixed right-8 bottom-8 z-50",
     chatForm: "absolute transition duration-1000 flex flex-col justify-between bottom-4 sm:bottom-0 right-2 w-[300px] h-[85vh] sm:h-[300px] bg-white rounded-xl shadow-2xl",
     header: 'w-full h-[10%] sm:h-[14%] bg-admin_color px-3 sm:px-2 flex items-center rounded-xl justify-between',
     headerRow: 'w-[80%] flex items-center text-white gap-3 sm:gap-2',
-    bodyChat: 'w-full h-[80%] sm:h-[72%] px-3 py-1 sm:px-2 flex flex-col overflow-y-scroll gap-2 shadow-lg',
+    bodyChat: 'w-full h-[80%] sm:h-[72%] px-3 py-1 sm:px-2 flex flex-col overflow-y-scroll gap-2 shadow-lg overflow-x-hidden',
     inputChat: 'w-full h-[10%] sm:h-[14%] flex justify-between shadow-xl rounded-b-md',
-    inputText: ' w-[90%] rounded-b-lg px-2',
+    inputText: ' w-full rounded-b-lg px-2',
     btnSend: 'w-[10%] flex justify-center',
-    popup: "flex gap-3 justify-cente items-center bg-admin_color p-4 rounded-full cursor-pointer select-none shadow-lg shadow-indigo-500/40",
+    popup: "animate-bounce flex gap-3 justify-cente items-center bg-admin_color p-4 rounded-full cursor-pointer select-none shadow-lg shadow-indigo-500/40",
     textPop: 'text-white font-semibold',
     msgContainer: "flex w-full px-2",
     msg: "max-w-[60%] text-white",
@@ -120,7 +121,7 @@ const Chat = () => {
         checkTime = timeFlag != date ? true : false;
         timeFlag = checkTime ? date : timeFlag;
         return (
-            <>
+            <Scroll loop={"all"} key={index} scroll={user?.email == msg?.sender ? "translateX(-400px)" : "translateX(400px)"}>
                 <div className={`w-full flex justify-center border-b-2 border-admin_color text-center my-4 ${checkTime ? "block" : "hidden"}`}>
                     <h1 className='text-xs text-white bg-admin_color px-2 py-1 rounded-t-lg'>{isToday ? "Today" : date}</h1>
                 </div>
@@ -135,7 +136,7 @@ const Chat = () => {
                         <span className='text-slate-500 text-sm'>{msgTime}</span>
                     </div>
                 </div>
-            </>
+            </Scroll>
         )
     })
     return (
@@ -173,7 +174,13 @@ const Chat = () => {
                             <div ref={msgRef}></div>
                         </div>
                         {/* Input Messages */}
-                        <div className={styles.inputChat}>
+                        <span className="p-input-icon-right w-full">
+
+                            <motion.i
+                                whileHover={{ scale: 1.2 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                className="pi pi-send cursor-pointer"
+                                onClick={handleSend} />
                             <InputText
                                 className={styles.inputText}
                                 placeholder='Type your message'
@@ -182,7 +189,8 @@ const Chat = () => {
                                 onKeyDown={handleEnter}
                             >
                             </InputText>
-                            <motion.div
+                        </span>
+                        {/* <motion.div
                                 whileHover={{ scale: 1.1 }}
                                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
                             >
@@ -193,8 +201,8 @@ const Chat = () => {
                                 >
                                     <i className="pi pi-send"></i>
                                 </Button>
-                            </motion.div>
-                        </div>
+                            </motion.div> */}
+
 
                     </motion.div>
                 ) : (
