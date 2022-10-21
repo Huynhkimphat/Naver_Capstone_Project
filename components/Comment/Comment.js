@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
@@ -7,7 +7,9 @@ import { Dropdown } from 'primereact/dropdown';
 import Avt from '../../static/UserProfile.jpg'
 import Image from 'next/image';
 import { BiLike, BiDislike } from 'react-icons/bi'
+import { useSelector } from 'react-redux';
 const Comment = (props) => {
+    const user = useSelector(state => state.rootReducer.user.user)
     const [searchInput, setSearchInput] = useState('');
     const [commentInput, setCommentInput] = useState('')
     const printListComments = [1, 2, 3, 4, 5, 6, 7].map((item, index) => {
@@ -56,9 +58,9 @@ const Comment = (props) => {
                 {/* Comment */}
                 {printListComments}
             </div>
-            <span className="p-input-icon-right w-full">
-                <i className="pi pi-send cursor-pointer"/>
-                <InputText className='w-full' value={commentInput} onChange={(e) => setCommentInput(e.target.value)} placeholder="Say something here..." />
+            <span className={`p-input-icon-right w-full`}>
+                <i className={`pi pi-send cursor-pointer ${user?.email ? "block" : "hidden"}`}/>
+                <InputText className={`w-full ${user?.email ? "block" : "hidden"}`} value={commentInput} onChange={(e) => setCommentInput(e.target.value)} placeholder="Say something here..." />
             </span>
         </div>
     );
