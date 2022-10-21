@@ -71,12 +71,9 @@ const ProductDetail = (props) => {
 
   }, []);
 
-
   useEffect(() => {
     setCreateObjectURL(information?.images)
   }, [information?.images]);
-
-
 
   // Upload images from Computer to Browser & Show all images in Form
   const uploadToClient = (event) => {
@@ -85,8 +82,6 @@ const ProductDetail = (props) => {
       const i = event.target.files[0];
       setImages([...images,i]);
       setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
-
-
     }
   };
   // Remove selected image
@@ -100,7 +95,6 @@ const ProductDetail = (props) => {
     setCreateObjectURL([...createObjectURL]);
   }
 
-
   const imageList = createObjectURL?.map((image, index) => {
     return (
         <div key={index} className=" flex flex-col gap-1 items-end bg-admin_color px-1 rounded-md pt-1">
@@ -111,7 +105,6 @@ const ProductDetail = (props) => {
         </div>
     )
   })
-
 
   const handleChange = (e) => {
     const data = e.target.name in information.configuration ? {
@@ -127,18 +120,12 @@ const ProductDetail = (props) => {
     setInformation(data);
   }
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     productService.UpdateProduct(props.id, information,images);
     productService.DeleteProductImage(removeLink)
     setRemoveLink("");
     setImages([]);
-   /* setInformation(initialProduct);
-    setImages([]);
-    setCreateObjectURL([]);*/
-
-
     showBottomLeft()
   }
   const handleCtChange = (e) => {
@@ -173,7 +160,6 @@ const ProductDetail = (props) => {
 
     toastBL.current.show({severity:'success', summary: 'Successfully update', detail:'update new' +
           ' product', life: 3000});
-
   }
   return (
       <div className={styles.wrapper}>
@@ -346,9 +332,7 @@ const ProductDetail = (props) => {
                 onChange={handleChange}
             />
             <button className={styles.submit} type="submit">
-
               <span>Update Product</span>
-
             </button>
           </form>
         </div>
