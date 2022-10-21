@@ -54,7 +54,6 @@ const ProductDetail = (props) => {
   }, []);
 
 
-
   const toastBL = useRef(null);
   const [toggle, setToggle] = useState(false);
   const [inputCt, setInputCt] = useState('');
@@ -71,13 +70,13 @@ const ProductDetail = (props) => {
     });
 
   }, []);
-  console.log("thong tin la",information)
+
 
   useEffect(() => {
     setCreateObjectURL(information?.images)
   }, [information?.images]);
 
-   console.log("hinhanhla",createObjectURL)
+
 
   // Upload images from Computer to Browser & Show all images in Form
   const uploadToClient = (event) => {
@@ -128,7 +127,7 @@ const ProductDetail = (props) => {
     setInformation(data);
   }
 
-  console.log("hinh anh duoc them moi:", images)
+
   const handleSubmit = (e) => {
     e.preventDefault();
     productService.UpdateProduct(props.id, information,images);
