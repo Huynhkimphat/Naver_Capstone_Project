@@ -92,14 +92,14 @@ const ProductList = ({
     if (dateDescSort == 0) {
       const cateList = [...productListByName];
       setProductListByName(
-        cateList.sort((a, b) => Number(a.createdOn) - Number(b.createdOn))
+        cateList.sort((a, b) => (Number(a.createdOn) > Number(b.createdOn) ? 1 : -1))
       );
     }
-    // console.log("Hi");
+   console.log(dateDescSort);
     if (dateDescSort == 1) {
       const cateList = [...productListByName];
       setProductListByName(
-        cateList.sort((a, b) => Number(a.createdOn) - Number(b.createdOn))
+        cateList.sort((a, b) => (Number(a.createdOn) > Number(b.createdOn) ? 1 : -1))
       );
     }
   }, [dateDescSort]);

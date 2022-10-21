@@ -13,8 +13,8 @@ const priceList = [
   { id: 2, name: "Acs", value: 1 },
 ];
 const dateList = [
-  { id: 3, name: "Newest", vavlue: 0 },
-  { id: 4, name: "Oldest", vavlue: 1 },
+  { id: 3, name: "Newest", value: 0 },
+  { id: 4, name: "Oldest", value:1},
 ];
 
 const Filter = ({ handleFilterPriceUpdate, handleFilterDateUpdate }) => {
@@ -53,7 +53,7 @@ const Filter = ({ handleFilterPriceUpdate, handleFilterDateUpdate }) => {
           >
             <option className={styles.defaultOption}>Date Added</option>
             {dateList.map((item) => (
-              <option key={item.id} value={item.name}>
+              <option key={item.id} value={item.value}>
                 {item.name}
               </option>
             ))}
