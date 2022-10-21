@@ -106,6 +106,9 @@ const Comment = (props) => {
         const unsub = onSnapshot(ref, (doc) => {
             setComments(doc.data()?.comment.reverse())
         })
+        return () => {
+            unsub();
+        }
     }, [db, props.productId])
     return (
         <div className=' w-4/5 mx-auto px-8 pt-10 pb-4 flex flex-col gap-4 items-center border-2 rounded-lg'>
@@ -122,7 +125,7 @@ const Comment = (props) => {
                 <Dropdown optionLabel="name" placeholder="Filter" />
             </div>
             {/* List Comments */}
-            <div className='w-full h-72 flex flex-col gap-4 overflow-y-auto'>
+            <div className='w-full max-h-72 flex flex-col gap-4 overflow-y-auto'>
                 {/* Comment */}
                 <div ref={cmtRef}></div>
                 {printListComments}
