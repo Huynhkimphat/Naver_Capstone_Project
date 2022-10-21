@@ -272,11 +272,7 @@ const AdProducts = (props) => {
                             textAlign: "center"
                         }}
                     ></Column>
-                    <Column
-                        rowEditor
-                        headerStyle={{ width: "10%", minWidth: "8rem" }}
-                        bodyStyle={{ textAlign: "center" }}
-                    ></Column>
+                    
                     <Column
                         field="detail"
                         headerStyle={{ width: "10%", minWidth: "1rem" }}
