@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import AppSelector from "../../redux/selector";
 import { Puff } from "react-loader-spinner";
+import Comment from "../../components/Comment/Comment";
 
 const styles = {
     wrapper: "container mx-auto mt-10",
@@ -24,6 +25,7 @@ export default function ProductDetailPage() {
                 <div className={styles.wrapper}>
                     <ProductDetail product={product} />
                     <ProductList category={product[0].category} viewCollection={true} />
+                    <Comment></Comment>
                     <AttentionContent />
                     <Banner />
                 </div>
