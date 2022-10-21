@@ -106,15 +106,21 @@ const Header = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <Link className={styles.logoContainer} href="/">
-          <Image
-            className={styles.logo}
-            src={Logo}
-            height={30}
-            width={65}
-            alt={""}
-          />
-        </Link>
+        <motion.div
+          className="flex items-center"
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          <Link className={styles.logoContainer} href="/">
+            <Image
+              className={styles.logo}
+              src={Logo}
+              height={30}
+              width={65}
+              alt={""}
+            />
+          </Link>
+        </motion.div>
         <div className={styles.headerNav}>{categoryRender}</div>
         <div className={styles.rightNav}>
           <div className={styles.searchIcon}>
@@ -134,7 +140,7 @@ const Header = () => {
             </Link>
           ) : (
             <motion.div
-              className="h-fit cursor-pointer"
+              className="h-fit cursor-pointer flex items-center"
               whileHover={{ scale: 1.3 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
