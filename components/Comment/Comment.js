@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
@@ -8,37 +8,105 @@ import Avt from '../../static/UserProfile.jpg'
 import Image from 'next/image';
 import { BiLike, BiDislike } from 'react-icons/bi'
 import { useSelector } from 'react-redux';
+import commentService from '../../services/api/commentService';
+import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
+import { db } from '../../lib/firebase';
+import { data } from 'autoprefixer';
 const Comment = (props) => {
     const user = useSelector(state => state.rootReducer.user.user)
     const [searchInput, setSearchInput] = useState('');
-    const [commentInput, setCommentInput] = useState('')
-    const printListComments = [1, 2, 3, 4, 5, 6, 7].map((item, index) => {
+    const [commentInput, setCommentInput] = useState('');
+    const [isScrollBot, setIsScrollBot] = useState(false);
+    const cmtRef = useRef(null)
+    const [comments, setComments] = useState([]) //This very important
+    // Convert long number to string k m b
+    const intToString  = (value) => {
+        var suffixes = ["", "k", "m", "b","t"];
+        var suffixNum = Math.floor((""+value).length/3);
+        var shortValue = parseFloat((suffixNum != 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(2));
+        if (shortValue % 1 != 0) {
+            shortValue = shortValue.toFixed(1);
+        }
+        return shortValue+suffixes[suffixNum];
+    }
+    const printListComments = comments?.map((comment, index) => {
+        const { commenter } = comment;
+        const date = comment?.createdAt.toDate().toDateString();
+        const time = comment?.createdAt.toDate().toLocaleTimeString([], { timeStyle: 'short' });
+        const like = intToString(comment?.like)
+        const dislike = intToString(comment?.dislike)
         return (
             <div key={index} className='flex flex-col w-full gap-4 border-b-2 py-4'>
                 <div className=' w-10 h-10 rounded-full object-cover'>
-                    <Image className='rounded-full' src={Avt} alt=""></Image>
+                    <Image className='rounded-full' src={commenter?.imageUrl} width={50} height={50} alt=""></Image>
                 </div>
                 {/* Name - Email - Time Commented */}
                 <div className='flex flex-col sm:flex-row flex-wrap justify-between'>
                     <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
-                        <span className='font-semibold text-lg'>Nguyễn Đức Hiếu 👨‍🦱</span>
-                        <span className='text-slate-500'>hieulechanhkk@gmail.com 📧</span>
+                        <span className='font-semibold text-lg'>{commenter?.name} 👨‍🦱</span>
+                        <span className='text-slate-500'>{commenter?.email} 📧</span>
                     </div>
-                    <span>17 Aug 1954 📅</span>
+                    <span className='text-sm text-slate-500'>{date} - {time}🕛</span>
                 </div>
                 <div>
-                    <p>Lorem ipsum dolor sit 👋, amet consectetur adipisicing elit. Delectus, ipsum. Corrupti harum dolorum incidunt laborum ipsum, voluptatem explicabo exercitationem? Iste, beatae? Nisi consequatur accusantium, maiores magni sunt reiciendis ea hic.</p>
+                    <p>{comment?.content}</p>
                 </div>
                 <div className='flex items-center justify-between'>
                     <span className='text-[#0B7AF5] font-semibold'>Reply</span>
                     <div className='flex gap-3'>
-                        <BiLike className='cursor-pointer' size={20}></BiLike>
-                        <BiDislike className='cursor-pointer' size={20}></BiDislike>
+                        <div className='flex flex-col items-center'>
+                            <BiLike className='cursor-pointer' size={20}></BiLike>
+                            <span className='text-xs'>{like}</span>
+                        </div>
+                        <div className='flex flex-col items-center'>
+                            <BiDislike className='cursor-pointer' size={20}></BiDislike>
+                            <span className='text-xs'>{dislike}</span>
+                        </div>
                     </div>
                 </div>
             </div>
         )
     })
+    const scrollToTop = () => {
+        cmtRef?.current?.scrollIntoView(
+            {
+                block: "center",
+                behavior: 'smooth'
+            })
+    }
+    const handleSendComment = () => {
+        if (commentInput) {
+            // Add a message to exist channel comment in firestore
+            const checkExist = comments?.length > 0 ? true : false;
+            const data = {
+                commenter: {
+                    name: user.name,
+                    email: user.email,
+                    imageUrl: user.imageUrl
+                },
+                content: commentInput,
+                createdAt: Timestamp.now(),
+                like: 0,
+                dislike: 0,
+                reply: [],
+            }
+            commentService.addComment(props.productId, data, checkExist)
+            // commentService.addComment()
+            scrollToTop();
+        }
+        setCommentInput('')
+    }
+    const handleEnter = (e) => {
+        if (e.key === "Enter")
+            handleSendComment()
+    }
+    // Get realtime comment
+    useEffect(() => {
+        const ref = doc(db, "comment", props.productId);
+        const unsub = onSnapshot(ref, (doc) => {
+            setComments(doc.data()?.comment.reverse())
+        })
+    }, [db, props.productId])
     return (
         <div className=' w-4/5 mx-auto px-8 pt-10 pb-4 flex flex-col gap-4 items-center border-2 rounded-lg'>
             {/* Search review */}
@@ -56,15 +124,20 @@ const Comment = (props) => {
             {/* List Comments */}
             <div className='w-full h-72 flex flex-col gap-4 overflow-y-auto'>
                 {/* Comment */}
+                <div ref={cmtRef}></div>
                 {printListComments}
             </div>
             <span className={`p-input-icon-right w-full ${user?.email ? "block" : "hidden"}`}>
                 {
                     user?.email ? (
-                        <i className="pi pi-send cursor-pointer"/>
+                        <i className="pi pi-send cursor-pointer" onClick={handleSendComment} />
                     ) : (<></>)
                 }
-                <InputText className={`w-full ${user?.email ? "block" : "hidden"}`} value={commentInput} onChange={(e) => setCommentInput(e.target.value)} placeholder="Say something here..." />
+                <InputText
+                    className={`w-full ${user?.email ? "block" : "hidden"}`}
+                    value={commentInput} onChange={(e) => setCommentInput(e.target.value)}
+                    onKeyDown={handleEnter}
+                    placeholder="Say something here..." />
             </span>
         </div>
     );
