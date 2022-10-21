@@ -58,8 +58,12 @@ const Comment = (props) => {
                 {/* Comment */}
                 {printListComments}
             </div>
-            <span className={`p-input-icon-right w-full`}>
-                <i className={`pi pi-send cursor-pointer ${user?.email ? "block" : "hidden"}`}/>
+            <span className={`p-input-icon-right w-full ${user?.email ? "block" : "hidden"}`}>
+                {
+                    user?.email ? (
+                        <i className="pi pi-send cursor-pointer"/>
+                    ) : (<></>)
+                }
                 <InputText className={`w-full ${user?.email ? "block" : "hidden"}`} value={commentInput} onChange={(e) => setCommentInput(e.target.value)} placeholder="Say something here..." />
             </span>
         </div>
