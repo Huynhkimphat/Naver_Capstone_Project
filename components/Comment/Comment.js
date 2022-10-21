@@ -11,7 +11,8 @@ import { useSelector } from 'react-redux';
 import commentService from '../../services/api/commentService';
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { data } from 'autoprefixer';
+import Scroll from '../Admin/Animation/Scroll';
+
 const Comment = (props) => {
     const user = useSelector(state => state.rootReducer.user.user)
     const [searchInput, setSearchInput] = useState('');
@@ -20,14 +21,14 @@ const Comment = (props) => {
     const cmtRef = useRef(null)
     const [comments, setComments] = useState([]) //This very important
     // Convert long number to string k m b
-    const intToString  = (value) => {
-        var suffixes = ["", "k", "m", "b","t"];
-        var suffixNum = Math.floor((""+value).length/3);
-        var shortValue = parseFloat((suffixNum != 0 ? (value / Math.pow(1000,suffixNum)) : value).toPrecision(2));
+    const intToString = (value) => {
+        var suffixes = ["", "k", "m", "b", "t"];
+        var suffixNum = Math.floor(("" + value).length / 3);
+        var shortValue = parseFloat((suffixNum != 0 ? (value / Math.pow(1000, suffixNum)) : value).toPrecision(2));
         if (shortValue % 1 != 0) {
             shortValue = shortValue.toFixed(1);
         }
-        return shortValue+suffixes[suffixNum];
+        return shortValue + suffixes[suffixNum];
     }
     const printListComments = comments?.map((comment, index) => {
         const { commenter } = comment;
@@ -36,35 +37,37 @@ const Comment = (props) => {
         const like = intToString(comment?.like)
         const dislike = intToString(comment?.dislike)
         return (
-            <div key={index} className='flex flex-col w-full gap-4 border-b-2 py-4'>
-                <div className=' w-10 h-10 rounded-full object-cover'>
-                    <Image className='rounded-full' src={commenter?.imageUrl} width={50} height={50} alt=""></Image>
-                </div>
-                {/* Name - Email - Time Commented */}
-                <div className='flex flex-col sm:flex-row flex-wrap justify-between'>
-                    <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
-                        <span className='font-semibold text-lg'>{commenter?.name} 👨‍🦱</span>
-                        <span className='text-slate-500'>{commenter?.email} 📧</span>
+            <Scroll loop={"all"} key={index} scroll={"translateY(60px)"}>
+                <div className='flex flex-col w-full gap-4 border-b-2 py-4'>
+                    <div className=' w-10 h-10 rounded-full object-cover'>
+                        <Image className='rounded-full' src={commenter?.imageUrl} width={50} height={50} alt=""></Image>
                     </div>
-                    <span className='text-sm text-slate-500'>{date} - {time}🕛</span>
-                </div>
-                <div>
-                    <p>{comment?.content}</p>
-                </div>
-                <div className='flex items-center justify-between'>
-                    <span className='text-[#0B7AF5] font-semibold'>Reply</span>
-                    <div className='flex gap-3'>
-                        <div className='flex flex-col items-center'>
-                            <BiLike className='cursor-pointer' size={20}></BiLike>
-                            <span className='text-xs'>{like}</span>
+                    {/* Name - Email - Time Commented */}
+                    <div className='flex flex-col sm:flex-row flex-wrap justify-between'>
+                        <div className='flex flex-col sm:flex-row sm:items-center gap-2'>
+                            <span className='font-semibold text-lg'>{commenter?.name} 👨‍🦱</span>
+                            <span className='text-slate-500'>{commenter?.email} 📧</span>
                         </div>
-                        <div className='flex flex-col items-center'>
-                            <BiDislike className='cursor-pointer' size={20}></BiDislike>
-                            <span className='text-xs'>{dislike}</span>
+                        <span className='text-sm text-slate-500'>{date} - {time}🕛</span>
+                    </div>
+                    <div>
+                        <p>{comment?.content}</p>
+                    </div>
+                    <div className='flex items-center justify-between'>
+                        <span className='text-[#0B7AF5] font-semibold'>Reply</span>
+                        <div className='flex gap-3'>
+                            <div className='flex flex-col items-center'>
+                                <BiLike className='cursor-pointer' size={20}></BiLike>
+                                <span className='text-xs'>{like}</span>
+                            </div>
+                            <div className='flex flex-col items-center'>
+                                <BiDislike className='cursor-pointer' size={20}></BiDislike>
+                                <span className='text-xs'>{dislike}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </Scroll>
         )
     })
     const scrollToTop = () => {
@@ -125,7 +128,7 @@ const Comment = (props) => {
                 <Dropdown optionLabel="name" placeholder="Filter" />
             </div>
             {/* List Comments */}
-            <div className='w-full max-h-72 flex flex-col gap-4 overflow-y-auto'>
+            <div className='w-full max-h-72 flex flex-col gap-4 overflow-y-auto overflow-x-hidden'>
                 {/* Comment */}
                 <div ref={cmtRef}></div>
                 {printListComments}
