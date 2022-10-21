@@ -25,7 +25,7 @@ export default function ProductDetailPage() {
                 <div className={styles.wrapper}>
                     <ProductDetail product={product} />
                     <ProductList category={product[0].category} viewCollection={true} />
-                    <Comment></Comment>
+                    <Comment productId={productId}></Comment>
                     <AttentionContent />
                     <Banner />
                 </div>
