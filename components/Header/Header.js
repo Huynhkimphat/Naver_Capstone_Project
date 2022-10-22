@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from 'framer-motion'
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Logo from "../../static/Logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -29,7 +29,7 @@ const styles = {
   rightNav: "px-4 flex items-center text-xl gap-3",
   hamburgerMenuIcon: "flex lg:hidden",
   searchIcon: "",
-  cartIcon: "",
+  cartIcon: "py-3",
   userIcon: "rounder-full",
   headerNav:
     "hidden lg:flex cursor-pointer items-center space-x-2 flex justify-center flex-col lg:flex-row ",
@@ -39,6 +39,8 @@ const styles = {
   activeButton: `text-bold text-[#FA4A0C]`,
   navMobileContainer: `flex text-xl gap-5 `,
   userImage: "rounded-full",
+  cartIconContainer: "flex",
+  numberProduct: "text-[10px] pb-4 text-bold",
 };
 
 const Header = () => {
@@ -91,10 +93,11 @@ const Header = () => {
       whileHover={{ scale: 1.2 }}
       transition={{ type: "spring", stiffness: 400, damping: 10 }}
       key={item.name}
-      className={`${styles.button} ${router.query.slug?.toString().includes(item.name.toLowerCase())
-        ? styles.activeButton
-        : ""
-        }`}
+      className={`${styles.button} ${
+        router.query.slug?.toString().includes(item.name.toLowerCase())
+          ? styles.activeButton
+          : ""
+      }`}
       onClick={() => {
         handleHeaderNavClick(item);
       }}
@@ -129,9 +132,16 @@ const Header = () => {
           <motion.div
             className="cursor-pointer"
             whileHover={{ scale: 1.2 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}>
-            <Link href="/checkout" className={styles.cartIcon}>
-              <AiOutlineShoppingCart />
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <Link href="/checkout">
+              <div className={styles.cartIconContainer}>
+                <div className={styles.cartIcon}>
+              
+                  <AiOutlineShoppingCart />
+                </div>
+                <div className={styles.numberProduct}>5</div>
+              </div>
             </Link>
           </motion.div>
           {!currentUser ? (
@@ -164,12 +174,10 @@ const Header = () => {
         </div>
       </div>
       {/* Navbar For  Mobile*/}
-      {
-        isOpenHamburgerMenu && (
-          <div className={styles.headerNavMobile}>{categoryRender}</div>
-        )
-      }
-    </div >
+      {isOpenHamburgerMenu && (
+        <div className={styles.headerNavMobile}>{categoryRender}</div>
+      )}
+    </div>
   );
 };
 
