@@ -12,6 +12,7 @@ import commentService from '../../services/api/commentService';
 import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import Scroll from '../Admin/Animation/Scroll';
+import { motion } from "framer-motion"
 
 const Comment = (props) => {
     const user = useSelector(state => state.rootReducer.user.user)
@@ -29,6 +30,17 @@ const Comment = (props) => {
             shortValue = shortValue.toFixed(1);
         }
         return shortValue + suffixes[suffixNum];
+    }
+    const updateLikeNDislike = (comment, index, type) => {
+        const data = type == "like" ? {
+            ...comment,
+            like: Number(comment.like + 1)
+        } : {
+            ...comment,
+            dislike: Number(comment.dislike + 1)
+        }
+        comments[index] = data;
+        commentService.updateLikeNDisLike(props.productId, comments.reverse())
     }
     const printListComments = comments?.map((comment, index) => {
         const { commenter } = comment;
@@ -54,20 +66,35 @@ const Comment = (props) => {
                         <p>{comment?.content}</p>
                     </div>
                     <div className='flex items-center justify-between'>
-                        <span className='text-[#0B7AF5] font-semibold'>Reply</span>
+                        <span className='text-[#0B7AF5] font-semibold select-none cursor-pointer'>Reply</span>
                         <div className='flex gap-3'>
-                            <div className='flex flex-col items-center'>
-                                <BiLike className='cursor-pointer' size={20}></BiLike>
-                                <span className='text-xs'>{like}</span>
-                            </div>
-                            <div className='flex flex-col items-center'>
-                                <BiDislike className='cursor-pointer' size={20}></BiDislike>
-                                <span className='text-xs'>{dislike}</span>
-                            </div>
+                            <motion.div
+                                whileTap={{ scale: 0.8 }}
+                                whileHover={{ scale: 1.1 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                onClick={() => updateLikeNDislike(comment, index, "like")}
+                                className='flex flex-col items-center cursor-pointer'>
+                                <BiLike
+                                    color='#0B7AF5'
+                                    size={20}
+                                ></BiLike>
+                                <span className='text-xs select-none text-[#0B7AF5]'>{like}</span>
+                            </motion.div>
+                            <motion.div
+                                whileTap={{ scale: 0.8 }}
+                                whileHover={{ scale: 1.1 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                onClick={() => updateLikeNDislike(comment, index, "dislike")}
+                                className='flex flex-col items-center cursor-pointer'>
+                                <BiDislike
+                                    color='#d50000'
+                                    size={20}></BiDislike>
+                                <span className='text-xs select-none text-[#d50000]'>{dislike}</span>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
-            </Scroll>
+            </Scroll >
         )
     })
     const scrollToTop = () => {
