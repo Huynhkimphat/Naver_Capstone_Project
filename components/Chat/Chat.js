@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { SiLivechat } from 'react-icons/si';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import nookies from 'nookies'
 import Image from 'next/image';
@@ -15,6 +15,7 @@ import { doc, onSnapshot, Timestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import userService from '../../services/api/userService';
 import Scroll from '../Admin/Animation/Scroll'
+import { chatNotification } from '../../redux/actions/chatAction';
 
 const styles = {
     popupContainer: "fixed right-8 bottom-8 z-50",
@@ -25,7 +26,7 @@ const styles = {
     inputChat: 'w-full h-[10%] sm:h-[14%] flex justify-between shadow-xl rounded-b-md',
     inputText: ' w-full rounded-b-lg px-2',
     btnSend: 'w-[10%] flex justify-center',
-    popup: "animate-bounce flex gap-3 justify-cente items-center bg-admin_color p-4 rounded-full cursor-pointer select-none shadow-lg shadow-indigo-500/40",
+    popup: "flex gap-3 justify-cente items-center bg-admin_color p-4 rounded-full cursor-pointer select-none shadow-lg shadow-indigo-500/40",
     textPop: 'text-white font-semibold',
     msgContainer: "flex w-full px-2",
     msg: "max-w-[60%] text-white",
@@ -36,6 +37,8 @@ const styles = {
 
 const Chat = () => {
     const user = useSelector(state => state.rootReducer.user.user)
+    const notification = useSelector(state => state.rootReducer.chat.data)
+    const dispatch = useDispatch();
     const [token, setToken] = useState('');
     const [togglePopup, setTogglePopup] = useState(false);
     // Scroll to last message
@@ -53,8 +56,7 @@ const Chat = () => {
         // Fetch conversation
         chatService.getAllMessagesById(user?.email == undefined ? "none" : user?.email)
             .then(res => {
-                if(res.messages==undefined && user.email!=undefined)
-                {
+                if (res.messages == undefined && user.email != undefined) {
                     const welcomeMsg = `Xin chào ${user?.name} 👋, cảm ơn bạn đã quan tâm đến các sản phẩm của Avion, xin hãy đợi trong giây lát để kết nối đến Admin tư vấn 😊😊.`
                     chatService.setMessageByID(user?.email, {
                         content: welcomeMsg,
@@ -69,6 +71,7 @@ const Chat = () => {
         const userId = user?.email == undefined ? "none" : user?.email;
         const ref = doc(db, "chat", userId)
         const unsub = onSnapshot(ref, (doc) => {
+            let flag = 0;
             if (userId != "none") {
                 const m = doc.data();
                 setMessages(m?.messages)
@@ -173,7 +176,10 @@ const Chat = () => {
                                 size={20}
                                 color="white"
                                 className='cursor-pointer'
-                                onClick={() => setTogglePopup(false)}
+                                onClick={() => {
+                                    dispatch(chatNotification(false))
+                                    setTogglePopup(false)
+                                }}
                             ></IoMdClose>
                         </div>
                         {/* Body */}
@@ -219,9 +225,16 @@ const Chat = () => {
                     <motion.div
                         whileHover={{ scale: 1.1 }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                        className={`${styles.popup} ${togglePopup ? "hidden" : "block"}`}
-                        onClick={() => setTogglePopup(true)}>
-                        <span className={styles.textPop}>Chat with us</span>
+                        className={`${styles.popup} ${togglePopup ? "hidden" : "block"} ${notification ? "animate-bounce" : "animate-bounce-slow"}`}
+                        onClick={() => {
+                            dispatch(chatNotification(false))
+                            setTogglePopup(true) 
+                        }}>
+                        <div class={`flex h-8 w-8 justify-center items-center absolute -top-3 right-0 ${notification ? "" : "hidden"}`}>
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffab00] opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-4 w-4 bg-[#ffd600]"></span>
+                        </div>
+                        <span className={styles.textPop}>{notification ? "New message" : "Chat with us"}</span>
                         <SiLivechat color='white' size={25}></SiLivechat>
                     </motion.div>
                 )
