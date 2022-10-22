@@ -53,6 +53,15 @@ const Chat = () => {
         // Fetch conversation
         chatService.getAllMessagesById(user?.email == undefined ? "none" : user?.email)
             .then(res => {
+                if(res.messages==undefined && user.email!=undefined)
+                {
+                    const welcomeMsg = `Xin chào ${user?.name} 👋, cảm ơn bạn đã quan tâm đến các sản phẩm của Avion, xin hãy đợi trong giây lát để kết nối đến Admin tư vấn 😊😊.`
+                    chatService.setMessageByID(user?.email, {
+                        content: welcomeMsg,
+                        sender: "admin@gmail.com",
+                        createdOn: Timestamp.now(),
+                    })
+                }
                 setMessages(res.messages)
             })
     }, [user])

@@ -69,7 +69,7 @@ const Chat = () => {
                 </div>
                 <div className={`${styles.msg} ${message?.sender != user?.email ? styles.msgLeft : styles.msgRight} ${index == 0 ? "mt-auto" : ""}`}>
                     <div className={`max-w-[60%] flex flex-col flex-wrap`}>
-                        <p className={`break-all p-2 rounded-md ${message?.sender == user?.email ? "bg-admin_second_color" : "bg-slate-400"}`}>{message?.content}</p>
+                        <p className={`break-words p-2 rounded-md ${message?.sender == user?.email ? "bg-admin_second_color" : "bg-slate-400"}`}>{message?.content}</p>
                         <span className=' text-slate-400 text-sm'>{msgTime}</span>
                     </div>
                 </div>
