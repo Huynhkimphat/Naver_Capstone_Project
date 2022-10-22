@@ -8,6 +8,9 @@ import AppSelector from "../../redux/selector";
 import cartService from "../../services/api/cartService";
 import { useRouter } from "next/router";
 
+import { Carousel } from 'primereact/carousel';
+
+
 const styles = {
   wrapper: " container mx-auto flex flex-col lg:flex-row p-4 ",
   imageProduct: "flex overflow-hidden justify-center items-center",
@@ -28,6 +31,7 @@ const styles = {
   btnAddCart: "rounded-lg border p-4 bg-[#2A254B] text-white text-center",
   btnMinus: "hover:bg-[#cccccc]",
   btnPus: "hover:bg-[#cccccc]",
+  card: "w-[550px] h-[550px]"
 };
 const ProductDetail = ({ product }) => {
   const router= useRouter();
@@ -41,7 +45,7 @@ const ProductDetail = ({ product }) => {
     const preparingProduct ={
       productId: product[0].id,
       amount: valueInput,
-      total: product[0].price * valueInput, 
+      total: product[0].price * valueInput,
     }
     dispatch(addProductToCart(preparingProduct));
   };
@@ -52,16 +56,23 @@ const ProductDetail = ({ product }) => {
     }
   },[cart])
 
+  const productTemplate = (product) => {
+    return (
+              <Image width={550}
+                     height={550}
+                     alt=""
+                     objectFit="contain" src={product} />
+    );
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.imageProduct}>
-        <Image
-          src={product[0].images[0]}
-          width={550}
-          height={550}
-          alt=""
-          objectFit="contain"
-        />
+        <div className={styles.card}>
+          <Carousel value={product[0].images} numVisible={1} numScroll={1}
+                    itemTemplate={productTemplate} />
+        </div>
+
       </div>
       <div className={styles.detailContainer}>
         <div className={styles.productTitle}>{product[0].name}</div>
@@ -78,7 +89,7 @@ const ProductDetail = ({ product }) => {
           Made By: {product[0].configuration.material}
         </div>
         <div className={styles.productPrice}>
-        
+
 
         {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[0].price)} - Left in stock: {product[0].quantity}
         </div>
