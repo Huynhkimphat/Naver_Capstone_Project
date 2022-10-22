@@ -37,7 +37,7 @@ const LineChart = (props) => {
     }
     const getDataDateOrder = dataLine.labels.map((month, index) => {
         return orders?.filter((order) => {
-            const date = new Date(order.date.seconds * 1000);
+            const date = new Date(order?.date.seconds * 1000);
             return convertMonth(date.toString().split(" ")[1]) == index + 1
         }).length;
     })
@@ -64,7 +64,7 @@ const LineChart = (props) => {
     return (
         <Scroll style={styles.lineChart} scroll="translateY(10px)">
             <div className={styles.titleLineChart}>
-                <h3 className="text-6 font-medium">Total Orders: {orders.length}</h3>
+                <h3 className="text-6 font-medium">Total Orders: {orders?.length}</h3>
             </div>
             <Line data={dataLine} height="190px" />
         </Scroll>

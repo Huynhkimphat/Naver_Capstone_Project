@@ -23,7 +23,7 @@ const DouChart = (props) => {
     })
     const getOrderStatus = dataDou.labels.map((label) => {
       return orders?.filter((order) => {
-        return order.status == label.toUpperCase();
+        return order?.status == label.toUpperCase();
       }).length;
     })
     useEffect(() => {
