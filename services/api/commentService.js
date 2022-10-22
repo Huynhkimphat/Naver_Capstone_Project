@@ -19,6 +19,12 @@ const commentService = {
         await updateDoc(q, {
             comment: data
         })
+    },
+    async addReply(productId, data) {
+        const q = doc(db, "comment", productId);
+        await updateDoc(q, {
+            comment: data
+        })
     }
 }
 
