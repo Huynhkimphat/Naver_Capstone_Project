@@ -173,7 +173,7 @@ const Comment = (props) => {
                             return (
                                 <div key={indexRep} className='w-full flex justify-end items-center gap-2'>
                                     <div className=' w-6 h-6 rounded-full object-cover'>
-                                        <Image className='rounded-full' src={commenter?.imageUrl} width={50} height={50} alt=""></Image>
+                                        <Image className='rounded-full' src={rep?.commenter?.imageUrl} width={50} height={50} alt=""></Image>
                                     </div>
                                     <div className='w-[94%]'>
                                         <div className='flex flex-col sm:flex-row flex-wrap justify-between'>
@@ -193,7 +193,7 @@ const Comment = (props) => {
                     }
                     <div className={`w-full flex justify-end items-center gap-2 ${toggleReply.index == index ? "block" : "hidden"}`}>
                         <div className=' w-6 h-6 rounded-full object-cover'>
-                            <Image className='rounded-full' src={commenter?.imageUrl} width={50} height={50} alt=""></Image>
+                            <Image className='rounded-full' src={user?.imageUrl} width={50} height={50} alt=""></Image>
                         </div>
                         <span className="p-input-icon-right w-[95%]">
                             <i className="pi pi-reply" 
