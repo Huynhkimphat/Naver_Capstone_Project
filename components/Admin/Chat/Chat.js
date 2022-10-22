@@ -15,18 +15,20 @@ import { useInView } from 'framer-motion';
 import { RiChatSmile2Fill } from 'react-icons/ri'
 import EmojiPicker from 'emoji-picker-react';
 import Hello from '../../../static/hello.png'
+import Scroll from '../Animation/Scroll';
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex shadow-lg rounded-md gap-4',
     content: 'w-full h-[65vh] justify-between  flex gap-2',
     userContainer: 'w-[30%] h-[96%] p-2 bg-admin_color rounded-md overflow-y-scroll flex flex-col gap-2 scrollbar-hide',
     user: 'flex items-center justify-start gap-2 bg-white p-2 rounded-md cursor-pointer transition-opacity',
-    messageContainer: ' overflow-y-auto flex w-[70%] h-full flex-col p-4 gap-2 justify-between',
-    message: 'h-[85%] flex flex-col gap-4 pt-4 overflow-y-scroll px-2 border-2 border-admin_color rounded-md',
+    messageContainer: ' overflow-y-auto flex w-[70%] h-full flex-col p-4 justify-between',
+    message: 'h-[75%] flex flex-col overflow-x-hidden gap-4 pt-4 overflow-y-scroll px-2 border-x-2 border-2 border-admin_color rounded-b-md',
     inputContainer: 'h-[15%] relative flex justify-around items-center p-2 border-2 rounded-md',
     btnSend: "w-[10%] flex items-center justify-center",
     msg: 'w-full flex text-white',
     msgLeft: "justify-start",
-    msgRight: "justify-end"
+    msgRight: "justify-end",
+    headerMessage: 'h-fit w-full bg-admin_color flex items-center py-1 px-2 rounded-t-lg gap-2',
 }
 const Chat = () => {
     const user = useSelector(state => state.rootReducer.user.user)
@@ -59,17 +61,19 @@ const Chat = () => {
         checkTime = timeFlag != date ? true : false;
         timeFlag = checkTime ? date : timeFlag;
         return (
-            <>
-                <div className={`flex border-b-2 border-admin_color justify-center ${checkTime ? "block" : "hidden"}`}>
+            <Scroll key={index}
+                loop={"all"}
+                scroll={message?.sender != user?.email ? "translateX(400px)" : "translateX(-400px)"}>
+                <div className={`flex border-b-2 border-admin_color justify-center my-2 ${checkTime ? "block" : "hidden"}`}>
                     <h1 className='text-white bg-admin_color rounded-t-lg px-2'>{isToday ? "Today" : date}</h1>
                 </div>
-                <div key={index} className={`${styles.msg} ${message?.sender != user?.email ? styles.msgLeft : styles.msgRight} ${index == 0 ? "mt-auto" : ""}`}>
+                <div className={`${styles.msg} ${message?.sender != user?.email ? styles.msgLeft : styles.msgRight} ${index == 0 ? "mt-auto" : ""}`}>
                     <div className={`max-w-[60%] flex flex-col flex-wrap`}>
                         <p className={`break-all p-2 rounded-md ${message?.sender == user?.email ? "bg-admin_second_color" : "bg-slate-400"}`}>{message?.content}</p>
                         <span className=' text-slate-400 text-sm'>{msgTime}</span>
                     </div>
                 </div>
-            </>
+            </Scroll>
         )
     })
     const handleSend = () => {
@@ -166,6 +170,7 @@ const Chat = () => {
     useEffect(() => {
         scrollToBottom()
     }, [messages])
+    console.log(chooseUser)
     return (
         <div className={styles.wrapper}>
             <div className={styles.content}>
@@ -173,6 +178,15 @@ const Chat = () => {
                     {printUsers}
                 </div>
                 <div className={styles.messageContainer}>
+                    <div className={`${chooseUser.email != "none" ? styles.headerMessage : "hidden"}`}>
+                        <div className='rounded-full flex items-center'>
+                            <Image className='rounded-full' src={chooseUser?.imageUrl} height={30} width={30} alt="User avatar"></Image>
+                        </div>
+                        <div className='flex flex-col'>
+                            <span className='text-white font-semibold'>{chooseUser?.name}</span>
+                            <span className='text-xs text-slate-300'>{chooseUser?.email}</span>
+                        </div>
+                    </div>
                     <div className={`${styles.message} ${hide ? "items-center scrollbar-hide" : ""}`}>
                         {printMessages}
                         <div style={{ float: "left", clear: "both" }} id='last' ref={msgRef}></div>
