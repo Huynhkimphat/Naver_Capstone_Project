@@ -4,5 +4,8 @@ const adminSend = (data) => ({
     type: Types.ADMIN_SEND,
     payload: { data },
 });
-
-export { adminSend };
+const chatNotification = (data) => ({
+    type: Types.CHAT_NOTIFICATION,
+    payload: { data },
+});
+export { adminSend, chatNotification };
