@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import userService from "../../services/api/userService";
 import { setUser } from "../../redux/actions/userAction";
 import { useRouter } from "next/router";
+import orderService from "../../services/api/admin/orderService";
 
 const styles = {
   wrapper: "mx-auto flex justify-around ",
@@ -21,6 +22,9 @@ const styles = {
   nameAcc: "text-4xl py-8 font-bold font-body",
   formInforAcc: "space-y-4",
   inforTitle: "text-2xl font-body py-8 font-black",
+  orderContainer: "my-4",
+  orderContent: "hover:text-[#FA4A0C] cursor-pointer",
+  btnCheckOrders: "rounded-lg px-4 py-2 bg-[#2A254B] text-white w-auto",
   btnContainer: "block sm:hidden py-4",
   userImage: "mw-full mh-full",
   disabledBtn:
@@ -78,6 +82,13 @@ const UserInfo = () => {
     userService.updateUser(prepareUser);
     userService.getUserByEmail(userEmail).then((res) => dispatch(setUser(res)));
   };
+  
+  const selectedUser = useSelector(state => state.rootReducer.user)
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    orderService.getOrdersById(selectedUser.email).then(res => setOrders(res))
+  },[selectedUser])
 
   return (
     <div className={styles.wrapper}>
@@ -98,14 +109,27 @@ const UserInfo = () => {
         {!user.isAdmin && (
           <div className={styles.historyOrderAcc}>
             <div className={styles.inforTitle}>History order</div>
-            <div className={styles.historyOrderContent}>
-              <input
-                className="w-full rounded-lg border-gray-200 p-3 text-sm"
-                placeholder="No product yet"
-                type="text"
-                id="name"
-              />
+            <div className={styles.orderContainer}>
+              {orders.map((order) => (
+                <div
+                  key={order.id}
+                  className={styles.orderContent}
+                  onClick={() => {
+                    router.push(`/order/${order?.id}`);
+                  }}
+                >
+                  {order.id} - Status: {order.status}
+                </div>
+              ))}
             </div>
+            <button
+              className={styles.btnCheckOrders}
+              onClick={() => {
+                router.push(`/order`);
+              }}
+            >
+              Check all
+            </button>
           </div>
         )}
       </div>
