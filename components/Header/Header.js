@@ -50,6 +50,7 @@ const Header = () => {
   const userImageUrl = useSelector((state) =>
     AppSelector.getUserImageUrl(state)
   );
+  const cart = useSelector(state => state.rootReducer.cart.cart)
 
   const router = useRouter();
 
@@ -140,7 +141,7 @@ const Header = () => {
               
                   <AiOutlineShoppingCart />
                 </div>
-                <div className={styles.numberProduct}>5</div>
+                <div className={styles.numberProduct}>{cart?.productListDetail.length}</div>
               </div>
             </Link>
           </motion.div>
