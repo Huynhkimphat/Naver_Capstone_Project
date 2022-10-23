@@ -55,7 +55,6 @@ const Header = () => {
   const router = useRouter();
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (userEmail) {
       userService
@@ -141,7 +140,7 @@ const Header = () => {
               
                   <AiOutlineShoppingCart />
                 </div>
-                <div className={styles.numberProduct}>{cart?.productListDetail?.length}</div>
+                <div className={styles.numberProduct}>{userEmail ? cart?.productListDetail?.length : ""}</div>
               </div>
             </Link>
           </motion.div>
