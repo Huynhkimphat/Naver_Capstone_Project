@@ -62,7 +62,7 @@ const Header = () => {
         .getUserByEmail(userEmail)
         .then((res) => dispatch(setUser(res)));
       cartService.getCartByEmail(userEmail).then((res) => {
-        if (!res.length) {
+        if (!res?.length) {
           console.log("Creating New Cart For ", userEmail);
           cartService.createNewCartById(userEmail);
         }
@@ -141,7 +141,7 @@ const Header = () => {
               
                   <AiOutlineShoppingCart />
                 </div>
-                <div className={styles.numberProduct}>{cart?.productListDetail.length}</div>
+                <div className={styles.numberProduct}>{cart?.productListDetail?.length}</div>
               </div>
             </Link>
           </motion.div>
