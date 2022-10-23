@@ -53,6 +53,7 @@ const Invoice = () => {
         router.push(`/admin/order/${id}`)
     }
     const printOrdersList = orderFiltered.map((item, index) => {
+        console.log(item);
         return (
             <div key={item?.id} className={styles.orderContainer}>
                 <div className={styles.codeCol}>
@@ -65,7 +66,7 @@ const Invoice = () => {
                 </div>
                 <div className={styles.commonCol}>
                     <span>Total</span>
-                    <span>{item?.totalPrice} VNĐ</span>
+                    <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item?.totalPrice)}</span>
                 </div>
                 <div className={styles.commonCol}>
                     <span>Status</span>
@@ -91,15 +92,13 @@ const Invoice = () => {
     }
     useEffect(() => {
         orderService.getOrdersById(selectedUser.email).then(res => {
-            const orderExcuted = res.map((ord) => {
-                const orDate = (new Date(ord.orderDate.seconds * 1000)).toString().split("(")[0];
-                return {
-                    ...ord,
-                    orderDate: orDate
-              }
-            })
-            setOrders(orderExcuted)
-            setOrderFiltered(orderExcuted)
+            // const orderExcuted = res.map((ord) => {
+            //     return {
+            //         ...ord,
+            //   }
+            // })
+            setOrders(res)
+            setOrderFiltered(res)
         })
     }, [selectedUser])
     useEffect(() => {
@@ -141,7 +140,7 @@ const Invoice = () => {
                 </div>
             </div>
             <div className={styles.totalContainer}>
-                <h1 className={styles.total}>Total: {total} VNĐ</h1>
+                <h1 className={styles.total}>Total: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total)} (VNĐ) 💰</h1>
             </div>
         </div>);
 };
