@@ -96,11 +96,11 @@ const Overview = (props) => {
                         </div>
                         <div className={styles.productRightItem}>
                             <span>Sale</span>
-                            <span>{topProducts[index]?.total} VNĐ</span>
+                            <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(topProducts[index]?.total)}</span>
                         </div>
                         <div className={styles.productRightItem}>
                             <span>Prices</span>
-                            <span>{product?.price} VNĐ</span>
+                            <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product?.price)}</span>
                         </div>
                         <div className={styles.productRightItem}>
                             <span>Best Seller</span>

@@ -55,13 +55,13 @@ const OrderDetail = () => {
                 className={styles.productContainer}>   
                 <div className='flex flex-col gap-2'>
                     <h1 className={styles.productName}>Name: {products[index]?.name}</h1>
-                    <span className={styles.productItInfo}>Category: {products[index]?.category}</span>
+                    <span className={styles.productItInfo}>🏷️ Category: {products[index]?.category}</span>
                    
-                    <span className={styles.productItInfo}>Price:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products[index]?.price)} VNĐ</span>
-                    <span className={styles.productItInfo}>Qt: {order.amount} Item</span>
+                    <span className={styles.productItInfo}>💸 Price:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(products[index]?.price)} VNĐ</span>
+                    <span className={styles.productItInfo}>🧮 Qt: {order.amount} Item</span>
                    
-                    <h1 className={styles.productName}>Total:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)}VNĐ via (COD)</h1>
-                    <span>Tracking Status on: 11:30PM, Today</span>
+                    <h1 className={styles.productName}>💰 Total:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(order.total)} (VNĐ via COD)</h1>
+                    <span>🚚 Tracking Status on: 11:30PM, Today</span>
                 </div>
                 <Image className='rounded-2xl' src={products[index]?.images[0]} width={200} height={200} alt=""></Image>
             </div>
@@ -76,7 +76,7 @@ const OrderDetail = () => {
         <div className={styles.wrapper}>
             <div className={styles.header}>
                 <div className={styles.headerInfo}>
-                    <Image src={_Image} height={60} width={60} alt=''></Image>
+                    <Image src={user?.imageUrl} height={60} width={60} alt=''></Image>
                     <div className={styles.orderInfo}>
                         <span>Order ID: {code}</span>
                         <span>Place On {date}</span>
@@ -87,22 +87,22 @@ const OrderDetail = () => {
             <div className={styles.customerContainer}>
                 <div className={styles.customerField}>
                     <div className={styles.customerInfo}>
-                        <h1 className={styles.customerTitle}>Customer: {user.name}</h1>
-                        <span>Customer ID: {customerId}</span>
-                        <span>Email: {user.email}</span>
-                        <span>Phone: {!user.phone ? "NA" : user.phone}</span>
-                        <span>Address: {!user.address ? "NA" : user.address}</span>
+                        <h1 className={styles.customerTitle}>Ⓜ️ Customer: {user.name}</h1>
+                        <span>🆔 Customer ID: {customerId}</span>
+                        <span>📧 Email: {user.email}</span>
+                        <span>📞 Phone: {!user.phone ? "NA" : user.phone}</span>
+                        <span>🅰️ Address: {!user.address ? "NA" : user.address}</span>
                     </div>
                 </div>
                 <div>
                     <div>
-                        <h1 className={styles.ordersTitle}>Orders</h1>
+                        <h1 className={styles.ordersTitle}>🛍️ Orders</h1>
                         {/* Print All Order List */}
                         {ordersList}
                         {/* Total */}
                         <div className={styles.totalPrice}>
                        
-                            <span className={styles.finalPrice}>Total:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)} VNĐ</span>
+                            <span className={styles.finalPrice}>Total:  {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalPrice)} (VNĐ)</span>
                         </div>
                     </div>
                     {/* Button */}
@@ -113,14 +113,14 @@ const OrderDetail = () => {
                                 ${(status == "REJECT" || status == "APPROVED") ? styles.unableClick : styles.reject}`
                             }
                             value={"REJECT"}
-                            onClick={handleSubmit}>Reject</button>
+                            onClick={handleSubmit}>Reject 🚫</button>
                         <button
                             className={`
                             ${styles.panel} 
                             ${(status == "REJECT" || status == "APPROVED") ? styles.unableClick : styles.approved}`}
                             icon="pi pi-check"
                             value={'APPROVED'}
-                            onClick={handleSubmit}>Approve</button>
+                            onClick={handleSubmit}>Approve ✅</button>
                     </div>
                 </div>
             </div>

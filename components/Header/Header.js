@@ -22,7 +22,7 @@ import { setCart } from "../../redux/actions/cartAction";
 import AppSelector from "../../redux/selector";
 
 const styles = {
-  wrapper: "px-8 py-2 shadow-md",
+  wrapper: "px-8 py-2 shadow-md sticky top-0 z-50 bg-white",
   content: "flex-1 flex justify-between",
   logoContainer: "flex items-center",
   logo: "cursor-pointer object-contain",
