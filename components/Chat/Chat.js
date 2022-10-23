@@ -41,6 +41,7 @@ const Chat = () => {
     const dispatch = useDispatch();
     const [token, setToken] = useState('');
     const [togglePopup, setTogglePopup] = useState(false);
+    const [imageList, setImageList] = useState([]);
     // Scroll to last message
     const msgRef = useRef(null);
     // Input
@@ -52,7 +53,7 @@ const Chat = () => {
     let today = new Date().toDateString();
     useEffect(() => {
         const cookies = nookies.get()["token"];
-        setToken(cookies)
+        setToken(cookies);
         // Fetch conversation
         chatService.getAllMessagesById(user?.email == undefined ? "none" : user?.email)
             .then(res => {
@@ -148,6 +149,17 @@ const Chat = () => {
                         <span className='text-slate-500 text-sm'>{msgTime}</span>
                     </div>
                 </div>
+                {/* <div className={`flex w-full px-2 my-4 ${user?.email == msg?.sender ? styles.msgRight : styles.msgLeft}`}>
+                    <div className='w-1/2'>
+                        <motion.div
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                            className='w-full flex flex-col bg-transparent shadow-xl'>
+                            <Image src={user?.imageUrl} className="rounded-2xl shadow-2xl" alt="" height={100} width={100}></Image>
+                        </motion.div>
+                        <span className='text-slate-500 text-sm'>{msgTime}</span>
+                    </div>
+                </div> */}
             </Scroll>
         )
     })
@@ -190,12 +202,19 @@ const Chat = () => {
                         </div>
                         {/* Input Messages */}
                         <span className="p-input-icon-right w-full">
-
-                            <motion.i
-                                whileHover={{ scale: 1.2 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                className="pi pi-send cursor-pointer"
-                                onClick={handleSend} />
+                            <i className='flex gap-4'>
+                                <motion.i
+                                    whileHover={{ scale: 1.2 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                    className="pi pi-paperclip cursor-pointer"
+                                    // onClick={() => {}}
+                                     />
+                                <motion.i
+                                    whileHover={{ scale: 1.2 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                    className="pi pi-send cursor-pointer"
+                                    onClick={handleSend} />
+                            </i>
                             <InputText
                                 className={styles.inputText}
                                 placeholder='Type your message'
@@ -228,7 +247,7 @@ const Chat = () => {
                         className={`${styles.popup} ${togglePopup ? "hidden" : "block"} ${notification ? "animate-bounce" : "animate-bounce-slow"}`}
                         onClick={() => {
                             dispatch(chatNotification(false))
-                            setTogglePopup(true) 
+                            setTogglePopup(true)
                         }}>
                         <div class={`flex h-8 w-8 justify-center items-center absolute -top-3 right-0 ${notification ? "" : "hidden"}`}>
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#ffab00] opacity-75"></span>
