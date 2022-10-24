@@ -1,1 +1,2 @@
 export const ADMIN_SEND = "ADMIN_SEND";
+export const CHAT_NOTIFICATION = "CHAT_NOTIFICATION"

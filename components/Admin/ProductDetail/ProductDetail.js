@@ -18,6 +18,8 @@ import { Toast } from 'primereact/toast';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/primereact.css';
+import {doc, onSnapshot} from "firebase/firestore";
+import {db} from "../../../lib/firebase";
 
 const styles = {
   wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
@@ -48,19 +50,9 @@ const ProductDetail = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    productService.getProductDetail(props.id).then((res) => dispatch(setProductDetail(res)));
-
+     productService.getProductDetail(props.id).then((res) => dispatch(setProductDetail(res)));
   }, []);
 
-  useEffect(() => {
-    setInformation(initialProduct)
-  }, [initialProduct]);
-
- /* useEffect(() => {
-    setCreateObjectURL(initialProduct?.images)
-  }, [initialProduct?.images]);*/
-
-  console.log(initialProduct)
 
   const toastBL = useRef(null);
   const [toggle, setToggle] = useState(false);
@@ -70,40 +62,40 @@ const ProductDetail = (props) => {
   const [images, setImages] = useState([]);
   const [createObjectURL, setCreateObjectURL] = useState([]);
   const [information, setInformation] = useState(initialProduct);
+  const [removeLink, setRemoveLink] = useState("");
 
+  useEffect(() => {
+    onSnapshot(doc(db, "product", props.id), (doc) => {
+      setInformation(doc.data())
+    });
 
+  }, []);
 
+  useEffect(() => {
+    setCreateObjectURL(information?.images)
+  }, [information?.images]);
 
   // Upload images from Computer to Browser & Show all images in Form
   const uploadToClient = (event) => {
+
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
-      setImages([...images, i]);
+      setImages([...images,i]);
       setCreateObjectURL([...createObjectURL, URL.createObjectURL(i)]);
     }
   };
   // Remove selected image
   const handleRemove = (e) => {
-    //e.preventDefault();
+    e.preventDefault();
     images.splice(e.target.value, 1);
     setImages([])
-    createObjectURL.splice(e.target.value, 1);
+    const link  = createObjectURL.splice(e.target.value, 1);
+    setRemoveLink(link[0]);
+    console.log("this is :",link[0])
     setCreateObjectURL([...createObjectURL]);
   }
 
-
- /* const imageList = createObjectURL.map((image, index) => {
-    return (
-        <div key={index} className=" flex flex-col gap-1 items-end bg-admin_color px-1 rounded-md pt-1">
-          <button className='text-white mr-1' value={index} onClick={handleRemove}>X</button>
-          <div>
-            <Image className='rounded-xl' src={image} width={100} height={100} alt=""></Image>
-          </div>
-        </div>
-    )
-  })*/
-
-  const imageList = createObjectURL.map((image, index) => {
+  const imageList = createObjectURL?.map((image, index) => {
     return (
         <div key={index} className=" flex flex-col gap-1 items-end bg-admin_color px-1 rounded-md pt-1">
           <button className='text-white mr-1' value={index} onClick={handleRemove}>X</button>
@@ -127,9 +119,13 @@ const ProductDetail = (props) => {
     }
     setInformation(data);
   }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    productService.UpdateProduct(props.id, information);
+    productService.UpdateProduct(props.id, information,images);
+    productService.DeleteProductImage(removeLink)
+    setRemoveLink("");
+    setImages([]);
     showBottomLeft()
   }
   const handleCtChange = (e) => {
@@ -161,6 +157,7 @@ const ProductDetail = (props) => {
     return <option key={index} value={category}>{category}</option>
   })
   const showBottomLeft = () => {
+
     toastBL.current.show({severity:'success', summary: 'Successfully update', detail:'update new' +
           ' product', life: 3000});
   }
@@ -296,6 +293,7 @@ const ProductDetail = (props) => {
                 name="imageProduct"
                 title=" "
                 multiple
+
                 onChange={uploadToClient} />
             <div className={styles.imgContainer}>
               {imageList}

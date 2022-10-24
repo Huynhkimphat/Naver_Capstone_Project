@@ -6,6 +6,10 @@ import { useState, useContext, useEffect } from "react";
 import { Puff } from "react-loader-spinner";
 import { AuthenUserContext } from "../../context/AuthUserContext";
 import Chat from "../Chat/Chat";
+import { useDispatch, useSelector } from "react-redux";
+import { db } from "../../lib/firebase";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { chatNotification } from "../../redux/actions/chatAction";
 
 const styles = {
   container: ``,
@@ -16,7 +20,8 @@ const styles = {
 
 export default function Layout({ children }) {
   const { setCurrentUserWithJWT, isLoading } = useContext(AuthenUserContext);
-
+  const user = useSelector(state => state.rootReducer.user.user);
+  const dispatch = useDispatch();
   function parseJwt(token) {
     if (!token) {
       return;
@@ -31,6 +36,26 @@ export default function Layout({ children }) {
     setCurrentUserWithJWT(parseJwt(token));
   }, []);
 
+  useEffect(() => {
+    const q = query(collection(db, "users"), where("email", "==", user?.email==undefined ? "none" : user?.email));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          // console.log("New: ", change.doc.data().lastMessage);
+        }
+        if (change.type === "modified") {
+          // console.log("Modified: ", change.doc.data().lastMessage);
+          dispatch(chatNotification(true))
+        }
+        if (change.type === "removed") {
+          // console.log("Removed: ", change.doc.data().lastMessage);
+        }
+      });
+    });
+    return () => {
+      unsubscribe()
+    }
+  }, [user])
   return (
     <div className={styles.container}>
       {isLoading ? (

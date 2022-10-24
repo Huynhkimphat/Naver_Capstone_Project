@@ -6,6 +6,7 @@ import Logo from "../../static/Logo.png";
 import { useRouter } from "next/router";
 import { AuthenUserContext } from "../../context/AuthUserContext";
 import { useEffect } from "react";
+import Scroll from '../Admin/Animation/Scroll'
 
 const styles = {
   wrapper: "flex items-center justify-center flex-col p-[2rem]",
@@ -45,14 +46,14 @@ export default function Login() {
       router.push("/");
     }
   }, []);
-  const 
-  signInHandler =async (event) => {
-    if(!(enteredUsername && enteredPassword) ||
-              passwordInvalid ||
-              userNameInvalid) return;
-    await logInAdminAccount(enteredUsername, enteredPassword);
-  };
-  const googleLogInHandle=async ()=>{
+  const
+    signInHandler = async (event) => {
+      if (!(enteredUsername && enteredPassword) ||
+        passwordInvalid ||
+        userNameInvalid) return;
+      await logInAdminAccount(enteredUsername, enteredPassword);
+    };
+  const googleLogInHandle = async () => {
     await logInWithGoogleAccount();
   }
 
@@ -71,71 +72,72 @@ export default function Login() {
     setPasswordInvalid(true);
   };
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.image}>
-        <Image src={Logo} />
-      </div>
-      <div className={styles.title}>Sign to your account</div>
+    <Scroll scroll={"translateY(60px)"}>
+      <div className={styles.wrapper}>
+        <div className={styles.image}>
+          <Image src={Logo} />
+        </div>
+        <div className={styles.title}>Sign to your account</div>
 
-      <div className={styles.formContainer}>
-        <div className={styles.usernameContainer}>
-          <label htmlFor="username" className={styles.label}>
-            Email address
-          </label>
-          <input
-            type="text"
-            name="username"
-            value={enteredUsername}
-            className={`${styles.input} ${userNameInvalid && styles.invalid}`}
-            onChange={(e) => {
-              setEnteredUsername(e.target.value);
-              checkUsernameValid(e.target.value);
-            }}
-          />
-        </div>
-        <div className={styles.passwordContainer}>
-          <label htmlFor="password" className={styles.label}>
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            value={enteredPassword}
-            className={`${styles.input} ${passwordInvalid && styles.invalid}`}
-            onChange={(e) => {
-              setEnteredPassword(e.target.value);
-              checkPasswordValid(e.target.value);
-            }}
-          />
-        </div>
-        <div className={styles.loginConfig}>
-          <div className={styles.checkRemember}>
-            <input type="checkbox" />
-            <div>Remember me</div>
+        <div className={styles.formContainer}>
+          <div className={styles.usernameContainer}>
+            <label htmlFor="username" className={styles.label}>
+              Email address
+            </label>
+            <input
+              type="text"
+              name="username"
+              value={enteredUsername}
+              className={`${styles.input} ${userNameInvalid && styles.invalid}`}
+              onChange={(e) => {
+                setEnteredUsername(e.target.value);
+                checkUsernameValid(e.target.value);
+              }}
+            />
           </div>
-          <div className={styles.forgot}>Forgot your password?</div>
-        </div>
-        <div
-          className={`${styles.button} ${
-            (!(enteredUsername && enteredPassword) ||
-              passwordInvalid ||
-              userNameInvalid) &&
-            styles.invalidButton
-          }`}
-          onClick={signInHandler}
-        >
-          Sign in
-        </div>
-        <div className={styles.hrContainer}>Or continue with</div>
-        <div className={styles.socialContainer}>
-          <div className={styles.social} onClick={googleLogInHandle}>
-            <FcGoogle className={styles.icon} />
+          <div className={styles.passwordContainer}>
+            <label htmlFor="password" className={styles.label}>
+              Password
+            </label>
+            <input
+              type="password"
+              name="password"
+              value={enteredPassword}
+              className={`${styles.input} ${passwordInvalid && styles.invalid}`}
+              onChange={(e) => {
+                setEnteredPassword(e.target.value);
+                checkPasswordValid(e.target.value);
+              }}
+            />
           </div>
-          <div className={styles.social}>
-            <BsFacebook className={`${styles.icon} ${styles.fbIcon}`} />
+          <div className={styles.loginConfig}>
+            <div className={styles.checkRemember}>
+              <input type="checkbox" />
+              <div>Remember me</div>
+            </div>
+            <div className={styles.forgot}>Forgot your password?</div>
+          </div>
+          <div
+            className={`${styles.button} ${(!(enteredUsername && enteredPassword) ||
+                passwordInvalid ||
+                userNameInvalid) &&
+              styles.invalidButton
+              }`}
+            onClick={signInHandler}
+          >
+            Sign in
+          </div>
+          <div className={styles.hrContainer}>Or continue with</div>
+          <div className={styles.socialContainer}>
+            <div className={styles.social} onClick={googleLogInHandle}>
+              <FcGoogle className={styles.icon} />
+            </div>
+            <div className={styles.social}>
+              <BsFacebook className={`${styles.icon} ${styles.fbIcon}`} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Scroll>
   );
 }

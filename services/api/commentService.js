@@ -14,6 +14,18 @@ const commentService = {
                 comment: [data]
             })
     },
+    async updateLikeNDisLike(productId, data) {
+        const q = doc(db, "comment", productId);
+        await updateDoc(q, {
+            comment: data
+        })
+    },
+    async addReply(productId, data) {
+        const q = doc(db, "comment", productId);
+        await updateDoc(q, {
+            comment: data
+        })
+    }
 }
 
 export default commentService;

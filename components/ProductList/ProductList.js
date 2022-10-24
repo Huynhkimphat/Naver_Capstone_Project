@@ -6,19 +6,20 @@ import AppSelector from "../../redux/selector";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Puff } from "react-loader-spinner";
+import { motion } from 'framer-motion'
 
 import Router from "next/router";
 const styles = {
   wrapper: "lg:p-14 md:p-12 p-6",
   container: "grid md:grid-cols-4 grid-cols-2 gap-x-6 gap-y-8",
-  item: "flex flex-col items-center",
+  item: "flex flex-col items-center shadow-xl rounded-lg text-center py-8 cursor-pointer",
   img: "hover:cursor-pointer",
   name: "mt-6 mb-2 text-lg md:text-sm lg:text-xl hover:cursor-pointer",
   price: "text-lg md:text-sm lg:text-lg hover:cursor-pointer",
   btnContainer: "text-center",
   btnViewCollection:
     "mt-8 bg-zinc-50 py-4 px-8 w-full md:w-auto hover:text-[#FA4A0C] hover:bg-zinc-200 hover:duration-300 hover:rounded-xl",
-  textColorHover: "hover:text-[#FA4A0C]",
+  textColorHover: "hover:text-[#FA4A0C] bg-dark_blue rounded-lg px-3 py-2 text-white truncate whitespace-nowrap",
 };
 
 const ProductList = ({
@@ -45,9 +46,9 @@ const ProductList = ({
     setProductListByCate(
       category
         ? productList?.filter(
-            (product) =>
-              product.category.toLowerCase() === category.toLowerCase()
-          )
+          (product) =>
+            product.category.toLowerCase() === category.toLowerCase()
+        )
         : productList
     );
 
@@ -58,8 +59,8 @@ const ProductList = ({
     setProductListByName(
       productNameSearch
         ? productListByCate?.filter((product) =>
-            product.name.toLowerCase().includes(productNameSearch.toLowerCase())
-          )
+          product.name.toLowerCase().includes(productNameSearch.toLowerCase())
+        )
         : productListByCate
     );
   }, [productListByCate, productNameSearch]);
@@ -91,14 +92,14 @@ const ProductList = ({
     if (dateDescSort == 0) {
       const cateList = [...productListByName];
       setProductListByName(
-        cateList.sort((a, b) => Number(a.createdOn) - Number(b.createdOn))
+        cateList.sort((a, b) => (Number(a.createdOn) > Number(b.createdOn) ? 1 : -1))
       );
     }
-    // console.log("Hi");
+   console.log(dateDescSort);
     if (dateDescSort == 1) {
       const cateList = [...productListByName];
       setProductListByName(
-        cateList.sort((a, b) => Number(a.createdOn) - Number(b.createdOn))
+        cateList.sort((a, b) => (Number(a.createdOn) > Number(b.createdOn) ? 1 : -1))
       );
     }
   }, [dateDescSort]);
@@ -132,13 +133,19 @@ const ProductList = ({
           />
         ) : (
           productListUIUpdate?.map((item) => (
-            <div key={item.id} className={styles.item}>
+            <motion.div
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              key={item.id}
+              className={styles.item}>
               <Image
                 src={item?.images[0]}
                 width={350}
                 height={350}
                 alt=""
                 objectFit="contain"
+                onClick={() => router.push(`/product/${item.id}`)}
               />
               <Link
                 className={styles.textColorHover}
@@ -156,7 +163,7 @@ const ProductList = ({
                   }).format(item.price)}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))
         )}
       </div>

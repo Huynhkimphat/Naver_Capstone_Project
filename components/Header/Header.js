@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Logo from "../../static/Logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -21,14 +22,14 @@ import { setCart } from "../../redux/actions/cartAction";
 import AppSelector from "../../redux/selector";
 
 const styles = {
-  wrapper: "px-8 py-2",
+  wrapper: "px-8 py-2 shadow-md sticky top-0 z-50 bg-white",
   content: "flex-1 flex justify-between",
   logoContainer: "flex items-center",
   logo: "cursor-pointer object-contain",
   rightNav: "px-4 flex items-center text-xl gap-3",
   hamburgerMenuIcon: "flex lg:hidden",
   searchIcon: "",
-  cartIcon: "",
+  cartIcon: "py-3",
   userIcon: "rounder-full",
   headerNav:
     "hidden lg:flex cursor-pointer items-center space-x-2 flex justify-center flex-col lg:flex-row ",
@@ -38,6 +39,8 @@ const styles = {
   activeButton: `text-bold text-[#FA4A0C]`,
   navMobileContainer: `flex text-xl gap-5 `,
   userImage: "rounded-full",
+  cartIconContainer: "flex",
+  numberProduct: "text-[10px] pb-4 text-bold",
 };
 
 const Header = () => {
@@ -47,18 +50,18 @@ const Header = () => {
   const userImageUrl = useSelector((state) =>
     AppSelector.getUserImageUrl(state)
   );
+  const cart = useSelector(state => state.rootReducer.cart.cart)
 
   const router = useRouter();
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (userEmail) {
       userService
         .getUserByEmail(userEmail)
         .then((res) => dispatch(setUser(res)));
       cartService.getCartByEmail(userEmail).then((res) => {
-        if (!res.length) {
+        if (!res?.length) {
           console.log("Creating New Cart For ", userEmail);
           cartService.createNewCartById(userEmail);
         }
@@ -86,7 +89,9 @@ const Header = () => {
   }, []);
 
   const categoryRender = categoryList.map((item) => (
-    <div
+    <motion.div
+      whileHover={{ scale: 1.2 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
       key={item.name}
       className={`${styles.button} ${
         router.query.slug?.toString().includes(item.name.toLowerCase())
@@ -99,42 +104,66 @@ const Header = () => {
       value={item.name}
     >
       {item.name}
-    </div>
+    </motion.div>
   ));
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        <Link className={styles.logoContainer} href="/">
-          <Image
-            className={styles.logo}
-            src={Logo}
-            height={30}
-            width={65}
-            alt={""}
-          />
-        </Link>
+        <motion.div
+          className="flex items-center"
+          whileHover={{ scale: 1.1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          <Link className={styles.logoContainer} href="/">
+            <Image
+              className={styles.logo}
+              src={Logo}
+              height={30}
+              width={65}
+              alt={""}
+            />
+          </Link>
+        </motion.div>
         <div className={styles.headerNav}>{categoryRender}</div>
         <div className={styles.rightNav}>
           <div className={styles.searchIcon}>
             <AiOutlineSearch />
           </div>
-          <Link href="/checkout" className={styles.cartIcon}>
-            <AiOutlineShoppingCart />
-          </Link>
+          <motion.div
+            className="cursor-pointer"
+            whileHover={{ scale: 1.2 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <Link href="/checkout">
+              <div className={styles.cartIconContainer}>
+                <div className={styles.cartIcon}>
+              
+                  <AiOutlineShoppingCart />
+                </div>
+                <div className={styles.numberProduct}>{userEmail ? cart?.productListDetail?.length : ""}</div>
+              </div>
+            </Link>
+          </motion.div>
           {!currentUser ? (
             <Link href="/login" className={styles.userIcon}>
               Log In
             </Link>
           ) : (
-            <Link href="/user" className={""}>
-              <Image
-                className={styles.userImage}
-                src={`https://res.cloudinary.com/demo/image/fetch/${userImageUrl}`}
-                width={20}
-                height={20}
-                alt={""}
-              />
-            </Link>
+            <motion.div
+              className="h-fit cursor-pointer flex items-center"
+              whileHover={{ scale: 1.3 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <Link href="/user" className={""}>
+                <Image
+                  className={styles.userImage}
+                  src={`https://res.cloudinary.com/demo/image/fetch/${userImageUrl}`}
+                  width={20}
+                  height={20}
+                  alt={""}
+                />
+              </Link>
+            </motion.div>
           )}
 
           <div className={styles.hamburgerMenuIcon}>
