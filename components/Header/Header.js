@@ -28,7 +28,7 @@ const styles = {
   logo: "cursor-pointer object-contain",
   rightNav: "px-4 flex items-center text-xl gap-3",
   hamburgerMenuIcon: "flex lg:hidden",
-  searchIcon: "",
+  searchIcon: "cursor-pointer",
   cartIcon: "py-3",
   userIcon: "rounder-full",
   headerNav:
@@ -126,9 +126,15 @@ const Header = () => {
         </motion.div>
         <div className={styles.headerNav}>{categoryRender}</div>
         <div className={styles.rightNav}>
-          <div className={styles.searchIcon}>
+          <motion.div
+            className={styles.searchIcon}
+            whileHover={{ scale: 1.2 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+          >
+            <Link href="/category">
             <AiOutlineSearch />
-          </div>
+            </Link>
+          </motion.div>
           <motion.div
             className="cursor-pointer"
             whileHover={{ scale: 1.2 }}

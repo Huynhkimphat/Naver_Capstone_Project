@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import headerBanner from "../../static/headerBanner.jpg";
+import { useRouter } from "next/router";
 
 const styles = {
   wrapper: "flex lg:p-14 md:p-12 text-white font-normal",
@@ -8,11 +9,13 @@ const styles = {
   title: "lg:w-3/4 text-3xl",
   mainContent: "flex flex-col lg:flex-col-reverse",
   description: "mt-20 lg:mt-30 md:mt-15 mb-8 lg:mb-0",
-  btnViewCollection: "bg-[#F9F9F926] lg:mt-10 py-4 px-8 w-full md:w-auto hover:text-[#FA4A0C] hover:bg-white hover:duration-300 rounded-xl",
+  btnViewCollection:
+    "bg-[#F9F9F926] lg:mt-10 py-4 px-8 w-full md:w-auto hover:text-[#FA4A0C] hover:bg-white hover:duration-300 rounded-xl",
   imgContainer: "md:w-4/12 w-0 relative",
 };
 
 const HeaderBanner = () => {
+  const router= useRouter();
   return (
     <div className={styles.wrapper}>
       <div className={styles.contentContainer}>
@@ -26,12 +29,24 @@ const HeaderBanner = () => {
             display things digitally using modern web technologies.
           </div>
           <div>
-            <button className={styles.btnViewCollection}>View collection</button>
+            <button
+              className={styles.btnViewCollection}
+              onClick={() => {
+                router.push("/category");
+              }}
+            >
+              View collection
+            </button>
           </div>
         </div>
       </div>
       <div className={styles.imgContainer}>
-        <Image className="rounded-r-lg" src={headerBanner} alt={""} layout="fill"/>
+        <Image
+          className="rounded-r-lg"
+          src={headerBanner}
+          alt={""}
+          layout="fill"
+        />
       </div>
     </div>
   );
