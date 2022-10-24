@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import userService from "../../services/api/userService";
 import { setUser } from "../../redux/actions/userAction";
 import { useRouter } from "next/router";
+import { confirmDialog } from "primereact/confirmdialog"; // To use confirmDialog method
 
 const styles = {
   wrapper: "mx-auto flex justify-around ",
@@ -38,6 +39,32 @@ const UserInfo = () => {
   const [address, setAddress] = useState(user.address);
   const router = useRouter();
   const [isUserNameValid, setIsUserNameValid] = useState(true);
+
+  const confirmSignout = () => {
+    confirmDialog({
+      message: "Wanna to sign out?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => signOut(),
+      reject: () => console.log("Hi"),
+    });
+  };
+
+  const confirmUpdateUser = () => {
+    confirmDialog({
+      message: "Wanna to update your account?",
+      header: "Confirmation",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => handleUpdateUser(),
+      reject: () => noUpdateUser(),
+    });
+  };
+
+  const noUpdateUser = () => {
+    setUserName(user.name);
+    setPhone(user.phone);
+    setAddress(user.address);
+  };
 
   const handleUserNameInput = (e) => {
     setUserName(e.target.value);
@@ -91,7 +118,7 @@ const UserInfo = () => {
           </div>
         )}
         <div className={styles.accTitle}>
-          <button className={styles.btn} onClick={signOut}>
+          <button className={styles.btn} onClick={confirmSignout}>
             Log out
           </button>
         </div>
@@ -207,7 +234,7 @@ const UserInfo = () => {
               isUserNameValid ? styles.enabledBtn : styles.disabledBtn
             }`}
             type="submit"
-            onClick={handleUpdateUser}
+            onClick={confirmUpdateUser}
           >
             Save
           </button>
@@ -221,7 +248,7 @@ const UserInfo = () => {
           </div>
         )}
         <div className={styles.btnContainer}>
-          <button className={styles.btn} onClick={signOut} type="submit">
+          <button className={styles.btn} onClick={confirmSignout} type="submit">
             Log out
           </button>
         </div>
