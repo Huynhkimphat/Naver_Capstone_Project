@@ -9,40 +9,40 @@ import cartService from "../../services/api/cartService";
 import { useRouter } from "next/router";
 
 import { Carousel } from 'primereact/carousel';
-
+import { motion } from "framer-motion"
 
 const styles = {
   wrapper: " container mx-auto flex flex-col lg:flex-row p-4 ",
   imageProduct: "flex overflow-hidden justify-center items-center",
-  detailContainer: "flex-1 p-2 sm:p-8 m-0 sm:m-12",
+  detailContainer: "flex-1 p-2 flex flex-col gap-2 sm:p-8 m-0 sm:m-12",
   productTitle: "text-4xl font-bold",
-  productSubtitle: "text-2xl text-[#cccccc] hover:text-[#000000]",
-  productPrice: "text-2xl py-4 pb-4",
-  descriptionTitle: "text-xl py-4",
+  productSubtitle: "text-md font-medium text-slate-500 hover:text-[#000000] ",
+  productPrice: "text-2xl py-1 text-white bg-red-500 w-fit rounded-lg px-2 font-semibold",
+  descriptionTitle: "text-xl py-4 font-semibold text-admin_color",
   descriptionContent: "",
-  dimensionTitle: "text-xl py-4",
+  dimensionTitle: "text-xl py-4 font-semibold text-admin_color",
   dimensionContent: " ",
   dimensionTable: "w-sm-table w-full table-fixed",
   buyProduct: "flex justify-between items-center flex-col sm:flex-row ",
   contentQualityContainer:
     "flex py-4 items-center justify-center flex-wrap gap-2",
   quantityAmountTitle: "text-xl mr-5",
-  contentQuantityAmount: "flex justify-center items-center",
-  btnAddCart: "rounded-lg border p-4 bg-[#2A254B] text-white text-center",
-  btnMinus: "hover:bg-[#cccccc]",
-  btnPus: "hover:bg-[#cccccc]",
+  contentQuantityAmount: "flex justify-center items-center bg-admin_color py-1 px-2 rounded-lg",
+  btnAddCart: "rounded-lg border p-4 bg-[#2A254B] font-semibold cursor-pointer text-white text-center",
+  btnMinus: " text-white cursor-pointer select-none",
+  btnPus: " text-white cursor-pointer select-none",
   card: "w-[550px] h-[550px]"
 };
 const ProductDetail = ({ product }) => {
-  const router= useRouter();
-  const dispatch =useDispatch();
+  const router = useRouter();
+  const dispatch = useDispatch();
   const [valueInput, setValueInput] = useState(0);
-  const cart = useSelector(state=>AppSelector.getCart(state))
-  const [isAdd,setIsAdd]= useState(false);
+  const cart = useSelector(state => AppSelector.getCart(state))
+  const [isAdd, setIsAdd] = useState(false);
 
   const handleAddToCart = async () => {
     setIsAdd(true);
-    const preparingProduct ={
+    const preparingProduct = {
       productId: product[0].id,
       amount: valueInput,
       total: product[0].price * valueInput,
@@ -50,18 +50,18 @@ const ProductDetail = ({ product }) => {
     dispatch(addProductToCart(preparingProduct));
   };
 
-  useEffect(()=>{
-    if(isAdd){
-      cartService.updateCart(cart.id,cart);
+  useEffect(() => {
+    if (isAdd) {
+      cartService.updateCart(cart.id, cart);
     }
-  },[cart])
+  }, [cart])
 
   const productTemplate = (product) => {
     return (
-              <Image width={550}
-                     height={550}
-                     alt=""
-                     objectFit="contain" src={product} />
+      <Image width={550}
+        height={550}
+        alt=""
+        objectFit="contain" src={product} />
     );
   }
 
@@ -70,7 +70,7 @@ const ProductDetail = ({ product }) => {
       <div className={styles.imageProduct}>
         <div className={styles.card}>
           <Carousel value={product[0].images} numVisible={1} numScroll={1}
-                    itemTemplate={productTemplate} />
+            itemTemplate={productTemplate} />
         </div>
 
       </div>
@@ -89,11 +89,11 @@ const ProductDetail = ({ product }) => {
           Made By: {product[0].configuration.material}
         </div>
         <div className={styles.productPrice}>
-
-
-        {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[0].price)} - Left in stock: {product[0].quantity}
+          {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[0].price)}
         </div>
-
+        <span className="font-medium">
+          Left in stock: {product[0].quantity}
+        </span>
         <div className={styles.descriptionTitle}>Description</div>
         <div className={styles.descriptionContent}>
           {product[0].description}
@@ -121,14 +121,20 @@ const ProductDetail = ({ product }) => {
             <div className={styles.quantityAmountTitle}>Amount</div>
 
             <div className={styles.contentQuantityAmount}>
-              <HiMinus
-                className={styles.btnMinus}
-                onClick={() =>
-                  valueInput !== 0 && setValueInput(Number(valueInput) - 1)
-                }
-              />
+              <motion.div
+                whileHover={{ scale: 1.3 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <HiMinus
+                  className={styles.btnMinus}
+                  onClick={() =>
+                    valueInput !== 0 && setValueInput(Number(valueInput) - 1)
+                  }
+                />
+              </motion.div>
               <input
-                className="mx-2 border text-center w-8"
+                className="mx-2 border text-center w-8 rounded-md"
                 type="text"
                 value={valueInput}
                 onChange={(e) =>
@@ -136,30 +142,40 @@ const ProductDetail = ({ product }) => {
                     Number(e.target.value) <= Number(0)
                       ? Number(0)
                       : Number(e.target.value) >= Number(product[0].quantity)
-                      ? Number(product[0].quantity)
-                      : Number(e.target.value)
+                        ? Number(product[0].quantity)
+                        : Number(e.target.value)
                   )
                 }
                 max={product[0].quantity}
                 min={0}
               />
-              <HiPlus
-                className={styles.btnPus}
-                onClick={() =>
-                  setValueInput(
-                    valueInput >= product[0].quantity
-                      ? product[0].quantity
-                      : Number(valueInput) + 1
-                  )
-                }
-              />
+              <motion.div
+                whileHover={{ scale: 1.3 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <HiPlus
+                  className={styles.btnPus}
+                  onClick={() =>
+                    setValueInput(
+                      valueInput >= product[0].quantity
+                        ? product[0].quantity
+                        : Number(valueInput) + 1
+                    )
+                  }
+                />
+              </motion.div>
             </div>
           </div>
-          <div className={styles.btnAddCart}>
+          <motion.div 
+          whileHover={{scale: 1.1}}
+          transition={{type:"spring", stiffness:400, damping:10}}
+          whileTap={{scale: 0.9}}
+          className={styles.btnAddCart}>
             <button type="submit" onClick={handleAddToCart}>
               Add to Cart
             </button>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
