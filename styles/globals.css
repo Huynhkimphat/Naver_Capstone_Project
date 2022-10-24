@@ -33,7 +33,14 @@ a {
   scrollbar-width: none;
   /* Firefox */
 }
-
+.btn-disabled{
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

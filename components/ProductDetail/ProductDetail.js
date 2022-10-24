@@ -17,7 +17,7 @@ const styles = {
   detailContainer: "flex-1 p-2 flex flex-col gap-2 sm:p-8 m-0 sm:m-12",
   productTitle: "text-4xl font-bold",
   productSubtitle: "text-md font-medium text-slate-500 hover:text-[#000000] ",
-  productPrice: "text-2xl py-1 text-white bg-red-500 w-fit rounded-lg px-2 font-semibold",
+  productPrice: "text-2xl py-1 text-white mt-4 bg-red-500 w-fit rounded-lg px-2 font-semibold",
   descriptionTitle: "text-xl py-4 font-semibold text-admin_color",
   descriptionContent: "",
   dimensionTitle: "text-xl py-4 font-semibold text-admin_color",
@@ -76,6 +76,25 @@ const ProductDetail = ({ product }) => {
       </div>
       <div className={styles.detailContainer}>
         <div className={styles.productTitle}>{product[0].name}</div>
+        <div className={styles.productPrice}>
+          {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[0].price)}
+        </div>
+        {
+          product[0]?.quantity != 0 ? (
+            <span className="font-medium">
+              Left in stock: {product[0].quantity}
+            </span>
+          ) : (
+            <span className=" font-medium text-red-500">
+              Out of stock
+            </span>
+          )
+        }
+
+        <div className={styles.descriptionTitle}>Description</div>
+        <div className={styles.descriptionContent}>
+          {product[0].description}
+        </div>
         <div className={styles.productSubtitle}>
           Brand: {product[0].configuration.brand}
         </div>
@@ -88,16 +107,6 @@ const ProductDetail = ({ product }) => {
         <div className={styles.productSubtitle}>
           Made By: {product[0].configuration.material}
         </div>
-        <div className={styles.productPrice}>
-          {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product[0].price)}
-        </div>
-        <span className="font-medium">
-          Left in stock: {product[0].quantity}
-        </span>
-        <div className={styles.descriptionTitle}>Description</div>
-        <div className={styles.descriptionContent}>
-          {product[0].description}
-        </div>
         <div className={styles.dimensionTitle}>Dimensions</div>
         <div className={styles.dimensionContent}>
           <table className={styles.dimensionTable}>
@@ -109,8 +118,8 @@ const ProductDetail = ({ product }) => {
             </thead>
             <tbody>
               <tr>
-                <td>{product[0].configuration.width}</td>
-                <td>{product[0].configuration.height}</td>
+                <td>{product[0].configuration.width} cm</td>
+                <td>{product[0].configuration.height} cm</td>
               </tr>
             </tbody>
           </table>
@@ -167,18 +176,18 @@ const ProductDetail = ({ product }) => {
               </motion.div>
             </div>
           </div>
-          <motion.div 
-          whileHover={{scale: 1.1}}
-          transition={{type:"spring", stiffness:400, damping:10}}
-          whileTap={{scale: 0.9}}
-          className={styles.btnAddCart}>
-            <button type="submit" onClick={handleAddToCart}>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            whileTap={{ scale: 0.9 }}
+            className={`${styles.btnAddCart} ${product[0]?.quantity != 0 ? "" : "btn-disabled"}`}>
+            <button type="submit" onClick={handleAddToCart} >
               Add to Cart
             </button>
           </motion.div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 export default ProductDetail;
