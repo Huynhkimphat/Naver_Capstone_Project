@@ -27,11 +27,10 @@ const Footer = () => {
     { id: 6, name: "Cutlery" },
   ];
   const ourCompanyList = [
-    { id: 1, name: "About us" },
-    { id: 2, name: "Vacancies" },
-    { id: 3, name: "Contact Us" },
-    { id: 4, name: "Privacy" },
-    { id: 5, name: "Returns policy" },
+    { id: 1, name: "Vacancies" },
+    { id: 2, name: "Contact Us" },
+    { id: 3, name: "Privacy" },
+    { id: 4, name: "Returns policy" },
   ];
 
   return (

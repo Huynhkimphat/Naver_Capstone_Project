@@ -40,7 +40,7 @@ const styles = {
   navMobileContainer: `flex text-xl gap-5 `,
   userImage: "rounded-full",
   cartIconContainer: "flex",
-  numberProduct: "text-[10px] pb-4 text-bold",
+  numberProduct: "text-[16px] pb-4 text-extrabold",
 };
 
 const Header = () => {
@@ -143,7 +143,6 @@ const Header = () => {
             <Link href="/checkout">
               <div className={styles.cartIconContainer}>
                 <div className={styles.cartIcon}>
-              
                   <AiOutlineShoppingCart />
                 </div>
                 <div className={styles.numberProduct}>{userEmail ? cart?.productListDetail?.length : ""}</div>

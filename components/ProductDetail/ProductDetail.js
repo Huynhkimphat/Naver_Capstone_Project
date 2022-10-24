@@ -36,7 +36,7 @@ const styles = {
 const ProductDetail = ({ product }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [valueInput, setValueInput] = useState(0);
+  const [valueInput, setValueInput] = useState(1);
   const cart = useSelector(state => AppSelector.getCart(state))
   const [isAdd, setIsAdd] = useState(false);
 
@@ -138,7 +138,7 @@ const ProductDetail = ({ product }) => {
                 <HiMinus
                   className={styles.btnMinus}
                   onClick={() =>
-                    valueInput !== 0 && setValueInput(Number(valueInput) - 1)
+                    valueInput !== 1 && setValueInput(Number(valueInput) - 1)
                   }
                 />
               </motion.div>
@@ -148,15 +148,15 @@ const ProductDetail = ({ product }) => {
                 value={valueInput}
                 onChange={(e) =>
                   setValueInput(
-                    Number(e.target.value) <= Number(0)
-                      ? Number(0)
+                    Number(e.target.value) <= Number(1)
+                      ? Number(1)
                       : Number(e.target.value) >= Number(product[0].quantity)
                         ? Number(product[0].quantity)
                         : Number(e.target.value)
                   )
                 }
                 max={product[0].quantity}
-                min={0}
+                min={1}
               />
               <motion.div
                 whileHover={{ scale: 1.3 }}

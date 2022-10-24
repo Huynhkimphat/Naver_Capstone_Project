@@ -32,7 +32,7 @@ export default function CartContent({ cart, orderNo }) {
   const adjustProduct = (data, type) => {
     if(orderNo)return;
     if (
-      (type === "minus" && data.amount === 0) ||
+      (type === "minus" && data.amount === 1) ||
       (type === "plus" && data.amount === Number(data.quantity))
     ) {
       return;
@@ -85,7 +85,7 @@ export default function CartContent({ cart, orderNo }) {
             </span>
             <div className={styles.contentQuantityAmount}>
               <HiMinus
-                className={orderNo ? styles.disabled : ""}
+                className={orderNo ? styles.disabled : "cursor-pointer select-none"}
                 onClick={() => {
                   adjustProduct(data, "minus");
                 }}
@@ -97,7 +97,7 @@ export default function CartContent({ cart, orderNo }) {
                 value={data.amount}
               />
               <HiPlus
-                className={orderNo ? styles.disabled : ""}
+                className={orderNo ? styles.disabled : "cursor-pointer select-none"}
                 onClick={() => {
                   adjustProduct(data, "plus");
                 }}
@@ -118,8 +118,7 @@ export default function CartContent({ cart, orderNo }) {
             {new Intl.NumberFormat("vi-VN", {
               style: "currency",
               currency: "VND",
-            }).format(data.total)}
-            VND
+            }).format(data.total)} (VND)
           </span>
         </div>
       ))}

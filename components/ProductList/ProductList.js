@@ -14,7 +14,7 @@ const styles = {
   container: "grid md:grid-cols-4 grid-cols-2 gap-x-6 gap-y-8",
   item: "flex flex-col items-center shadow-xl rounded-lg text-center py-8 cursor-pointer",
   img: "hover:cursor-pointer",
-  name: "mt-6 mb-2 text-lg md:text-sm lg:text-xl hover:cursor-pointer",
+  name: "mt-6 mb-2 text-lg md:text-sm lg:text-xl hover:cursor-pointer z-10",
   price: "text-lg md:text-sm lg:text-lg hover:cursor-pointer",
   btnContainer: "text-center",
   btnViewCollection:
@@ -95,7 +95,7 @@ const ProductList = ({
         cateList.sort((a, b) => (Number(a.createdOn) > Number(b.createdOn) ? 1 : -1))
       );
     }
-   console.log(dateDescSort);
+    console.log(dateDescSort);
     if (dateDescSort == 1) {
       const cateList = [...productListByName];
       setProductListByName(
@@ -134,10 +134,11 @@ const ProductList = ({
         ) : (
           productListUIUpdate?.map((item) => (
             <motion.div
-              whileTap={{ scale: 0.9 }}
-              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 1 }}
+              whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
               key={item.id}
+              onClick={() => router.push(`/product/${item.id}`)}
               className={styles.item}>
               <Image
                 src={item?.images[0]}
