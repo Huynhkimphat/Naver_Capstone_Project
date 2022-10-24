@@ -4,13 +4,14 @@ import orderService from "../../../services/api/admin/orderService";
 import cartService from "../../../services/api/cartService";
 import { confirmDialog } from "primereact/confirmdialog"; // To use confirmDialog method
 import { setCart } from "../../../redux/actions/cartAction";
+import { motion } from 'framer-motion'
 const styles = {
   wrapper: " w-full px-8 py-10",
   title: "font-semibold text-2xl border-b pb-8",
   summaryBorder: "mt-8",
   summaryDetail: "flex font-semibold justify-between py-6 text-sm uppercase",
   checkoutBtn:
-    "bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full",
+    "bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full rounded-2xl",
 };
 
 export default function Summary({ orderNo }) {
@@ -61,9 +62,9 @@ export default function Summary({ orderNo }) {
           </span>
         </div>
         {orderNo || (
-          <button className={styles.checkoutBtn} onClick={confirm}>
-            Checkout
-          </button>
+            <button className={styles.checkoutBtn} onClick={confirm}>
+              Checkout
+            </button>
         )}
       </div>
     </div>
