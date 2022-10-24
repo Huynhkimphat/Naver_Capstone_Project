@@ -15,6 +15,7 @@ import productService from "../../../services/api/productService";
 import { setProductList } from "../../../redux/actions/productAction";
 import { Ripple } from "primereact/ripple";
 import { InputText } from "primereact/inputtext";
+import { classNames } from 'primereact/utils';
 const styles = {
     wrapper: 'mx-auto w-full p-4 flex flex-col shadow-lg rounded-md',
     dataTable: 'mt-4',
@@ -158,11 +159,11 @@ const AdProducts = (props) => {
     useEffect(() => {
         productService.getAllProducts().then(res => {
             productService.getAllProducts().then(res => {
-                const pdl = res.map((product,index) => {
-                  return {
-                    ...product,
-                    status: product.quantity ? "INSTOCK" : "OUTOFSTOCK"
-                  }
+                const pdl = res.map((product, index) => {
+                    return {
+                        ...product,
+                        status: product.quantity ? "INSTOCK" : "OUTOFSTOCK"
+                    }
                 })
                 dispatch(setProductList(pdl))
             })
@@ -272,7 +273,7 @@ const AdProducts = (props) => {
                             textAlign: "center"
                         }}
                     ></Column>
-                    
+
                     <Column
                         field="detail"
                         headerStyle={{ width: "10%", minWidth: "1rem" }}
