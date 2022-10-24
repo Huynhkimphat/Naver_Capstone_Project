@@ -6,6 +6,7 @@ import 'primereact/resources/primereact.css';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion'
+import Gif from '../static/404.gif'
 const Custom404 = (props) => {
     const router = useRouter();
     return (
@@ -13,7 +14,7 @@ const Custom404 = (props) => {
             <h1 className=' text-3xl font-extrabold text-red-500'>404</h1>
             <h1 className='text-xl font-extrabold text-red-500'>PAGE NOT FOUND</h1>
             <div className='w-1/2 h-1/2 relative'>
-                <Image src={"https://media.tenor.com/vYTwUEafhogAAAAC/404.gif"}
+                <Image src={Gif}
                     layout="fill"
                     alt='404 GIF'
                     objectFit="contain"></Image>
