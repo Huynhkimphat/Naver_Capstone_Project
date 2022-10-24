@@ -1,34 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">Naver Capstone Project</h1>
 
-## Getting Started
+![logo](https://user-images.githubusercontent.com/30569818/113259711-a2bffa80-92f7-11eb-8771-304248752a41.jpg)
 
-First, run the development server:
+<div align="center">
+   Solution for a challenge from  <a href="https://www.uit.edu.vn/" target="_blank">University Of Informations Technology</a>.
+</div>
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+<div align="center">
+  <h3>
+    <a href="https://naver-capstone-project.vercel.app/">
+      Demo
+    </a>
+    <span> | </span>
+    <a href="https://github.com/Huynhkimphat/Naver_Capstone_Project">
+      Solution
+    </a>
+  </h3>
+</div>
+<!-- TABLE OF CONTENTS -->
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Table of Contents
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- [Table of Contents](#table-of-contents)
+- [Overview](#overview)
+  - [Introduction](#introduction)
+  - [Built With](#built-with)
+  - [Download Project](#download-project)
+    - [Step 1 : Install Nodejs and git](#step-1--install-nodejs-and-oracledb-and-git)
+    - [Step 2 : Clone Project](#step-2--clone-project)
+    - [Step 3 : Install Package](#step-3--install-package)
+    - [Step 4 : Create .env file](#step-4--create-env-file)
+    - [Step 5 : Run Project](#step-5--run-project)
+- [Acknowledgements](#acknowledgements)
+- [Contact](#contact)
+- [About Us](#about-us)
+  - [Project Manger](#project-manger)
+  - [FrontEnd Developer](#frontend-developer)
+  - [BackEnd Developer](#backend-developer)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Overview
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Introduction
 
-## Learn More
+### Built With
 
-To learn more about Next.js, take a look at the following resources:
+- [ReactJS](https://reactjs.org/)
+- [TailwindCSS](https://tailwindcss.com/) 
+- [JS](https://en.wikipedia.org/wiki/JavaScript)
+- [NextJS](https://nextjs.org/)
+- [Vercel](https://vercel.com/dashboard)
+- [Firebase](https://firebase.google.com/?gclid=CjwKCAjw79iaBhAJEiwAPYwoCHk3h-5bbnedoOLnhhb5XslqJb61PaZhZlBxrHgcqdhixDwhoNMzahoCxKgQAvD_BwE&gclsrc=aw.ds)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Download Project
+#### Step 1 : Install Nodejs and OracleDB and git
+- [Nodejs](https://nodejs.org/en/)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Git](https://git-scm.com/)
 
-## Deploy on Vercel
+#### Step 2 : Clone Project
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Git clone https://github.com/Huynhkimphat/Naver_Capstone_Project.git
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Step 3 : Install Package
+- npm i or yarn
+
+#### Step 4 : Create .env file
+    NEXT_PUBLIC_FIREBASE_PUBLIC_API_KEY="AIzaSyCYL1vL_8KfRSGDR1Kyy5C1zDuML98yaD0"
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="naver-capstone-project.firebaseapp.com"
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID="naver-capstone-project"
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="gs://naver-capstone-project.appspot.com"
+#### Step 5 : Run Project
+- npm run dev or yarn dev
+
+## Acknowledgements
+
+## Contact
+- Github : [Huynhkimphat](https://github.com/Huynhkimphat)
+- Email :   kimphat.devcs@gmail.com
+
+## About Us
+### Project Manger 
+  - [Huynh Kim Phat](https://github.com/Huynhkimphat)
+
+### Leader
+  - [Nguyen Duc Hieu](https://github.com/hieulechanhkk)
+
+### FrontEnd Developer 
+   - [Tran Thi Diep](https://github.com/tranthidiep142)
+   - [Le Thi Thanh Huong](https://github.com/Huong295/)
+   - [Pham Huu Khoi Nguyen](https://github.com/)
+   - [Nguyen Tang Hao](https://github.com/)
