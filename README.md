@@ -89,4 +89,4 @@
    - [Tran Thi Diep](https://github.com/tranthidiep142)
    - [Le Thi Thanh Huong](https://github.com/Huong295/)
    - [Pham Huu Khoi Nguyen](https://github.com/)
-   - [Nguyen Tang Hao](https://github.com/)
+   - [Nguyen Tang Hao](https://github.com/NTangHao)
